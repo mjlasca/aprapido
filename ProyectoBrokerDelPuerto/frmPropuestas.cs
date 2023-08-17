@@ -369,168 +369,177 @@ namespace ProyectoBrokerDelPuerto
                 propuestas pro = new propuestas();
                 DataSet ds = pro.getprefijo(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(),dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString());
 
-                frm.lblConsecutivo.Text = dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
-                frm.lblidpropuesta.Text = dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString();
-                
-                frm.edit = true;
-                
-                informes info = new informes();
-                DataSet infoDs = info.get_tipo_informe("FINDIA", Convert.ToDateTime( ds.Tables[0].Rows[0]["ultmod"]).ToString("yyyy-MM-dd HH:mm:ss"));
-                if ( infoDs.Tables[0].Rows.Count > 0)
+                if(ds.Tables[0].Rows.Count> 0)
                 {
-                    //if (DateTime.Compare(Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"]), Convert.ToDateTime(infoDs.Tables[0].Rows[0]["ultmod"])) >= 0)
-                    //{
+                    frm.lblConsecutivo.Text = dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
+                    frm.lblidpropuesta.Text = dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString();
+
+                    frm.edit = true;
+
+                    informes info = new informes();
+                    DataSet infoDs = info.get_tipo_informe("FINDIA", Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"]).ToString("yyyy-MM-dd HH:mm:ss"));
+                    if (infoDs.Tables[0].Rows.Count > 0)
+                    {
+                        //if (DateTime.Compare(Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"]), Convert.ToDateTime(infoDs.Tables[0].Rows[0]["ultmod"])) >= 0)
+                        //{
                         frm.findeldia = true;
-                    //}
-                }
+                        //}
+                    }
 
-                frm.codpostalactivo = false;
-                
-                frm.textBox1.Text = ds.Tables[0].Rows[0]["documento"].ToString().Trim();
-                frm.lblPrefijo.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString();
-                frm.datosInciales();
-                if(ds.Tables[0].Rows[0]["paga"].ToString() != "")
-                {
-                    if(ds.Tables[0].Rows[0]["paga"].ToString() == "1")
-                        frm.paga_ch.Checked = true;
-                    else
-                        frm.paga_ch.Checked = false;
-                }
-                
+                    frm.codpostalactivo = false;
+
+                    frm.textBox1.Text = ds.Tables[0].Rows[0]["documento"].ToString().Trim();
+                    frm.lblPrefijo.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString();
+                    frm.datosInciales();
+                    if (ds.Tables[0].Rows[0]["paga"].ToString() != "")
+                    {
+                        if (ds.Tables[0].Rows[0]["paga"].ToString() == "1")
+                            frm.paga_ch.Checked = true;
+                        else
+                            frm.paga_ch.Checked = false;
+                    }
 
 
-                lineas_propuestas li = new lineas_propuestas();
-                controlventas controlventas = new controlventas();
-                DataSet lineas = li.get_idpropuesta(ds.Tables[0].Rows[0]["idpropuesta"].ToString(), ds.Tables[0].Rows[0]["prefijo"].ToString());
 
-                for(int i = 0; i < lineas.Tables[0].Rows.Count; i++)
-                {
-                    frm.dataGridView1.Rows.Add();
-                    actividades ac = new actividades();
-                    clasificaciones cla = new clasificaciones();
-                    DataSet dd = ac.get(lineas.Tables[0].Rows[i]["id_actividad"].ToString());
+                    lineas_propuestas li = new lineas_propuestas();
+                    controlventas controlventas = new controlventas();
+                    DataSet lineas = li.get_idpropuesta(ds.Tables[0].Rows[0]["idpropuesta"].ToString(), ds.Tables[0].Rows[0]["prefijo"].ToString());
 
-                    DataGridViewComboBoxCell comboboxCell = frm.dataGridView1.Rows[i].Cells["clasificacion"] as DataGridViewComboBoxCell;
-                    /*
-                    * Espacio para llenar el combo de clasificacion
-                    */
+                    for (int i = 0; i < lineas.Tables[0].Rows.Count; i++)
+                    {
+                        frm.dataGridView1.Rows.Add();
+                        actividades ac = new actividades();
+                        clasificaciones cla = new clasificaciones();
+                        DataSet dd = ac.get(lineas.Tables[0].Rows[i]["id_actividad"].ToString());
+
+                        DataGridViewComboBoxCell comboboxCell = frm.dataGridView1.Rows[i].Cells["clasificacion"] as DataGridViewComboBoxCell;
+                        /*
+                        * Espacio para llenar el combo de clasificacion
+                        */
                         clasificaciones cla1 = new clasificaciones();
                         cla1.id_actividad = lineas.Tables[0].Rows[i]["id_actividad"].ToString();
                         DataSet ds1 = cla1.get_all_actividad();
                         //MessageBox.Show("ds. "+ds.Tables.Count);
-                        
+
                         if (ds1.Tables.Count > 0)
                         {
                             comboboxCell.Items.Clear();
                             for (int j = 0; j < ds1.Tables[0].Rows.Count; j++)
                             {
-                                comboboxCell.Items.Add(ds1.Tables[0].Rows[j]["cod"].ToString() + " - "+ ds1.Tables[0].Rows[j]["nombre"].ToString());
+                                comboboxCell.Items.Add(ds1.Tables[0].Rows[j]["cod"].ToString() + " - " + ds1.Tables[0].Rows[j]["nombre"].ToString());
                             }
                         }
-                    //MessageBox.Show("FEC NAC"+ lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString());
-                    /***/
-                    frm.dataGridView1.Rows[i].Cells["idPropuesta"].Value = i;
-                    frm.dataGridView1.Rows[i].Cells["nodocumento"].Value = lineas.Tables[0].Rows[i]["documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["documento"].ToString(): "";
-                    frm.dataGridView1.Rows[i].Cells["documento"].Value = lineas.Tables[0].Rows[i]["tipo_documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["tipo_documento"].ToString() : "";
-                    frm.dataGridView1.Rows[i].Cells["apellido"].Value = lineas.Tables[0].Rows[i]["apellidos"].ToString() != "" ? lineas.Tables[0].Rows[i]["apellidos"].ToString() : "";
-                    frm.dataGridView1.Rows[i].Cells["nombre"].Value = lineas.Tables[0].Rows[i]["nombres"].ToString() != "" ? lineas.Tables[0].Rows[i]["nombres"].ToString() : "";
-                    frm.dataGridView1.Rows[i].Cells["fecha"].Value = lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString() != "" ? Convert.ToDateTime(lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy") : "";
-                    frm.dataGridView1.Rows[i].Cells["actividad"].Value = lineas.Tables[0].Rows[0]["actividad"].ToString();
-                    frm.dataGridView1.Rows[i].Cells["clasificacion"].Value = lineas.Tables[0].Rows[0]["clasificacion"].ToString();
-                    //frm.dataGridView1.Rows.Add(i,lineas.Tables[0].Rows[i]["documento"].ToString(), lineas.Tables[0].Rows[i]["tipo_documento"].ToString(), lineas.Tables[0].Rows[i]["apellidos_nombres"].ToString(), lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString(), dd.Tables[0].Rows[0]["nombre"].ToString());
+                        //MessageBox.Show("FEC NAC"+ lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString());
+                        /***/
+                        frm.dataGridView1.Rows[i].Cells["idPropuesta"].Value = i;
+                        frm.dataGridView1.Rows[i].Cells["nodocumento"].Value = lineas.Tables[0].Rows[i]["documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["documento"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["documento"].Value = lineas.Tables[0].Rows[i]["tipo_documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["tipo_documento"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["apellido"].Value = lineas.Tables[0].Rows[i]["apellidos"].ToString() != "" ? lineas.Tables[0].Rows[i]["apellidos"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["nombre"].Value = lineas.Tables[0].Rows[i]["nombres"].ToString() != "" ? lineas.Tables[0].Rows[i]["nombres"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["fecha"].Value = lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString() != "" ? Convert.ToDateTime(lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy") : "";
+                        frm.dataGridView1.Rows[i].Cells["actividad"].Value = lineas.Tables[0].Rows[0]["actividad"].ToString();
+                        frm.dataGridView1.Rows[i].Cells["clasificacion"].Value = lineas.Tables[0].Rows[0]["clasificacion"].ToString();
+                        //frm.dataGridView1.Rows.Add(i,lineas.Tables[0].Rows[i]["documento"].ToString(), lineas.Tables[0].Rows[i]["tipo_documento"].ToString(), lineas.Tables[0].Rows[i]["apellidos_nombres"].ToString(), lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString(), dd.Tables[0].Rows[0]["nombre"].ToString());
 
-                }
-
-
+                    }
 
 
-                frm.fechapropuesta = Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"].ToString());
 
-                frm.fechaDesde.Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["fechaDesde"].ToString());
-                frm.fechaHasta.Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["fechaHasta"].ToString());
 
-                
-                frm.comboBox4.Text = ds.Tables[0].Rows[0]["meses"].ToString();
-                frm.checkBox1.Checked = Convert.ToBoolean(ds.Tables[0].Rows[0]["clausula"]);
-                frm.checkBox2.Checked = Convert.ToBoolean(ds.Tables[0].Rows[0]["barrio_beneficiario"]);
-                frm.comboCobertura.Text =  ds.Tables[0].Rows[0]["id_cobertura"].ToString() ;
+                    frm.fechapropuesta = Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"].ToString());
 
-                barrios ba = new barrios();
-                
-                //frm.comboBarrios.Text = ba.get_nombre(ds.Tables[0].Rows[0]["id_barrio"].ToString()); 
-                frm.txtPremio.Text = string.Format("{0:c}", Convert.ToDouble(ds.Tables[0].Rows[0]["premio"].ToString()));
-                frm.txtPremioTotal.Text = string.Format("{0:c}", Convert.ToDouble(ds.Tables[0].Rows[0]["premio_total"].ToString()));
-                
-                if (ds.Tables[0].Rows[0]["nueva_poliza"].ToString() == "1")
-                {
-                    frm.radAltaPoliza.Checked = true;
-                }
-                if (ds.Tables[0].Rows[0]["nueva_poliza"].ToString() == "2")
-                {
-                    frm.radNuevaPoliza.Checked = true;
-                }
+                    frm.fechaDesde.Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["fechaDesde"].ToString());
+                    frm.fechaHasta.Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["fechaHasta"].ToString());
 
-                /*MessageBox.Show("--> 1 "+ Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd")+
-                    " / 2 "+ DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd")); 
-                if (Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd") != DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"))
-                {*/
-                    if ( (Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date != DateTime.Now.Date &&
-                    Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd") != DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd")) || 
+
+                    frm.comboBox4.Text = ds.Tables[0].Rows[0]["meses"].ToString();
+                    frm.checkBox1.Checked = Convert.ToBoolean(ds.Tables[0].Rows[0]["clausula"]);
+                    frm.checkBox2.Checked = Convert.ToBoolean(ds.Tables[0].Rows[0]["barrio_beneficiario"]);
+                    frm.comboCobertura.Text = ds.Tables[0].Rows[0]["id_cobertura"].ToString();
+
+                    barrios ba = new barrios();
+
+                    //frm.comboBarrios.Text = ba.get_nombre(ds.Tables[0].Rows[0]["id_barrio"].ToString()); 
+                    frm.txtPremio.Text = string.Format("{0:c}", Convert.ToDouble(ds.Tables[0].Rows[0]["premio"].ToString()));
+                    frm.txtPremioTotal.Text = string.Format("{0:c}", Convert.ToDouble(ds.Tables[0].Rows[0]["premio_total"].ToString()));
+
+                    if (ds.Tables[0].Rows[0]["nueva_poliza"].ToString() == "1")
+                    {
+                        frm.radAltaPoliza.Checked = true;
+                    }
+                    if (ds.Tables[0].Rows[0]["nueva_poliza"].ToString() == "2")
+                    {
+                        frm.radNuevaPoliza.Checked = true;
+                    }
+
+                    /*MessageBox.Show("--> 1 "+ Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd")+
+                        " / 2 "+ DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd")); 
+                    if (Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd") != DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd"))
+                    {*/
+                    if ((Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date != DateTime.Now.Date &&
+                    Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).Date.ToString("yyyy-MM-dd") != DateTime.Now.Date.AddDays(1).ToString("yyyy-MM-dd")) ||
                      frm.findeldia)
                     {
                         frm.formEdit(ds.Tables[0].Rows[0]["ultmod"].ToString());
-                        
+
                         frm.dataGridView1.ReadOnly = true;
                         frm.botEliminarFila = false;
 
                     }
-                //}
+                    //}
 
 
-                
 
-                /*
-                * ListBox barrios seleccionados seleccionados
-                */
-                
-                if(ds.Tables[0].Rows[0]["data_barrios"] != null && ds.Tables[0].Rows[0]["data_barrios"].ToString() != "")
-                {
-                    frm.set_json_barrios_listbox(ds.Tables[0].Rows[0]["data_barrios"].ToString());
-                }
-                else{
 
-                    barrios_propuesta baProp = new barrios_propuesta();
-                    baProp.idprefijo = dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString();
-                    baProp.prefijo = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString();
-                    DataSet barrds = baProp.get_idpropuesta(baProp.idprefijo, baProp.prefijo);
-                    for (int j = 0; j < barrds.Tables[0].Rows.Count; j++)
+                    /*
+                    * ListBox barrios seleccionados seleccionados
+                    */
+
+                    if (ds.Tables[0].Rows[0]["data_barrios"] != null && ds.Tables[0].Rows[0]["data_barrios"].ToString() != "")
                     {
-                        frm.listBox1.Items.Add(barrds.Tables[0].Rows[j]["nombre"].ToString());
+                        frm.set_json_barrios_listbox(ds.Tables[0].Rows[0]["data_barrios"].ToString());
+                    }
+                    else
+                    {
 
-                        barrios barr = new barrios();
-                        barr.id = barr.get_id(barrds.Tables[0].Rows[j]["nombre"].ToString());
-                        DataSet dsBarr = barr.get();
-                        if (dsBarr.Tables[0].Rows.Count > 0)
+                        barrios_propuesta baProp = new barrios_propuesta();
+                        baProp.idprefijo = dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString();
+                        baProp.prefijo = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString();
+                        DataSet barrds = baProp.get_idpropuesta(baProp.idprefijo, baProp.prefijo);
+                        for (int j = 0; j < barrds.Tables[0].Rows.Count; j++)
                         {
-                            frm.listBox2.Items.Add(
-                                   " Mte: " + this.exigencias(dsBarr.Tables[0].Rows[0]["suma_muerte"].ToString(), 1) +
-                                   "   -   GM:" +
-                                   this.exigencias(dsBarr.Tables[0].Rows[0]["suma_gm"].ToString(), 2)
-                               );
+                            frm.listBox1.Items.Add(barrds.Tables[0].Rows[j]["nombre"].ToString());
 
-                            frm.set_list_barrios(dsBarr.Tables[0]);
+                            barrios barr = new barrios();
+                            barr.id = barr.get_id(barrds.Tables[0].Rows[j]["nombre"].ToString());
+                            DataSet dsBarr = barr.get();
+                            if (dsBarr.Tables[0].Rows.Count > 0)
+                            {
+                                frm.listBox2.Items.Add(
+                                       " Mte: " + this.exigencias(dsBarr.Tables[0].Rows[0]["suma_muerte"].ToString(), 1) +
+                                       "   -   GM:" +
+                                       this.exigencias(dsBarr.Tables[0].Rows[0]["suma_gm"].ToString(), 2)
+                                   );
+
+                                frm.set_list_barrios(dsBarr.Tables[0]);
+
+                            }
 
                         }
-
                     }
+
+
+                    //totales
+                    frm.premio_ = ds.Tables[0].Rows[0]["premio"].ToString();
+                    frm.premioTotal_ = ds.Tables[0].Rows[0]["premio_total"].ToString();
+                    frm.ocultarBotonGuardar();
+                    frm.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("El estado de la propuesta ha cambiado, actualiza la búsqueda");
                 }
                 
-
-                //totales
-                frm.premio_ = ds.Tables[0].Rows[0]["premio"].ToString();
-                frm.premioTotal_ = ds.Tables[0].Rows[0]["premio_total"].ToString();
-                frm.ocultarBotonGuardar();
-                frm.ShowDialog();
                 
             }
             

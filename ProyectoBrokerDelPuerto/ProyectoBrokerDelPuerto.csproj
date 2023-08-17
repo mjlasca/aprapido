@@ -304,6 +304,12 @@
     <Compile Include="frmConfigcorreo.Designer.cs">
       <DependentUpon>frmConfigcorreo.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmConfigDB.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmConfigDB.Designer.cs">
+      <DependentUpon>frmConfigDB.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmControlVentas.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -613,6 +619,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmConfigcorreo.resx">
       <DependentUpon>frmConfigcorreo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmConfigDB.resx">
+      <DependentUpon>frmConfigDB.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmControlVentas.resx">
       <DependentUpon>frmControlVentas.cs</DependentUpon>

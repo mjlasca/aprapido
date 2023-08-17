@@ -55,43 +55,55 @@ namespace ProyectoBrokerDelPuerto
             string ipguardada = "100";
             string usuarioBaseDatos = "remoto";
             string contraBaseDatos = "remoto";
+            string nombreBaseDatos = "barriosprivados";
+
+            
+            if (!System.IO.File.Exists("ip.txt"))
+                System.IO.File.WriteAllText("ip.txt", "");
+            
+
+            string[] lineText = System.IO.File.ReadAllLines("ip.txt");
+            if (lineText.Count() < 1)
+            {
+                frmConfigDB configdb = new frmConfigDB();
+                configdb.ShowDialog();
+                if (configdb.DialogResult == DialogResult.OK)
+                {
+                    lineText = System.IO.File.ReadAllLines("ip.txt");
+                    ipguardada = lineText[0];
+                    nombreBaseDatos = lineText[1];
+                    usuarioBaseDatos = lineText[2];
+                    if(lineText.Count() < 4 )
+                        contraBaseDatos = "";
+                    else
+                        contraBaseDatos = lineText[3];
+                }
+
+            }
+            else
+            {
+                lineText = System.IO.File.ReadAllLines("ip.txt");
+                ipguardada = lineText[0];
+                nombreBaseDatos = lineText[1];
+                usuarioBaseDatos = lineText[2];
+                if (lineText.Count() < 4)
+                    contraBaseDatos = "";
+                else
+                    contraBaseDatos = lineText[3];
+            }
+
 
             try
             {
-                ipguardada = System.IO.File.ReadAllText("ip.txt");
-                if (ipguardada.Trim() == "")
-                {
-                    ipguardada = Prompt.ShowDialog("IP del servidor LAN", "El ip debe ser un número parecido a (192.168.1.10)");
-                    if(ipguardada.Trim() == "")
-                        System.IO.File.WriteAllText("ip.txt", "100");
-                    else
-                        System.IO.File.WriteAllText("ip.txt", ipguardada.Trim());
-                }
+                conecction = new MySqlConnection("server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;");
+                conecction.Open();
             }
             catch(Exception ex)
             {
-                ipguardada = Prompt.ShowDialog("IP del servidor LAN", "El ip debe ser un número parecido a (192.168.1.10)");
-                if (ipguardada.Trim() == "")
-                    System.IO.File.WriteAllText("ip.txt", "100");
-                else
-                    System.IO.File.WriteAllText("ip.txt", ipguardada.Trim());
+                MessageBox.Show("Ha ocurrido un error al tratar de conectar al servidor y/o la base de datos\n"+ex.Message,
+                    "Error conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            //MessageBox.Show("IP--> "+ this.GetLocalIPAddress()+ "GUARDA " + ipguardada);
-
-            if (this.GetLocalIPAddress() != ipguardada)
-            {
-                //Desarrollo        
-                //conecction = new MySqlConnection("server=localhost; database=barrios_test; Uid=root; pwd=; Allow Zero Datetime=True;");
-                //Produccións
-                /*conecction = new MySqlConnection("server="+ ipguardada + "; database=barriosprivados; Uid="+ usuarioBaseDatos + "; pwd="+contraBaseDatos+"; Alget_all_fecha_exportlow Zero Datetime=True;");*/
-                conecction = new MySqlConnection("server=" + ipguardada + "; database=barriosprivados; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;");
-            }
-            else {
-                conecction = new MySqlConnection("server="+ipguardada+"; database=barriosprivados; Uid="+ usuarioBaseDatos + "; pwd="+ contraBaseDatos + "; Allow Zero Datetime=True;");
-            }
-
-            conecction.Open();
+            
         }
 
 
