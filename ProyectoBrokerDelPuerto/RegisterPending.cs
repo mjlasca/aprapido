@@ -78,7 +78,7 @@ namespace ProyectoBrokerDelPuerto
                             this.updateCodestado(ds.Tables[0].Rows[i]["id"].ToString());
                         }else
                         {
-                            DateTime dateReg = Convert.ToDateTime(ds.Tables[0].Rows[i]["id"].ToString());
+                            DateTime dateReg = Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString());
 
                             if(DateTime.Now.Date > dateReg.Date)
                                 this.updateCodestado(ds.Tables[0].Rows[i]["id"].ToString(), 2);
