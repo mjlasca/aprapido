@@ -93,16 +93,10 @@ namespace ProyectoBrokerDelPuerto
             }
 
 
-            try
-            {
+            
                 conecction = new MySqlConnection("server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;");
                 conecction.Open();
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Ha ocurrido un error al tratar de conectar al servidor y/o la base de datos\n"+ex.Message,
-                    "Error conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
             
         }
 

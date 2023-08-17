@@ -49,7 +49,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         if (strContent != "0" && strContent != "")
                         {
-                            if (Convert.ToDouble(strContent) > Convert.ToDouble(MDIParent1.versionsistema))
+                            if (Convert.ToDouble(strContent.Replace(".", ",")) > Convert.ToDouble(MDIParent1.versionsistema.Replace(".",",")))
                             {
                                 this.versOnline = strContent;
                                 return true;
