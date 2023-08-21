@@ -277,7 +277,7 @@ namespace ProyectoBrokerDelPuerto
             if (dataGridView1.CurrentRow.Cells["idPropuesta"].Value != null)
             {
                 //Estado 1 Vigente 2 No vigente 0 Anulada
-                if (dataGridView1.CurrentRow.Cells["estado"].Value.ToString() == "0" || dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString() == "O")
+                if (dataGridView1.CurrentRow.Cells["estado"].Value.ToString() == "0")
                 {
                     btnAnular.Enabled = false;
                     btnVer.Enabled = false;
