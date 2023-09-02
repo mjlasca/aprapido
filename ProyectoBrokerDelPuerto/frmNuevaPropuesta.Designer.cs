@@ -97,8 +97,10 @@
             this.btnRecibo = new System.Windows.Forms.Button();
             this.btnEmitir = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label24 = new System.Windows.Forms.Label();
             this.btnInfoBarrios = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.paga_ch = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.btnEliminar = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
@@ -107,10 +109,8 @@
             this.btnDuplicar = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.paga_ch = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.libreDeuda_btn = new System.Windows.Forms.Button();
-            this.label24 = new System.Windows.Forms.Label();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -868,6 +868,16 @@
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             this.groupBox3.MouseHover += new System.EventHandler(this.groupBox3_MouseHover);
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(18, 108);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(32, 13);
+            this.label24.TabIndex = 67;
+            this.label24.Text = "Paga";
+            this.label24.Visible = false;
+            // 
             // btnInfoBarrios
             // 
             this.btnInfoBarrios.Location = new System.Drawing.Point(674, 32);
@@ -887,6 +897,18 @@
             this.button2.Text = "+";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // paga_ch
+            // 
+            this.paga_ch.AutoSize = true;
+            this.paga_ch.Checked = true;
+            this.paga_ch.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.paga_ch.Location = new System.Drawing.Point(3, 107);
+            this.paga_ch.Name = "paga_ch";
+            this.paga_ch.Size = new System.Drawing.Size(15, 14);
+            this.paga_ch.TabIndex = 64;
+            this.paga_ch.UseVisualStyleBackColor = true;
+            this.paga_ch.Visible = false;
             // 
             // button1
             // 
@@ -976,18 +998,6 @@
             this.vScrollBar1.Visible = false;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
-            // paga_ch
-            // 
-            this.paga_ch.AutoSize = true;
-            this.paga_ch.Checked = true;
-            this.paga_ch.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.paga_ch.Location = new System.Drawing.Point(3, 107);
-            this.paga_ch.Name = "paga_ch";
-            this.paga_ch.Size = new System.Drawing.Size(15, 14);
-            this.paga_ch.TabIndex = 64;
-            this.paga_ch.UseVisualStyleBackColor = true;
-            this.paga_ch.Visible = false;
-            // 
             // button3
             // 
             this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
@@ -1008,16 +1018,6 @@
             this.libreDeuda_btn.Text = "Libre de Deuda";
             this.libreDeuda_btn.UseVisualStyleBackColor = true;
             this.libreDeuda_btn.Click += new System.EventHandler(this.libreDeuda_btn_Click);
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(18, 108);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(32, 13);
-            this.label24.TabIndex = 67;
-            this.label24.Text = "Paga";
-            this.label24.Visible = false;
             // 
             // button5
             // 
@@ -1150,8 +1150,8 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button libreDeuda_btn;
-        private System.Windows.Forms.Label label24;
         public System.Windows.Forms.Button btnGuardar;
         public System.Windows.Forms.Button button5;
+        public System.Windows.Forms.Label label24;
     }
 }

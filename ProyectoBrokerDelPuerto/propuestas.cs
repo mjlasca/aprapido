@@ -14,7 +14,7 @@ namespace ProyectoBrokerDelPuerto
         //Si codestado es 1. Està vigente la propuesta, 2. Ya no està vigente, 0. Anulada
         string columns = "documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor,"+
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version";
         public string  id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta,clausula, barrio_beneficiario,ultmod, 
             user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota;
         public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0";
@@ -23,6 +23,7 @@ namespace ProyectoBrokerDelPuerto
         public string prima = "0", nombre = "", datos;
         public string fecha_nacimiento;
         public bool denube = false;
+        public int version { get; set; } = 0;
         public string data_barrios { get; set; }
 
         conexion con = new conexion();
@@ -83,34 +84,9 @@ namespace ProyectoBrokerDelPuerto
 
             con.query(sql);
 
-
-
             this.addColumn();
-         
-            if (sicambiotabla)
-            {
-                Console.WriteLine("RENAME 2");
-                sql = "insert into propuestas ( id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod,user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor,prefijo,formadepago,usuariopaga,tipopago,compformapago,idpropuesta,envionube,codempresa)"
-                    + " select id, documento, num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta, clausula, barrio_beneficiario, ultmod, user_edit, codestado, cobertura_suma, cobertura_deducible, cobertura_gastos, promocion, paga, fecha_paga, referencia, prima, master, organizador, productor, prefijo, formadepago, usuariopaga, tipopago, compformapago, idpropuesta, envionube, codempresa"
-                    + " from propuestas2; ";
-                con.query(sql);
-                sql = "DROP TABLE propuestas2";
-                con.query(sql);
-            }
-
-
             this.addIndex();
-            this.transicion();
-
-            con.query("UPDATE propuestas SET fecha_paga = ultmod WHERE fecha_paga = '1000-01-01 01:00:00' AND formadepago = 'CONTADO' ");
-
-
-            //HAY QUE BORRARLO
             this.enviohechoFecha();
-
-            sql = "UPDATE propuestas SET codempresa = '" + MDIParent1.codempresa + "' WHERE (codempresa IS NULL OR codempresa = '')  AND ultmod > '"+DateTime.Now.AddMonths(-3).ToString("yyyy-MM-dd HH:mm:ss")+"' ";
-            con.query(sql);
-
         }
 
         private void transicion()
@@ -321,6 +297,8 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE propuestas ADD COLUMN nota VARCHAR(10)  DEFAULT 0;");
                     if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'data_barrios' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE propuestas ADD data_barrios LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'version' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE propuestas ADD COLUMN version int(10)  DEFAULT 0;");
                 }
                 catch(Exception ex)
                 {
@@ -352,6 +330,7 @@ namespace ProyectoBrokerDelPuerto
                     con.query("ALTER TABLE propuestas ADD COLUMN codempresa VARCHAR(150) NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN nota VARCHAR(10)  DEFAULT 0;");
                     con.query("ALTER TABLE propuestas ADD COLUMN data_barrios JSON NULL;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN version int(10)  DEFAULT 0;");
                 }
                 catch (Exception ex){
                     Console.WriteLine("Error al agregar columna de propuesta " + ex.Message);
@@ -1031,6 +1010,18 @@ namespace ProyectoBrokerDelPuerto
             return true;
         }
 
+        public bool confirmVersion()
+        {
+            if (this.idpropuesta != "")
+            {
+                sql = "SELECT id FROM propuestas WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' AND version < '"+this.version+"' ";
+                if (con.query(sql).Tables[0].Rows.Count > 0)
+                    return true;
+            }
+
+            return false;
+        }
+
         public bool save_import()
         {
             try
@@ -1045,127 +1036,137 @@ namespace ProyectoBrokerDelPuerto
 
                 if (this.exist())
                 {
-                    if (this.denube)
-                    {
 
-                        sql = "UPDATE propuestas SET " +
-                        "documento = '" + this.documento + "'," +
-                        "num_polizas = '" + this.num_polizas + "'," +
-                        "meses = '" + this.meses + "'," +
-                        "id_cobertura = '" + this.id_cobertura + "'," +
-                        "id_barrio = '" + this.id_barrio + "'," +
-                        "nueva_poliza = '" + this.nueva_poliza + "'," +
-                        "premio = '" + this.premio + "'," +
-                        "premio_total = '" + this.premio_total + "'," +
-                        "fechaDesde = '" + this.fechaDesde + "'," +
-                        "fechaHasta = '" + this.fechaHasta + "'," +
-                        "clausula = '" + this.clausula + "'," +
-                        "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                        "ultmod = '" + this.ultmod + "'," +
-                        "usuariopaga = '" + this.usuariopaga + "'," +
-                        "fecha_paga = '" + this.fecha_paga + "'," +
-                        "codestado = '" + this.codestado + "'," +
-                        "cobertura_suma = '" + this.cobertura_suma + "'," +
-                        "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                        "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                        "promocion = '" + this.promocion + "'," +
-                        "paga = '" + this.paga + "'," +
-                        "referencia = '" + this.referencia + "'," +
-                        "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                        "master = '" + this.master + "'," +
-                        "organizador = '" + this.organizador + "'," +
-                        "productor = '" + this.productor + "'," +
-                        "formadepago = '" + this.formadepago + "'," +
-                        "prefijo = '" + this.prefijo + "'," +
-                        "tipopago = '" + this.tipopago + "'," +
-                        "compformapago = '" + this.compformapago + "'," +
-                        "nota = '" + this.nota + "'," +
-                        "codempresa = '" + MDIParent1.codempresa + "'," +
-                        "data_barrios = '" + this.data_barrios + "'," +
-                        "idpropuesta = '" + this.idpropuesta + "'" +
-                        " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
-
-                    }
-                    else
-                    {
-                        if (this.formadepago == "CREDITO")
+                    
+                        if (this.denube )
                         {
-                            sql = "UPDATE propuestas SET " +
-                            "documento = '" + this.documento + "'," +
-                            "num_polizas = '" + this.num_polizas + "'," +
-                            "meses = '" + this.meses + "'," +
-                            "id_cobertura = '" + this.id_cobertura + "'," +
-                            "id_barrio = '" + this.id_barrio + "'," +
-                            "nueva_poliza = '" + this.nueva_poliza + "'," +
-                            "premio = '" + this.premio + "'," +
-                            "premio_total = '" + this.premio_total + "'," +
-                            "fechaDesde = '" + this.fechaDesde + "'," +
-                            "fechaHasta = '" + this.fechaHasta + "'," +
-                            "clausula = '" + this.clausula + "'," +
-                            "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                            "ultmod = '" + this.ultmod + "'," +
-                            "codestado = '" + this.codestado + "'," +
-                            "cobertura_suma = '" + this.cobertura_suma + "'," +
-                            "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                            "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                            "promocion = '" + this.promocion + "'," +
-                            "paga = '" + this.paga + "'," +
-                            "usuariopaga = ''," +
-                            "fecha_paga  = '1000-01-01 01:00:00'," +
-                            "referencia = '" + this.referencia + "'," +
-                            "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                            "master = '" + this.master + "'," +
-                            "organizador = '" + this.organizador + "'," +
-                            "productor = '" + this.productor + "'," +
-                            "formadepago = '" + this.formadepago + "'," +
-                            "prefijo = '" + this.prefijo + "'," +
-                            "tipopago = '" + this.tipopago + "'," +
-                            "compformapago = '" + this.compformapago + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
-                            "envionube = '0'," +
-                            "data_barrios = '" + this.data_barrios + "'," +
-                            "idpropuesta = '" + this.idpropuesta + "'" +
-                            " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+
+                            if( this.confirmVersion())
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "documento = '" + this.documento + "'," +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "user_edit = '" + this.user_edit + "'," +
+                                "usuariopaga = '" + this.usuariopaga + "'," +
+                                "fecha_paga = '" + this.fecha_paga + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "nota = '" + this.nota + "'," +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                " version = '" + this.version + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
+
                         }
                         else
                         {
-                            sql = "UPDATE propuestas SET " +
-                            "documento = '" + this.documento + "'," +
-                            "num_polizas = '" + this.num_polizas + "'," +
-                            "meses = '" + this.meses + "'," +
-                            "id_cobertura = '" + this.id_cobertura + "'," +
-                            "id_barrio = '" + this.id_barrio + "'," +
-                            "nueva_poliza = '" + this.nueva_poliza + "'," +
-                            "premio = '" + this.premio + "'," +
-                            "premio_total = '" + this.premio_total + "'," +
-                            "fechaDesde = '" + this.fechaDesde + "'," +
-                            "fechaHasta = '" + this.fechaHasta + "'," +
-                            "clausula = '" + this.clausula + "'," +
-                            "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                            "ultmod = '" + this.ultmod + "'," +
-                            "fecha_paga = '" + this.fecha_paga + "'," +
-                            "codestado = '" + this.codestado + "'," +
-                            "cobertura_suma = '" + this.cobertura_suma + "'," +
-                            "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                            "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                            "promocion = '" + this.promocion + "'," +
-                            "paga = '" + this.paga + "'," +
-                            "referencia = '" + this.referencia + "'," +
-                            "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                            "master = '" + this.master + "'," +
-                            "organizador = '" + this.organizador + "'," +
-                            "productor = '" + this.productor + "'," +
-                            "formadepago = '" + this.formadepago + "'," +
-                            "prefijo = '" + this.prefijo + "'," +
-                            "tipopago = '" + this.tipopago + "'," +
-                            "compformapago = '" + this.compformapago + "'," +
-                            "envionube = '0'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
-                            "data_barrios = '" + this.data_barrios + "'," +
-                            "idpropuesta = '" + this.idpropuesta + "'" +
-                            " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            if (this.formadepago == "CREDITO")
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "documento = '" + this.documento + "'," +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "usuariopaga = ''," +
+                                "fecha_paga  = '1000-01-01 01:00:00'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , "+
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
+                            else
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "documento = '" + this.documento + "'," +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "fecha_paga = '" + this.fecha_paga + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , " +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
                         }
-                    }
+                    
 
                 }
                 else
@@ -1208,7 +1209,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.envionube + "'," +
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
-                        "'" + this.data_barrios + "'" +
+                        "'" + this.data_barrios + "'," +
+                        "'" + this.version + "'" +
 
                         ") ";
 
@@ -1261,7 +1263,8 @@ namespace ProyectoBrokerDelPuerto
                             "'" + this.envionube + "'," +
                             "'" + MDIParent1.codempresa + "'," +
                             "'" + this.nota + "'," +
-                            "'" + this.data_barrios + "'" +
+                            "'" + this.data_barrios + "'," +
+                            "'" + this.version + "'" +
 
                             ") ";
                         }
@@ -1552,9 +1555,10 @@ namespace ProyectoBrokerDelPuerto
                 
                 if (this.exist() && auxidpropuesta == true)
                 {
-                    if (this.denube)
-                    {
-                        
+                    
+                        if (this.denube && this.confirmVersion())
+                        {
+
                             sql = "UPDATE propuestas SET " +
                             "documento = '" + this.documento + "'," +
                             "num_polizas = '" + this.num_polizas + "'," +
@@ -1587,92 +1591,96 @@ namespace ProyectoBrokerDelPuerto
                             "tipopago = '" + this.tipopago + "'," +
                             "compformapago = '" + this.compformapago + "'," +
                             "nota = '" + this.nota + "'," +
+                            "version = '"+this.version+"' , " +
                             "codempresa = '" + MDIParent1.codempresa + "'," +
                             "data_barrios = '" + this.data_barrios + "'," +
                             "idpropuesta = '" + this.idpropuesta + "'" +
                             " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
-                        
-                    }
-                    else
-                    {
-                        if (this.formadepago == "CREDITO")
-                        {
-                            sql = "UPDATE propuestas SET " +
-                            "documento = '" + this.documento + "'," +
-                            "num_polizas = '" + this.num_polizas + "'," +
-                            "meses = '" + this.meses + "'," +
-                            "id_cobertura = '" + this.id_cobertura + "'," +
-                            "id_barrio = '" + this.id_barrio + "'," +
-                            "nueva_poliza = '" + this.nueva_poliza + "'," +
-                            "premio = '" + this.premio + "'," +
-                            "premio_total = '" + this.premio_total + "'," +
-                            "fechaDesde = '" + this.fechaDesde + "'," +
-                            "fechaHasta = '" + this.fechaHasta + "'," +
-                            "clausula = '" + this.clausula + "'," +
-                            "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                            "ultmod = '" + this.ultmod + "'," +
-                            "codestado = '" + this.codestado + "'," +
-                            "cobertura_suma = '" + this.cobertura_suma + "'," +
-                            "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                            "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                            "promocion = '" + this.promocion + "'," +
-                            "paga = '" + this.paga + "'," +
-                            "usuariopaga = ''," +
-                            "fecha_paga  = '1000-01-01 01:00:00'," +
-                            "referencia = '" + this.referencia + "'," +
-                            "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                            "master = '" + this.master + "'," +
-                            "organizador = '" + this.organizador + "'," +
-                            "productor = '" + this.productor + "'," +
-                            "formadepago = '" + this.formadepago + "'," +
-                            "prefijo = '" + this.prefijo + "'," +
-                            "tipopago = '" + this.tipopago + "'," +
-                            "compformapago = '" + this.compformapago + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
-                            "envionube = '0'," +
-                            "data_barrios = '" + this.data_barrios + "'," +
-                            "idpropuesta = '" + this.idpropuesta + "'" +
-                            " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+
                         }
                         else
                         {
-                            sql = "UPDATE propuestas SET " +
-                            "documento = '" + this.documento + "'," +
-                            "num_polizas = '" + this.num_polizas + "'," +
-                            "meses = '" + this.meses + "'," +
-                            "id_cobertura = '" + this.id_cobertura + "'," +
-                            "id_barrio = '" + this.id_barrio + "'," +
-                            "nueva_poliza = '" + this.nueva_poliza + "'," +
-                            "premio = '" + this.premio + "'," +
-                            "premio_total = '" + this.premio_total + "'," +
-                            "fechaDesde = '" + this.fechaDesde + "'," +
-                            "fechaHasta = '" + this.fechaHasta + "'," +
-                            "clausula = '" + this.clausula + "'," +
-                            "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                            "ultmod = '" + this.ultmod + "'," +
-                            "fecha_paga = '" + this.fecha_paga + "'," +
-                            "codestado = '" + this.codestado + "'," +
-                            "cobertura_suma = '" + this.cobertura_suma + "'," +
-                            "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                            "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                            "promocion = '" + this.promocion + "'," +
-                            "paga = '" + this.paga + "'," +
-                            "referencia = '" + this.referencia + "'," +
-                            "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                            "master = '" + this.master + "'," +
-                            "organizador = '" + this.organizador + "'," +
-                            "productor = '" + this.productor + "'," +
-                            "formadepago = '" + this.formadepago + "'," +
-                            "prefijo = '" + this.prefijo + "'," +
-                            "tipopago = '" + this.tipopago + "'," +
-                            "compformapago = '" + this.compformapago + "'," +
-                            "envionube = '0'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
-                            "data_barrios = '" + this.data_barrios + "'," +
-                            "idpropuesta = '" + this.idpropuesta + "'" +
-                            " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            if (this.formadepago == "CREDITO")
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "documento = '" + this.documento + "'," +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "usuariopaga = ''," +
+                                "fecha_paga  = '1000-01-01 01:00:00'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , " +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
+                            else
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "documento = '" + this.documento + "'," +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "fecha_paga = '" + this.fecha_paga + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , " +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
                         }
-                    }
+                    
                     
                 }
                 else
@@ -1715,7 +1723,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.envionube + "'," +
                         "'" + MDIParent1.codempresa+ "'," +
                         "'" + this.nota + "'," +
-                        "'" + this.data_barrios + "'" +
+                        "'" + this.data_barrios + "'," +
+                        "'" + this.version + "'" +
 
                         ") ";
 
@@ -1770,7 +1779,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.envionube + "'," +
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
-                        "'" + this.data_barrios + "'" +
+                        "'" + this.data_barrios + "'," +
+                        "'" + this.version + "'" +
 
                         ") ";
                     }
@@ -1804,52 +1814,13 @@ namespace ProyectoBrokerDelPuerto
 
                 if (this.exist())
                 {
-                    if (this.denube)
+                    if (this.confirmVersion())
                     {
-
-                        sql = "UPDATE propuestas SET " +
-                        "documento = '" + this.documento + "'," +
-                        "num_polizas = '" + this.num_polizas + "'," +
-                        "meses = '" + this.meses + "'," +
-                        "id_cobertura = '" + this.id_cobertura + "'," +
-                        "id_barrio = '" + this.id_barrio + "'," +
-                        "nueva_poliza = '" + this.nueva_poliza + "'," +
-                        "premio = '" + this.premio + "'," +
-                        "premio_total = '" + this.premio_total + "'," +
-                        "fechaDesde = '" + this.fechaDesde + "'," +
-                        "fechaHasta = '" + this.fechaHasta + "'," +
-                        "clausula = '" + this.clausula + "'," +
-                        "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                        "ultmod = '" + this.ultmod + "'," +
-                        "usuariopaga = '" + this.usuariopaga + "'," +
-                        "fecha_paga = '" + this.fecha_paga + "'," +
-                        "codestado = '" + this.codestado + "'," +
-                        "cobertura_suma = '" + this.cobertura_suma + "'," +
-                        "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                        "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                        "promocion = '" + this.promocion + "'," +
-                        "paga = '" + this.paga + "'," +
-                        "referencia = '" + this.referencia + "'," +
-                        "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                        "master = '" + this.master + "'," +
-                        "organizador = '" + this.organizador + "'," +
-                        "productor = '" + this.productor + "'," +
-                        "formadepago = '" + this.formadepago + "'," +
-                        "prefijo = '" + this.prefijo + "'," +
-                        "tipopago = '" + this.tipopago + "'," +
-                        "compformapago = '" + this.compformapago + "'," +
-                        "nota = '" + this.nota + "'," +
-                        "codempresa = '" + MDIParent1.codempresa + "'," +
-                        "data_barrios = '" + this.data_barrios + "'," +
-                        "idpropuesta = '" + this.idpropuesta + "'" +
-                        " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "'; ";
-
-                    }
-                    else
-                    {
-                        if (this.formadepago == "CREDITO")
+                        if (this.denube)
                         {
+
                             sql = "UPDATE propuestas SET " +
+                            "documento = '" + this.documento + "'," +
                             "num_polizas = '" + this.num_polizas + "'," +
                             "meses = '" + this.meses + "'," +
                             "id_cobertura = '" + this.id_cobertura + "'," +
@@ -1862,44 +1833,7 @@ namespace ProyectoBrokerDelPuerto
                             "clausula = '" + this.clausula + "'," +
                             "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
                             "ultmod = '" + this.ultmod + "'," +
-                            "codestado = '" + this.codestado + "'," +
-                            "cobertura_suma = '" + this.cobertura_suma + "'," +
-                            "cobertura_gastos = '" + this.cobertura_gastos + "'," +
-                            "cobertura_deducible = '" + this.cobertura_deducible + "'," +
-                            "promocion = '" + this.promocion + "'," +
-                            "paga = '" + this.paga + "'," +
-                            "usuariopaga = ''," +
-                            "fecha_paga  = '1000-01-01 01:00:00'," +
-                            "referencia = '" + this.referencia + "'," +
-                            "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
-                            "master = '" + this.master + "'," +
-                            "organizador = '" + this.organizador + "'," +
-                            "productor = '" + this.productor + "'," +
-                            "formadepago = '" + this.formadepago + "'," +
-                            "prefijo = '" + this.prefijo + "'," +
-                            "tipopago = '" + this.tipopago + "'," +
-                            "compformapago = '" + this.compformapago + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
-                            "envionube = '0'," +
-                            "data_barrios = '" + this.data_barrios + "'," +
-                            "idpropuesta = '" + this.idpropuesta + "'" +
-                            " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ; ";
-                        }
-                        else
-                        {
-                            sql = "UPDATE propuestas SET " +
-                            "num_polizas = '" + this.num_polizas + "'," +
-                            "meses = '" + this.meses + "'," +
-                            "id_cobertura = '" + this.id_cobertura + "'," +
-                            "id_barrio = '" + this.id_barrio + "'," +
-                            "nueva_poliza = '" + this.nueva_poliza + "'," +
-                            "premio = '" + this.premio + "'," +
-                            "premio_total = '" + this.premio_total + "'," +
-                            "fechaDesde = '" + this.fechaDesde + "'," +
-                            "fechaHasta = '" + this.fechaHasta + "'," +
-                            "clausula = '" + this.clausula + "'," +
-                            "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
-                            "ultmod = '" + this.ultmod + "'," +
+                            "usuariopaga = '" + this.usuariopaga + "'," +
                             "fecha_paga = '" + this.fecha_paga + "'," +
                             "codestado = '" + this.codestado + "'," +
                             "cobertura_suma = '" + this.cobertura_suma + "'," +
@@ -1916,13 +1850,96 @@ namespace ProyectoBrokerDelPuerto
                             "prefijo = '" + this.prefijo + "'," +
                             "tipopago = '" + this.tipopago + "'," +
                             "compformapago = '" + this.compformapago + "'," +
-                            "envionube = '0'," +
+                            "nota = '" + this.nota + "'," +
                             "codempresa = '" + MDIParent1.codempresa + "'," +
                             "data_barrios = '" + this.data_barrios + "'," +
+                            "version = '" + this.version + "'," +
                             "idpropuesta = '" + this.idpropuesta + "'" +
                             " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "'; ";
+
+                        }
+                        else
+                        {
+                            if (this.formadepago == "CREDITO")
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "usuariopaga = ''," +
+                                "fecha_paga  = '1000-01-01 01:00:00'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , " +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ; ";
+                            }
+                            else
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "num_polizas = '" + this.num_polizas + "'," +
+                                "meses = '" + this.meses + "'," +
+                                "id_cobertura = '" + this.id_cobertura + "'," +
+                                "id_barrio = '" + this.id_barrio + "'," +
+                                "nueva_poliza = '" + this.nueva_poliza + "'," +
+                                "premio = '" + this.premio + "'," +
+                                "premio_total = '" + this.premio_total + "'," +
+                                "fechaDesde = '" + this.fechaDesde + "'," +
+                                "fechaHasta = '" + this.fechaHasta + "'," +
+                                "clausula = '" + this.clausula + "'," +
+                                "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
+                                "ultmod = '" + this.ultmod + "'," +
+                                "fecha_paga = '" + this.fecha_paga + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "cobertura_suma = '" + this.cobertura_suma + "'," +
+                                "cobertura_gastos = '" + this.cobertura_gastos + "'," +
+                                "cobertura_deducible = '" + this.cobertura_deducible + "'," +
+                                "promocion = '" + this.promocion + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "master = '" + this.master + "'," +
+                                "organizador = '" + this.organizador + "'," +
+                                "productor = '" + this.productor + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "prefijo = '" + this.prefijo + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "envionube = '0'," +
+                                "version = (version + 1 ) , " +
+                                "codempresa = '" + MDIParent1.codempresa + "'," +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "'; ";
+                            }
                         }
                     }
+                    
 
                 }
                 else
@@ -1965,7 +1982,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.envionube + "'," +
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
-                        "'" + this.data_barrios + "' " +
+                        "'" + this.data_barrios + "', " +
+                        "'" + this.version + "' " +
 
                         "); ";
 
@@ -2009,7 +2027,7 @@ namespace ProyectoBrokerDelPuerto
                 fechapago_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             sql = "UPDATE propuestas SET paga = 1, usuariopaga = '" + MDIParent1.sesionUser + "', fecha_paga = '" +
-                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "'  WHERE " +
+                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "',envionube = 0, version = ( version + 1 )  WHERE " +
                 " idpropuesta = '" + id_.Trim() + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
@@ -2068,11 +2086,11 @@ namespace ProyectoBrokerDelPuerto
         {
             if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0' WHERE CONCAT(prefijo,idpropuesta) = '" + codgrupo_ + "' ";
+                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 1 )  WHERE CONCAT(prefijo,idpropuesta) = '" + codgrupo_ + "' ";
             }
             else
             {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0' WHERE (prefijo || idpropuesta) = '" + codgrupo_ + "' ";
+                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 1 ) WHERE (prefijo || idpropuesta) = '" + codgrupo_ + "' ";
             }
             con.query(sql);
 
@@ -2101,13 +2119,13 @@ namespace ProyectoBrokerDelPuerto
 
         public void anular_propuesta(string prefijo_, string idpropuesta_)
         {
-            sql = "UPDATE propuestas SET codestado = 0, envionube = 0 WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
+            sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
 
         public void modificacionClausulas(string prefijo_, string idpropuesta_)
         {
-            sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+"' WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
+            sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+ "', version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
 

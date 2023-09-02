@@ -373,6 +373,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     frm.lblConsecutivo.Text = dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
                     frm.lblidpropuesta.Text = dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString();
+                    frm.formpago_ = ds.Tables[0].Rows[0]["formadepago"].ToString();
 
                     frm.edit = true;
 
@@ -739,6 +740,11 @@ namespace ProyectoBrokerDelPuerto
             propuestas pro = new propuestas();
             pro.idpropuesta = idpropuesta_;
             pro.prefijo = prefijo_;
+
+            DataSet ds = pro.getprefijo(pro.prefijo, pro.idpropuesta);
+            if(ds.Tables[0].Rows[0]["version"] != null && ds.Tables[0].Rows[0]["version"].ToString() != "")
+                pro.version = Convert.ToInt16( ds.Tables[0].Rows[0]["version"].ToString() );
+
             //pro.pagar(pro.idpropuesta, pro.prefijo, formapago, compformapago);
 
             frmNuevaPropuesta frm = new frmNuevaPropuesta();
@@ -756,6 +762,8 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.compformapago = compformapago;
                 this.pay.usuariopaga = MDIParent1.sesionUser;
                 this.pay.fecha_paga = fechapagar;
+                this.pay.version = pro.version;
+
                 bool resimport = await this.paypropuesta();
                 if (resimport)
                 {
@@ -798,6 +806,8 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.compformapago = compformapago;
                 this.pay.usuariopaga = MDIParent1.sesionUser;
                 this.pay.fecha_paga = fechapagar;
+                this.pay.version = pro.version;
+
                 bool resimport = await this.paypropuesta();
                 if (resimport)
                 {
@@ -869,7 +879,7 @@ namespace ProyectoBrokerDelPuerto
 
             try
             {
-                string url = this.urlapi + "/api/paypro";
+                string url = MDIParent1.apiuri + "/api/paypro";
                 
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";
@@ -934,4 +944,5 @@ class paypro
     public string codempresa { get; set; }
     public string api_token { get; set; }
     public string rolpuntodeventa { get; set; }
+    public int version { get; set; }
 }

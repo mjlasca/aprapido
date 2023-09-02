@@ -437,7 +437,7 @@ namespace ProyectoBrokerDelPuerto
             Console.WriteLine("JSON IMP \n"+json);
             /*try
             {*/
-                string url = this.urlapi + "/api/parametros";
+                string url = MDIParent1.apiuri + "/api/parametros";
                 Console.WriteLine("URL IMP \n"+url);
                 WebRequest _request = WebRequest.Create(url);
                 
@@ -568,7 +568,7 @@ namespace ProyectoBrokerDelPuerto
             Console.WriteLine("JSON PUNTOS " + json);
             try
             {
-                string url = this.urlapi + "/api/getPuntos";
+                string url = MDIParent1.apiuri + "/api/getPuntos";
                 Console.WriteLine("URL GETPUNTOS "+url);
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";
@@ -708,6 +708,7 @@ namespace ProyectoBrokerDelPuerto
                                                     nota = val["nota"] == null ? "" : val["nota"],
                                                     envionube = "1",
                                                     data_barrios = val["data_barrios"] == null ? "{\"barrios\":[]}" : val["data_barrios"],
+                                                    version = val["version"] == null ? "" : val["version"],
 
                                                 }).ToList();
 
@@ -718,42 +719,14 @@ namespace ProyectoBrokerDelPuerto
                     int aux = 0;
                     try
                     {
-                        /*for(int k = 1; k < (listobj.Count/limit); k++)
-                        {
-                            int limitaux = (limit * k);
-                            if ((k + 1) > (listobj.Count / limit))
-                                limitaux = listobj.Count;
-                        */
                             for (int i = aux; i < listobj.Count; i++)
                             {
-                            
                                 listobj[i].save_import();
-                                /*if (MDIParent1.installing)
-                                {
-                                    if (listAux.IndexOf(listobj[i].prefijo + listobj[i].idpropuesta) < 0)
-                                    { 
-                                        concat_.AppendLine(listobj[i].concat_sql());
-                                        listAux.Add(listobj[i].prefijo + listobj[i].idpropuesta);
-                                    }
-                                }
-                                else
-                                {
-                                    listobj[i].save_import();
-                                }*/
                                 concat_1 += listobj[i].prefijo + listobj[i].idpropuesta + ",";
-
                             }
 
-                        //aux = limit * k;
                         if (concat_1 != "")
                         {
-                            /*if (MDIParent1.installing)
-                            {
-                                propuestas pro = new propuestas();
-                                pro.save_concat(concat_.ToString());
-                                Console.WriteLine("TEMINA PROPUESTAS " + DateTime.Now);
-                            }*/
-
                                 this.concattextbox += Environment.NewLine + Environment.NewLine;
                                 migraciones mig = new migraciones();
                                 mig.tabla = "propuestas";
@@ -764,7 +737,6 @@ namespace ProyectoBrokerDelPuerto
                                 mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                                 mig.useredit = MDIParent1.sesionUser;
                                 miPropuestas = mig;
-                            //}
                         }
 
                     }

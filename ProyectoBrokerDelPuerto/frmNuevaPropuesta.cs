@@ -18,6 +18,7 @@ namespace ProyectoBrokerDelPuerto
     public partial class frmNuevaPropuesta : Form
     {
         public bool edit = false;
+        public string formpago_ = "";
         public bool duplicado_ = false;
         DateTime fechacorrida = DateTime.Now;
         public bool findeldia = false;
@@ -124,6 +125,7 @@ namespace ProyectoBrokerDelPuerto
                         checkBox1.Enabled = true;
                         checkBox2.Enabled = true;
                         btnGuardar.Enabled = false;
+                        button5.Enabled = false;
                         
                     }
                 }
@@ -2291,6 +2293,7 @@ namespace ProyectoBrokerDelPuerto
                 else
                 {
                     btnGuardar.Enabled = false;
+                    button5.Enabled = false;
                 }
             }
 
@@ -2356,10 +2359,18 @@ namespace ProyectoBrokerDelPuerto
 
         public void ocultarBotonGuardar()
         {
-            if (paga_ch.Checked)
-                button5.Enabled = false;
-            if (paga_ch.Checked == false)
+            if (this.formpago_ == "CREDITO")
+            {
                 btnGuardar.Enabled = false;
+                paga_ch.Enabled = false;
+            }
+                
+            if (this.formpago_ == "CONTADO")
+            {
+                button5.Enabled = false;
+                paga_ch.Enabled = true;
+            }
+                
         }
 
         private void button5_Click(object sender, EventArgs e)

@@ -1559,7 +1559,8 @@ namespace ProyectoBrokerDelPuerto
                                 fecha_nacimiento = ds.Tables[0].Rows[i]["fecha_nacimiento"] != null ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("yyyy-MM-dd") : "1900-01-01",
                                 nota = ds.Tables[0].Rows[i]["nota"].ToString(),
                                 data_barrios = ds.Tables[0].Rows[i]["data_barrios"].ToString(),
-                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString()
+                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString(),
+                                version = ds.Tables[0].Rows[i]["version"] != null ? Convert.ToInt16(ds.Tables[0].Rows[i]["version"].ToString()) : 0
                             }
                         );
 
@@ -1764,12 +1765,12 @@ namespace ProyectoBrokerDelPuerto
         {
             
             Console.WriteLine("JSON START");
-            System.IO.File.WriteAllText("enviojson.json", json);
+            Console.WriteLine(json);
             Console.WriteLine("JSON FINISH");
 
             try
             {
-                string url = this.urlapi +"/api/propuestas";
+                string url = MDIParent1.apiuri +"/api/propuestas";
 
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";

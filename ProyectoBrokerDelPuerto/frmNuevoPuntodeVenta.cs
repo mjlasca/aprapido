@@ -186,7 +186,7 @@ namespace ProyectoBrokerDelPuerto
         {
             try
             {
-                string url = this.urlapi + "/api/confirmarpuntodeventa?userpunto=" + txtEmail.Text + "&prefijo=" + txtPrefijo.Text + "&api_token=" + this.tokenapi;
+                string url = MDIParent1.apiuri + "/api/confirmarpuntodeventa?userpunto=" + txtEmail.Text + "&prefijo=" + txtPrefijo.Text + "&api_token=" + this.tokenapi;
                 Console.WriteLine("URL VALIDACION "+url);
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "GET";
@@ -385,7 +385,7 @@ namespace ProyectoBrokerDelPuerto
 
             try
             {
-                string url = this.urlapi +"/api/editarpuntodeventa";
+                string url = MDIParent1.apiuri +"/api/editarpuntodeventa";
                 Console.WriteLine(url);
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";
