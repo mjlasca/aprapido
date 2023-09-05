@@ -2027,7 +2027,7 @@ namespace ProyectoBrokerDelPuerto
                 fechapago_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             sql = "UPDATE propuestas SET paga = 1, usuariopaga = '" + MDIParent1.sesionUser + "', fecha_paga = '" +
-                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "',envionube = 0, version = ( version + 1 )  WHERE " +
+                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "',envionube = 0, version = ( version + 2 )  WHERE " +
                 " idpropuesta = '" + id_.Trim() + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
@@ -2086,11 +2086,11 @@ namespace ProyectoBrokerDelPuerto
         {
             if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 1 )  WHERE CONCAT(prefijo,idpropuesta) = '" + codgrupo_ + "' ";
+                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 2 )  WHERE CONCAT(prefijo,idpropuesta) = '" + codgrupo_ + "' ";
             }
             else
             {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 1 ) WHERE (prefijo || idpropuesta) = '" + codgrupo_ + "' ";
+                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 2 ) WHERE (prefijo || idpropuesta) = '" + codgrupo_ + "' ";
             }
             con.query(sql);
 
@@ -2119,13 +2119,13 @@ namespace ProyectoBrokerDelPuerto
 
         public void anular_propuesta(string prefijo_, string idpropuesta_)
         {
-            sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
+            sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 20 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
 
         public void modificacionClausulas(string prefijo_, string idpropuesta_)
         {
-            sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+ "', version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
+            sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+ "', version = ( version + 2 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
 
