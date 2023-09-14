@@ -743,7 +743,11 @@ namespace ProyectoBrokerDelPuerto
 
             DataSet ds = pro.getprefijo(pro.prefijo, pro.idpropuesta);
             if(ds.Tables[0].Rows[0]["version"] != null && ds.Tables[0].Rows[0]["version"].ToString() != "")
-                pro.version = Convert.ToInt16( ds.Tables[0].Rows[0]["version"].ToString() );
+            {
+                pro.version = Convert.ToInt16(ds.Tables[0].Rows[0]["version"].ToString()) + 2;
+                
+            }
+                
 
             //pro.pagar(pro.idpropuesta, pro.prefijo, formapago, compformapago);
 
@@ -762,7 +766,7 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.compformapago = compformapago;
                 this.pay.usuariopaga = MDIParent1.sesionUser;
                 this.pay.fecha_paga = fechapagar;
-                this.pay.version = pro.version;
+                this.pay.version = pro.version ;
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
