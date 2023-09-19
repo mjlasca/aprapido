@@ -2068,33 +2068,19 @@ namespace ProyectoBrokerDelPuerto
             if (MDIParent1.baseDatos == "MySql")
             {
                 sql = "UPDATE propuestas AS p, controlventas AS c  " +
-                    "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito  " +
+                    "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito, version = ( version + 1 )  " +
                     " WHERE ( p.referencia IS NULL OR p.referencia = '' ) AND CONCAT(p.prefijo,p.idpropuesta) = c.codgrupo  AND c.fecha = '" + fecha_+"'";
                 
             }
             else
             {
                 sql = "UPDATE propuestas AS p, controlventas AS c  " +
-                    "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito  " +
+                    "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito, version = ( version + 1 )  " +
                     " WHERE ( p.referencia IS NULL OR p.referencia = '' ) AND (p.prefijo || p.idpropuesta) = c.codgrupo  AND c.fecha = '" + fecha_ + "'";
             }
             con.query(sql);
 
 
-        }
-        public void asignar_referencia(string refe, string codgrupo_, string prima_, string nota_)
-        {
-            if (MDIParent1.baseDatos == "MySql")
-            {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 2 )  WHERE CONCAT(prefijo,idpropuesta) = '" + codgrupo_ + "' ";
-            }
-            else
-            {
-                sql = "UPDATE propuestas SET referencia = '" + refe + "', prima = '" + prima_ + "', nota = '" + nota_ + "', envionube = '0', version = ( version + 2 ) WHERE (prefijo || idpropuesta) = '" + codgrupo_ + "' ";
-            }
-            con.query(sql);
-
-           
         }
 
         public List<RegistroRef> getRefPropuestas(string fecha_)
