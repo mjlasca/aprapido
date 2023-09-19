@@ -1839,10 +1839,11 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            this.formpago_ = "CONTADO";
             paga_ch.Checked = true;
-            this.ocultarBotonGuardar();
             this.guardarPropuesta();
-            
+            this.ocultarBotonGuardar();
+
         }
 
         private void guardarPropuesta()
@@ -1880,7 +1881,6 @@ namespace ProyectoBrokerDelPuerto
 
         private void frmNuevaPropuesta_FormClosing(object sender, FormClosingEventArgs e)
         {
-
             if (edit == false)
             {
                 validaciones val = new validaciones();
@@ -1914,6 +1914,13 @@ namespace ProyectoBrokerDelPuerto
                         e.Cancel = true;
                     }
                 }
+            }
+
+            if(this.duplicado_ && btnGuardar.Enabled == true && button5.Enabled == true)
+            {
+                this.suma_premio();
+                MessageBox.Show("Por favor elige una forma de pago antes de cerrar", "Error forma de pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                e.Cancel = true;
             }
 
         }
@@ -2375,6 +2382,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void button5_Click(object sender, EventArgs e)
         {
+            this.formpago_ = "CREDITO";
             paga_ch.Checked = false;
             this.guardarPropuesta();
             this.ocultarBotonGuardar();
