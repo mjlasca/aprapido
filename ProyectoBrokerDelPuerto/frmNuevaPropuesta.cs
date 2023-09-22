@@ -276,6 +276,7 @@ namespace ProyectoBrokerDelPuerto
                 btnDuplicar.Enabled = true;
                 whatsapp.Visible = true;
                 mail_btn.Enabled = true;
+                libreDeuda_btn.Enabled = true;
             }
 
             path = @"EmisionesBasrrios\" + textBox1.Text.Trim();
@@ -2296,6 +2297,10 @@ namespace ProyectoBrokerDelPuerto
                     checkBox1.Enabled = true;
                     checkBox2.Enabled = true;
                     referencianum_txt.Text = "";
+                    btnEmitir.Enabled = false;
+                    btnRecibo.Enabled = false;
+                    mail_btn.Enabled = false;
+                    libreDeuda_btn.Enabled = false;
                 }
                 else
                 {
