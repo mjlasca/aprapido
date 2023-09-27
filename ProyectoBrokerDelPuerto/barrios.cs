@@ -168,7 +168,7 @@ namespace ProyectoBrokerDelPuerto
             string res = "";
             DataSet ds = new DataSet();
 
-            sql = "SELECT id FROM barrios WHERE lower(nombre) = lower('"+nombre_+"') ";
+            sql = "SELECT id FROM barrios WHERE lower(nombre) = lower('"+nombre_+"') AND codestado = 1 ";
 
             try
             {
