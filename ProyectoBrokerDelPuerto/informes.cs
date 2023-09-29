@@ -144,8 +144,8 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT DATE(t1.ultmod) as ultmod FROM propuestas t1 INNER JOIN informes t2 ON t1.codestado > 0 AND DATE(diacierre) != DATE(t1.ultmod)  AND  DATE(t1.ultmod) > DATE('" + fec1.ToString("yyyy-MM-dd")+
-                "') AND DATE(t1.ultmod) < DATE('" + fec2.ToString("yyyy-MM-dd") + "') GROUP BY DATE(t1.ultmod) ";
+            sql = "SELECT DATE(t1.ultmod) as ultmod FROM propuestas t1 INNER JOIN informes t2 ON t1.codestado > 0 AND DATE(diacierre) != DATE(t1.fecha_paga)  AND  DATE(t1.fecha_paga) > DATE('" + fec1.ToString("yyyy-MM-dd")+
+                "') AND DATE(t1.fecha_paga) < DATE('" + fec2.ToString("yyyy-MM-dd") + "') GROUP BY DATE(t1.fecha_paga) ";
             Console.WriteLine("--> "+sql);
             ds = con.query(sql);
             return ds;

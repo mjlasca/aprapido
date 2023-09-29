@@ -38,7 +38,7 @@ namespace ProyectoBrokerDelPuerto
         {
             try
             {
-                var webRequest = WebRequest.Create(@"http://apibarrios.3enterprise.online/versionAp.txt");
+                var webRequest = WebRequest.Create(MDIParent1.apiuri+"/versionAp.txt");
 
                 using (var response = webRequest.GetResponse())
                 using (var content = response.GetResponseStream())
@@ -155,8 +155,8 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 WebClient mywebClient = new WebClient();
-                mywebClient.DownloadFile("http://apibarrios.3enterprise.online/ProyectoBrokerDelPuerto.exe", "ProyectoBrokerDelPuerto_" + this.versOnline + ".exe");
-                mywebClient.DownloadFile("http://apibarrios.3enterprise.online/logoap.ico", "logoap.ico");
+                mywebClient.DownloadFile(MDIParent1.apiuri+"/ProyectoBrokerDelPuerto.exe", "ProyectoBrokerDelPuerto_" + this.versOnline + ".exe");
+                mywebClient.DownloadFile(MDIParent1.apiuri+"/logoap.ico", "logoap.ico");
                 return true;
             }catch(Exception ex)
             {
