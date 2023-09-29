@@ -1771,6 +1771,8 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 string url = MDIParent1.apiuri +"/api/propuestas";
+                if(MDIParent1.apiuri.IndexOf("https") > -1)
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";

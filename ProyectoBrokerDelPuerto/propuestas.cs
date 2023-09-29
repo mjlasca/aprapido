@@ -498,9 +498,9 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
             if(codorganizador_ != "TODOS")
-                sql = "SELECT * FROM propuestas WHERE DATE(ultmod) = '" + fecha_ + "' AND codestado > 0 AND organizador = '"+codorganizador_+"'";
+                sql = "SELECT * FROM propuestas WHERE DATE(fecha_paga) = '" + fecha_ + "' AND codestado > 0 AND organizador = '"+codorganizador_+"'";
             else
-                sql = "SELECT * FROM propuestas WHERE DATE(ultmod) = '" + fecha_ + "' AND codestado > 0 ";
+                sql = "SELECT * FROM propuestas WHERE DATE(fecha_paga) = '" + fecha_ + "' AND codestado > 0 ";
             try
             {
                 ds = con.query(sql);

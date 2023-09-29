@@ -387,6 +387,8 @@ namespace ProyectoBrokerDelPuerto
             {
                 string url = MDIParent1.apiuri +"/api/editarpuntodeventa";
                 Console.WriteLine(url);
+                if (MDIParent1.apiuri.IndexOf("https") > -1)
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 WebRequest _request = WebRequest.Create(url);
                 _request.Method = "POST";
                 _request.ContentType = "application/json;charset=UTF-8";
