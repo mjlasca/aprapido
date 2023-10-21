@@ -166,7 +166,11 @@ namespace ProyectoBrokerDelPuerto
             if (empleado_txt.Text == "Todos")
                 pro.user_edit = "";
             pro.referencia = referencia_txt.Text;
+            
             DataSet ds = pro.get_all_busqueda(busqueda.Text, query_estado, fec1.Value.ToString("yyyy-MM-dd"), fec2.Value.ToString("yyyy-MM-dd"));
+            if (orden_select.Text == "Fecha paga")
+                ds = pro.get_all_busqueda_paga(busqueda.Text, query_estado, fec1.Value.ToString("yyyy-MM-dd"), fec2.Value.ToString("yyyy-MM-dd"));
+
             dataGridView1.Rows.Clear();
             if (ds.Tables.Count > 0)
             {
@@ -192,7 +196,8 @@ namespace ProyectoBrokerDelPuerto
                            ds.Tables[0].Rows[i]["premio_total"].ToString(),
                            ds.Tables[0].Rows[i]["codestado"].ToString(),
                            ds.Tables[0].Rows[i]["formadepago"].ToString(),
-                           pagado
+                           pagado,
+                           ds.Tables[0].Rows[i]["fecha_paga"].ToString()
                           );
                     }
                 }
@@ -241,7 +246,7 @@ namespace ProyectoBrokerDelPuerto
             usuarios usuallow = new usuarios();
             usuallow.loggin = MDIParent1.sesionUser;
             this.visibleLibreDeuda();
-
+            orden_select.Text = "Fecha";
             this.access = usuallow.accessperfil("propuestas");
 
             button2.Visible = Convert.ToBoolean(this.access[1]);

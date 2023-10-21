@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "4.8";
+        public static string versionsistema { get; set; } = "5.2";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -609,6 +609,10 @@ namespace ProyectoBrokerDelPuerto
                 System.IO.File.Delete(@"file_importaciones/importacion_solicitud_barrios.txt");
             if (File.Exists(@"file_importaciones/importacion_solicitud_barrios1.txt"))
                 System.IO.File.Delete(@"file_importaciones/importacion_solicitud_barrios1.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_gruposbarrios.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_gruposbarrios.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_gruposbarrios1.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_gruposbarrios1.txt");
             if (File.Exists(@"file_importaciones/importacion_solicitud_lineas_propuestas.txt"))
                 System.IO.File.Delete(@"file_importaciones/importacion_solicitud_lineas_propuestas.txt");
             if (File.Exists(@"file_importaciones/importacion_solicitud_lineas_propuestas1.txt"))
@@ -617,6 +621,18 @@ namespace ProyectoBrokerDelPuerto
                 System.IO.File.Delete(@"file_importaciones/importacion_solicitud_clientes.txt");
             if (File.Exists(@"file_importaciones/importacion_solicitud_clientes1.txt"))
                 System.IO.File.Delete(@"file_importaciones/importacion_solicitud_clientes1.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_coberturas.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_coberturas.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_coberturas1.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_coberturas1.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_actividades.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_actividades.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_actividades1.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_actividades1.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_clasificaciones.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_clasificaciones.txt");
+            if (File.Exists(@"file_importaciones/importacion_api_clasificaciones1.txt"))
+                System.IO.File.Delete(@"file_importaciones/importacion_api_clasificaciones1.txt");
 
             this.importCloudParameters();
             

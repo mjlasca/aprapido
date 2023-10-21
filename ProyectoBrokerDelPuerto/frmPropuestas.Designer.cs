@@ -49,6 +49,7 @@
             this.estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.formadepago = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chVigentes = new System.Windows.Forms.CheckBox();
             this.chNoVigentes = new System.Windows.Forms.CheckBox();
             this.chAnuladas = new System.Windows.Forms.CheckBox();
@@ -65,6 +66,8 @@
             this.sinpagar_ch = new System.Windows.Forms.CheckBox();
             this.btnPagar = new System.Windows.Forms.Button();
             this.libreDeuda_btn = new System.Windows.Forms.Button();
+            this.orden_select = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -119,7 +122,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(779, 35);
+            this.button1.Location = new System.Drawing.Point(904, 34);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(102, 23);
             this.button1.TabIndex = 15;
@@ -147,12 +150,13 @@
             this.premio,
             this.estado,
             this.formadepago,
-            this.paga});
+            this.paga,
+            this.fecha_paga});
             this.dataGridView1.Location = new System.Drawing.Point(22, 83);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(859, 431);
+            this.dataGridView1.Size = new System.Drawing.Size(984, 431);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
@@ -248,10 +252,16 @@
             // 
             // paga
             // 
-            this.paga.FillWeight = 51.03574F;
+            this.paga.FillWeight = 60F;
             this.paga.HeaderText = "Paga";
             this.paga.Name = "paga";
             this.paga.ReadOnly = true;
+            // 
+            // fecha_paga
+            // 
+            this.fecha_paga.HeaderText = "Fecha Pago";
+            this.fecha_paga.Name = "fecha_paga";
+            this.fecha_paga.ReadOnly = true;
             // 
             // chVigentes
             // 
@@ -302,7 +312,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(766, 520);
+            this.button3.Location = new System.Drawing.Point(891, 520);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(115, 23);
             this.button3.TabIndex = 19;
@@ -313,7 +323,7 @@
             // fec1
             // 
             this.fec1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.fec1.Location = new System.Drawing.Point(593, 36);
+            this.fec1.Location = new System.Drawing.Point(596, 36);
             this.fec1.Name = "fec1";
             this.fec1.Size = new System.Drawing.Size(80, 20);
             this.fec1.TabIndex = 20;
@@ -322,7 +332,7 @@
             // fec2
             // 
             this.fec2.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.fec2.Location = new System.Drawing.Point(693, 36);
+            this.fec2.Location = new System.Drawing.Point(696, 36);
             this.fec2.Name = "fec2";
             this.fec2.Size = new System.Drawing.Size(80, 20);
             this.fec2.TabIndex = 20;
@@ -331,7 +341,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(679, 39);
+            this.label2.Location = new System.Drawing.Point(682, 39);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(10, 13);
             this.label2.TabIndex = 21;
@@ -356,7 +366,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(424, 20);
+            this.label4.Location = new System.Drawing.Point(427, 20);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 13);
             this.label4.TabIndex = 24;
@@ -366,7 +376,7 @@
             // 
             this.empleado_txt.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.empleado_txt.FormattingEnabled = true;
-            this.empleado_txt.Location = new System.Drawing.Point(427, 35);
+            this.empleado_txt.Location = new System.Drawing.Point(430, 35);
             this.empleado_txt.Name = "empleado_txt";
             this.empleado_txt.Size = new System.Drawing.Size(155, 21);
             this.empleado_txt.TabIndex = 25;
@@ -415,11 +425,34 @@
             this.libreDeuda_btn.UseVisualStyleBackColor = true;
             this.libreDeuda_btn.Click += new System.EventHandler(this.libreDeuda_btn_Click);
             // 
+            // orden_select
+            // 
+            this.orden_select.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.orden_select.FormattingEnabled = true;
+            this.orden_select.Items.AddRange(new object[] {
+            "Fecha",
+            "Fecha paga"});
+            this.orden_select.Location = new System.Drawing.Point(787, 35);
+            this.orden_select.Name = "orden_select";
+            this.orden_select.Size = new System.Drawing.Size(111, 21);
+            this.orden_select.TabIndex = 31;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(784, 20);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(63, 13);
+            this.label5.TabIndex = 30;
+            this.label5.Text = "Ordenar por";
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(909, 555);
+            this.ClientSize = new System.Drawing.Size(1035, 555);
+            this.Controls.Add(this.orden_select);
+            this.Controls.Add(this.label5);
             this.Controls.Add(this.libreDeuda_btn);
             this.Controls.Add(this.btnPagar);
             this.Controls.Add(this.sinpagar_ch);
@@ -476,6 +509,7 @@
         private System.Windows.Forms.CheckBox pagado_ch;
         private System.Windows.Forms.CheckBox sinpagar_ch;
         private System.Windows.Forms.Button btnPagar;
+        private System.Windows.Forms.Button libreDeuda_btn;
         private System.Windows.Forms.DataGridViewTextBoxColumn referencia;
         private System.Windows.Forms.DataGridViewTextBoxColumn prefijo;
         private System.Windows.Forms.DataGridViewTextBoxColumn idpropuestaprefijo;
@@ -490,6 +524,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn estado;
         private System.Windows.Forms.DataGridViewTextBoxColumn formadepago;
         private System.Windows.Forms.DataGridViewTextBoxColumn paga;
-        private System.Windows.Forms.Button libreDeuda_btn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fecha_paga;
+        private System.Windows.Forms.ComboBox orden_select;
+        private System.Windows.Forms.Label label5;
     }
 }

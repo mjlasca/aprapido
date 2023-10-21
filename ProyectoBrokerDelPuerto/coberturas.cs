@@ -398,7 +398,7 @@ namespace ProyectoBrokerDelPuerto
         public void delete()
         {
             this.exist();
-            sql = "UPDATE coberturas SET codestado = 0, ultmod = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"', version = '"+this.version+"' WHERE reg = '" + this.reg + "' ";
+            sql = "UPDATE coberturas SET codestado = 0, ultmod = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"', version = '"+(this.version++)+"' WHERE reg = '" + this.reg + "' ";
             con.query(sql);
         }
     }

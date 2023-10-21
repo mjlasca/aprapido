@@ -793,7 +793,7 @@ namespace ProyectoBrokerDelPuerto
             lsorg.Add("TODOS");
             DataSet ds = new DataSet();
 
-            sql = "SELECT organizador FROM propuestas WHERE codestado =  1 AND DATE(ultmod) = '"+ fecha_ + "'  GROUP BY organizador ORDER BY organizador ASC ";
+            sql = "SELECT organizador FROM propuestas WHERE codestado =  1 AND DATE(fecha_paga) = '"+ fecha_ + "'  GROUP BY organizador ORDER BY organizador ASC ";
             try
             {
                 ds = con.query(sql);
@@ -917,8 +917,61 @@ namespace ProyectoBrokerDelPuerto
             return ds;
         }
 
+        public DataSet get_all_busqueda(string coincidencia, string estado_ = "", string fecha1 = "", string fecha2 = "")
+        {
+            DataSet ds = new DataSet();
 
-        public DataSet get_all_busqueda(string coincidencia, string estado_ = "", string fecha1="", string fecha2 = "")
+            if (fecha1 == "")
+                fecha1 = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+            if (fecha2 == "")
+                fecha2 = DateTime.Now.ToString("yyyy-MM-dd");
+            if (this.referencia != "")
+            {
+                this.referencia = " AND t1.referencia = '" + this.referencia + "' ";
+            }
+
+            if (this.user_edit != "")
+            {
+                this.user_edit = " AND t3.nombre = '" + this.user_edit + "' ";
+            }
+
+            if (MDIParent1.baseDatos == "MySql")
+            {
+                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
+                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga FROM propuestas t1 INNER JOIN clientes t2  " +
+                "  INNER JOIN usuarios t3 ON " +
+                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
+                + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" + coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
+                " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
+            }
+            else
+            {
+                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
+                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga FROM propuestas t1 INNER JOIN clientes t2  " +
+                "  INNER JOIN usuarios t3 ON " +
+                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE "
+                + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
+                " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
+            }
+            Console.WriteLine("Propuestas \n" + sql);
+
+            try
+            {
+                ds = con.query(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar propuestas");
+            }
+
+            return ds;
+        }
+
+        public DataSet get_all_busqueda_paga(string coincidencia, string estado_ = "", string fecha1="", string fecha2 = "")
         {
             DataSet ds = new DataSet();
 
@@ -939,9 +992,9 @@ namespace ProyectoBrokerDelPuerto
             if (MDIParent1.baseDatos == "MySql")
             {
                 sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
-                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga FROM propuestas t1 INNER JOIN clientes t2  " +
+                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
-                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
+                " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
                 + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" + coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
@@ -952,7 +1005,7 @@ namespace ProyectoBrokerDelPuerto
                 sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
                 " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
-                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE " 
+                " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE " 
                 + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
@@ -1008,6 +1061,19 @@ namespace ProyectoBrokerDelPuerto
             }
 
             return true;
+        }
+
+        public bool confirmPay()
+        {
+            if (this.idpropuesta != "" && this.fecha_paga != "" && this.usuariopaga != "" && this.paga == "1" && this.formadepago == "CREDITO" && this.codestado != "0" )
+            {
+                
+                sql = "SELECT id FROM propuestas WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' AND ( version >= '" + this.version + "' AND (usuariopaga IS NULL OR usuariopaga = '' ) ) AND formadepago = 'CREDITO' AND codestado > 0 ";
+                if (con.query(sql).Tables[0].Rows.Count > 0)
+                    return true;
+            }
+
+            return false;
         }
 
         public bool confirmVersion()
@@ -1080,6 +1146,23 @@ namespace ProyectoBrokerDelPuerto
                                 "data_barrios = '" + this.data_barrios + "'," +
                                 " version = '" + this.version + "'," +
                                 "idpropuesta = '" + this.idpropuesta + "'" +
+                                " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
+                            else if( this.confirmPay() )
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                "usuariopaga = '" + this.usuariopaga + "'," +
+                                "fecha_paga = '" + this.fecha_paga + "'," +
+                                "codestado = '" + this.codestado + "'," +
+                                "paga = '" + this.paga + "'," +
+                                "referencia = '" + this.referencia + "'," +
+                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                "formadepago = '" + this.formadepago + "'," +
+                                "tipopago = '" + this.tipopago + "'," +
+                                "compformapago = '" + this.compformapago + "'," +
+                                "nota = '" + this.nota + "'," +
+                                "data_barrios = '" + this.data_barrios + "'," +
+                                " version = '" + this.version + "' " +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
                             }
 

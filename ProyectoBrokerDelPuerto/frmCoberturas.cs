@@ -92,6 +92,7 @@ namespace ProyectoBrokerDelPuerto
         {
             coberturas cob = new coberturas();
             cob.reg = dataGridView1.CurrentRow.Cells["reg"].Value.ToString();
+            cob.nombre = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
             cob.delete();
             this.llenar_grid();
         }
