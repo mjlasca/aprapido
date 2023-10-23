@@ -1002,6 +1002,8 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnRecibo_Click(object sender, EventArgs e)
         {
+            this.suma_premio();
+
             /*if (paga_ch.Checked)
             {*/
                 if (MessageBox.Show("¿Recibo pagado?", "PDF Recibo", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -1021,7 +1023,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnEmitir_Click(object sender, EventArgs e)
         {
-
+            this.suma_premio();
             if (this.validacion(false)) {
               /*  if (paga_ch.Checked)
                 {*/
@@ -1996,6 +1998,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void mail_btn_Click(object sender, EventArgs e)
         {
+            this.suma_premio();
             this.enviarMail();
         }
 
@@ -2223,6 +2226,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void pictureBox1_Click(object sender, EventArgs e)
         {
+            this.suma_premio();
             string sexoMensaje = "Estimado ";
             if (radioButton1.Checked)
                 sexoMensaje = "Estimada ";
@@ -2274,6 +2278,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnDuplicar_Click(object sender, EventArgs e)
         {
+            this.suma_premio();
             if (MessageBox.Show("¿Está Segur@ de duplicar la propuesta?", "Duplicar Propuesta", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
                 
@@ -2346,12 +2351,13 @@ namespace ProyectoBrokerDelPuerto
 
         private void button3_Click(object sender, EventArgs e)
         {
+            this.suma_premio();
             this.abrirRutaFacturaScripts(path);
         }
 
         private void libreDeuda_btn_Click(object sender, EventArgs e)
         {
-
+            this.suma_premio();
             this.visibleLibreDeuda();
             if(libreDeuda_btn.Visible == true)
             {

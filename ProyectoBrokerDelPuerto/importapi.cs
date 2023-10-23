@@ -458,8 +458,8 @@ namespace ProyectoBrokerDelPuerto
                 using (var ors = new StreamReader(_response.GetResponseStream()))
                 {
                     res = ors.ReadToEnd().Trim();
-
-                    if (res != "")
+                }
+                if (res != "")
                     {
 
 
@@ -543,7 +543,7 @@ namespace ProyectoBrokerDelPuerto
 
                     }
                     
-                }
+                
 
                 System.IO.File.WriteAllText(@"file_importaciones/importacion_" + this.para.solicitud + ".txt", res);
 

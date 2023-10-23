@@ -949,7 +949,7 @@ namespace ProyectoBrokerDelPuerto
             else
             {
                 sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
-                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga FROM propuestas t1 INNER JOIN clientes t2  " +
+                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga  FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
                 " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE "
                 + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
@@ -1003,7 +1003,7 @@ namespace ProyectoBrokerDelPuerto
             else
             {
                 sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
-                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga FROM propuestas t1 INNER JOIN clientes t2  " +
+                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga  FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
                 " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE " 
                 + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
