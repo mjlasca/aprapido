@@ -136,7 +136,7 @@ namespace ProyectoBrokerDelPuerto
         private void button1_Click(object sender, EventArgs e)
         {
             double val = this.valorEntrega();
-            if (val > 0)
+            if (val >= 0)
             {
                 frmNuevaEntrega frm = new frmNuevaEntrega();
                 frm.txtValor.Text = this.valorEntrega().ToString();
@@ -152,10 +152,11 @@ namespace ProyectoBrokerDelPuerto
                         frm0.exportarRendiciones();
                     });
                 }
-            }else if(val < 0)
+            }else
             {
                 MessageBox.Show("Los días " + errores+ " tienen arqueos sin cerrar", "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void actualizarArqueos(string numentrega)
