@@ -90,11 +90,13 @@ namespace ProyectoBrokerDelPuerto
 
         private void button4_Click(object sender, EventArgs e)
         {
-            coberturas cob = new coberturas();
-            cob.reg = dataGridView1.CurrentRow.Cells["reg"].Value.ToString();
-            cob.nombre = dataGridView1.CurrentRow.Cells["nombre"].Value.ToString();
-            cob.delete();
-            this.llenar_grid();
+            if (MessageBox.Show("¿Está Segur@ de eliminar la cobertura?", "Eliminar cobertura", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                coberturas cob = new coberturas();
+                cob.reg = dataGridView1.CurrentRow.Cells["reg"].Value.ToString();
+                cob.delete();
+                this.llenar_grid();
+            }
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)

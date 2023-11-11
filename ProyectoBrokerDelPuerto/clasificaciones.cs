@@ -11,7 +11,7 @@ namespace ProyectoBrokerDelPuerto
     {
         string sql = "";
         string columns = "cod, nombre, id_actividad, ultmod, user_edit, codestado, version ";
-        public string id, cod, nombre, id_actividad, ultmod, user_edit, codestado = "";
+        public string id, cod, nombre, id_actividad, ultmod, user_edit, codestado = "1";
         conexion con = new conexion();
         public int version { set; get; } = 0;
         public clasificaciones(bool inst = false)
@@ -363,7 +363,8 @@ namespace ProyectoBrokerDelPuerto
                         "id_actividad = '" + this.id_actividad + "'," +
                         "ultmod = '" + this.ultmod + "'," +
                         "version = '" + this.version + "'," +
-                        "user_edit = '" + this.user_edit + "'" +
+                        "user_edit = '" + this.user_edit + "'," +
+                        "codestado = '" + this.codestado + "'" +
                         " WHERE id = '" + this.id + "'";
                 }
                 else
@@ -441,11 +442,48 @@ namespace ProyectoBrokerDelPuerto
             }
         }
 
+        public bool getObject()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM clasificaciones WHERE codestado = 1 AND id = '" + this.id + "'";
+            try
+            {
+                ds = con.query(sql);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    this.id = ds.Tables[0].Rows[0]["id"].ToString();
+                    this.cod = ds.Tables[0].Rows[0]["cod"].ToString();
+                    this.nombre = ds.Tables[0].Rows[0]["nombre"].ToString();
+                    this.id_actividad = ds.Tables[0].Rows[0]["id_actividad"].ToString();
+                    this.ultmod = ds.Tables[0].Rows[0]["ultmod"].ToString();
+                    this.user_edit = ds.Tables[0].Rows[0]["user_edit"].ToString();
+                    this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                    this.version = Convert.ToInt16(ds.Tables[0].Rows[0]["version"].ToString());
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar coberturas");
+            }
+
+            return false;
+        }
+
         public void delete()
         {
-            this.exist();
+            /*this.exist();
             sql = "UPDATE clasificaciones SET codestado = 0, ultmod = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', version = '"+this.version+"' WHERE id = '" + this.id + "' ";
-            con.query(sql);
+            con.query(sql);*/
+            this.getObject();
+            this.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.user_edit = MDIParent1.sesionUser;
+            this.version++;
+            this.codestado = "0";
+
+            this.save();
         }
     }
 }

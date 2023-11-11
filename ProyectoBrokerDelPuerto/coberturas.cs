@@ -159,6 +159,43 @@ namespace ProyectoBrokerDelPuerto
             return ds;
         }
 
+        public bool getObject()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM coberturas WHERE codestado = 1 AND reg = '" + this.reg + "'";
+            try
+            {
+                ds = con.query(sql);
+                if(ds.Tables[0].Rows.Count > 0)
+                {
+                    this.reg = ds.Tables[0].Rows[0]["reg"].ToString();
+                    this.nombre = ds.Tables[0].Rows[0]["nombre"].ToString();
+                    this.suma = ds.Tables[0].Rows[0]["suma"].ToString();
+                    this.gastos = ds.Tables[0].Rows[0]["gastos"].ToString();
+                    this.deducible = ds.Tables[0].Rows[0]["deducible"].ToString();
+                    this.vrMensual = ds.Tables[0].Rows[0]["vrMensual"].ToString();
+                    this.vrTrimestral = ds.Tables[0].Rows[0]["vrTrimestral"].ToString();
+                    this.vrSemestral = ds.Tables[0].Rows[0]["vrSemestral"].ToString();
+                    this.x21 = ds.Tables[0].Rows[0]["x21"].ToString();
+                    this.x32 = ds.Tables[0].Rows[0]["x32"].ToString();
+                    this.x64 = ds.Tables[0].Rows[0]["x64"].ToString();
+                    this.ultmod = ds.Tables[0].Rows[0]["ultmod"].ToString();
+                    this.user_edit = ds.Tables[0].Rows[0]["user_edit"].ToString();
+                    this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                    this.version = Convert.ToInt16(ds.Tables[0].Rows[0]["version"].ToString());
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar coberturas");
+            }
+
+            return false;
+        }
+
 
         public DataSet get_all_busqueda(string coincidencia)
         {
@@ -397,9 +434,18 @@ namespace ProyectoBrokerDelPuerto
 
         public void delete()
         {
-            this.exist();
+            /*this.exist();
             sql = "UPDATE coberturas SET codestado = 0, ultmod = '"+DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")+"', version = '"+(this.version++)+"' WHERE reg = '" + this.reg + "' ";
-            con.query(sql);
+            con.query(sql);*/
+
+            this.getObject();
+            this.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.user_edit = MDIParent1.sesionUser;
+            this.version++;
+            this.codestado = "0";
+
+            this.save();
+
         }
     }
 }

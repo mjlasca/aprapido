@@ -165,10 +165,13 @@ namespace ProyectoBrokerDelPuerto
 
         private void button4_Click(object sender, EventArgs e)
         {
-            clasificaciones cla = new clasificaciones();
-            cla.id = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            cla.delete();
-            this.llenar_grid();
+            if (MessageBox.Show("¿Está Segur@ de eliminar la clasificación?", "Eliminar clasificación", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                clasificaciones cla = new clasificaciones();
+                cla.id = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+                cla.delete();
+                this.llenar_grid();
+            }
         }
 
         private void txtCodigo_Leave(object sender, EventArgs e)

@@ -11,7 +11,7 @@ namespace ProyectoBrokerDelPuerto
     {
         string sql = "";
         string columns = "cod, nombre, ultmod, user_edit, codestado,version ";
-        public string id, cod, nombre, ultmod, user_edit, codestado = "";
+        public string id, cod, nombre, ultmod, user_edit, codestado = "1";
 
         public int version { set; get; } = 0;
         conexion con = new conexion();
@@ -309,7 +309,8 @@ namespace ProyectoBrokerDelPuerto
                         "nombre = '" + corregir_nombre(this.nombre) + "'," +
                         "ultmod = '" + this.ultmod + "'," +
                         "version = '" + this.version + "'," +
-                        "user_edit = '" + this.user_edit + "'" +
+                        "user_edit = '" + this.user_edit + "'," +
+                        "codestado = '" + this.codestado + "'" +
                         " WHERE id = '" + this.id + "'";
                 }
                 else
@@ -387,11 +388,48 @@ namespace ProyectoBrokerDelPuerto
             }
         }
 
+        public bool getObject()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM actividades WHERE codestado = 1 AND id = '" + this.id + "'";
+            try
+            {
+                ds = con.query(sql);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    this.id = ds.Tables[0].Rows[0]["id"].ToString();
+                    this.cod = ds.Tables[0].Rows[0]["cod"].ToString();
+                    this.nombre = ds.Tables[0].Rows[0]["nombre"].ToString();
+                    this.ultmod = ds.Tables[0].Rows[0]["ultmod"].ToString();
+                    this.user_edit = ds.Tables[0].Rows[0]["user_edit"].ToString();
+                    this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                    this.version = Convert.ToInt16(ds.Tables[0].Rows[0]["version"].ToString());
+
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar coberturas");
+            }
+
+            return false;
+        }
+
         public void delete()
         {
-            this.exist();
+            /*this.exist();
             sql = "UPDATE actividades SET codestado = 0, ultmod = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "', version = '"+this.version+"' WHERE id = '" + this.id + "' ";
-            con.query(sql);
+            con.query(sql);*/
+
+            this.getObject();
+            this.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.user_edit = MDIParent1.sesionUser;
+            this.version++;
+            this.codestado = "0";
+
+            this.save();
         }
     }
 }

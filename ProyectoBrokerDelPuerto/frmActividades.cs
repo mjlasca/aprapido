@@ -122,10 +122,13 @@ namespace ProyectoBrokerDelPuerto
 
         private void button4_Click(object sender, EventArgs e)
         {
-            actividades ac = new actividades();
-            ac.id = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
-            ac.delete();
-            this.llenar_grid();
+            if (MessageBox.Show("¿Está Segur@ de eliminar la actividad?", "Eliminar actividad", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                actividades ac = new actividades();
+                ac.id = dataGridView1.CurrentRow.Cells["id"].Value.ToString();
+                ac.delete();
+                this.llenar_grid();
+            }
         }
 
         private void txtCodigo_Leave(object sender, EventArgs e)
