@@ -93,6 +93,10 @@ namespace ProyectoBrokerDelPuerto
                 ba.envionube = 1;
                 if (ba.save())
                 {
+                    frmMigraciones frmmig = new frmMigraciones();
+                    Task.Run(() => {
+                        return frmmig.exportarBarrios();
+                    });
                     this.cuitBarr = ba.nombre;
                     this.DialogResult = DialogResult.OK;
                 }
