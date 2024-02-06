@@ -70,33 +70,41 @@ namespace ProyectoBrokerDelPuerto
             if (refpro.Count() > 0)
             {
                 ApiPropuestas apProp = new ApiPropuestas();
+                try
+                {
+                    List<ReferenceCloud> refCloud = new List<ReferenceCloud>();
+                    refCloud = await apProp.GetRef(refpro);
+                    if (refCloud.Count > 0)
+                    {
 
-                List<ReferenceCloud> refCloud = new List<ReferenceCloud>();
-                refCloud = await apProp.GetRef(refpro);
+                        foreach (ReferenceCloud re in refCloud)
+                        {
+                            if (re.referencia != null && re.referencia != "")
+                            {
+                                if (concat_.ToString() != "")
+                                    concat_.AppendLine("," + re.save());
+                                else
+                                    concat_.AppendLine(re.save());
+                            }
+
+                        }
+
+                        if (concat_.ToString() != "")
+                        {
+                            sql = "INSERT INTO referencecloud (" + this.columns + ") VALUES";
+                            con.query(sql + concat_.ToString());
+                        }
+
+                    }
+                }
+                catch(Exception ex)
+                {
+                    //
+                }
+                
 
                 
-                if (refCloud.Count > 0)
-                {
-                    
-                    foreach (ReferenceCloud re in refCloud)
-                    {
-                        if(re.referencia != null && re.referencia != "")
-                        {
-                            if (concat_.ToString() != "")
-                                concat_.AppendLine("," + re.save());
-                            else
-                                concat_.AppendLine(re.save());
-                        }
-                        
-                    }
-                    
-                    if (concat_.ToString() != "")
-                    {
-                        sql = "INSERT INTO referencecloud (" + this.columns + ") VALUES";
-                        con.query(sql + concat_.ToString());
-                    }
-                        
-                }
+                
             }
 
 

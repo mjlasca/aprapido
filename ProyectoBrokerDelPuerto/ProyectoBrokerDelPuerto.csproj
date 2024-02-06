@@ -42,6 +42,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -352,6 +353,12 @@
     <Compile Include="frmGruposBarrios.Designer.cs">
       <DependentUpon>frmGruposBarrios.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmImputaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmImputaciones.Designer.cs">
+      <DependentUpon>frmImputaciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmInfoBarrios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -643,6 +650,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmGruposBarrios.resx">
       <DependentUpon>frmGruposBarrios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmImputaciones.resx">
+      <DependentUpon>frmImputaciones.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmInfoBarrios.resx">
       <DependentUpon>frmInfoBarrios.cs</DependentUpon>

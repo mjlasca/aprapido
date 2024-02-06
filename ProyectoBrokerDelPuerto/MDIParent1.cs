@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "http://apibarrios.3enterprise.online"; //http://apibarrios.3enterprise.online
+        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //http://apibarrios.3enterprise.online
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -321,6 +321,11 @@ namespace ProyectoBrokerDelPuerto
                         verYCompararToolStripMenuItem.Visible = Convert.ToBoolean(ds.Tables[0].Rows[i]["vista"]);
                     }
 
+                    if (ds.Tables[0].Rows[i]["modulo"].ToString() == "imputaciones")
+                    {
+                        MDinformes.Visible = true;
+                        imputacionesToolStripMenuItem.Visible = Convert.ToBoolean(ds.Tables[0].Rows[i]["vista"]);
+                    }
                 }
             }
 
@@ -1182,6 +1187,13 @@ namespace ProyectoBrokerDelPuerto
         private void modificaciónDeBarriosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             frmAuditoriaClausulas frm = new frmAuditoriaClausulas();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+        }
+
+        private void imputacionesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            frmImputaciones frm = new frmImputaciones();
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();
         }

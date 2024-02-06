@@ -17,7 +17,7 @@ namespace ProyectoBrokerDelPuerto
             "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version";
         public string  id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta,clausula, barrio_beneficiario,ultmod, 
             user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota;
-        public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0";
+        public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0", valor_pagado = "0", imputacion = "0", fecha_comprobante = "";
         public string fecha_paga = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public string referencia = "", prefijo = "", formadepago = "CONTADO";
         public string prima = "0", nombre = "", datos;
@@ -299,6 +299,12 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE propuestas ADD data_barrios LONGTEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL ;");
                     if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'version' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE propuestas ADD COLUMN version int(10)  DEFAULT 0;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'valor_pagado' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE propuestas ADD COLUMN valor_pagado double  DEFAULT 0;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'imputacion' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE propuestas ADD COLUMN imputacion int(1) DEFAULT 0;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'fecha_comprobante' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE propuestas ADD COLUMN fecha_comprobante DATE NULL;");
                 }
                 catch(Exception ex)
                 {
@@ -331,6 +337,9 @@ namespace ProyectoBrokerDelPuerto
                     con.query("ALTER TABLE propuestas ADD COLUMN nota VARCHAR(10)  DEFAULT 0;");
                     con.query("ALTER TABLE propuestas ADD COLUMN data_barrios JSON NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN version int(10)  DEFAULT 0;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN valor_pagado double  DEFAULT 0;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN imputacion int(1) DEFAULT 0;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN fecha_comprobante DATE NULL;");
                 }
                 catch (Exception ex){
                     Console.WriteLine("Error al agregar columna de propuesta " + ex.Message);
@@ -416,14 +425,15 @@ namespace ProyectoBrokerDelPuerto
 
             sql = "SELECT * FROM propuestas WHERE (codestado = 1 OR codestado = 2) AND idpropuesta = '" + id_ + "' AND prefijo = '" + prefijo_ + "' ";
             //Console.WriteLine("GETPR--->\n\n"+sql);
-            try
-            {
+            /*try
+            {*/
+                
                 ds = con.query(sql);
-            }
+            /**}
             catch (Exception ex)
             {
                 Console.Write("ERROR al consultar propuestas");
-            }
+            }*/
 
             return ds;
         }
@@ -1126,6 +1136,9 @@ namespace ProyectoBrokerDelPuerto
                                 "user_edit = '" + this.user_edit + "'," +
                                 "usuariopaga = '" + this.usuariopaga + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
+                                "valor_pagado = '" + this.valor_pagado + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                                "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "cobertura_suma = '" + this.cobertura_suma + "'," +
                                 "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1153,6 +1166,9 @@ namespace ProyectoBrokerDelPuerto
                                 sql = "UPDATE propuestas SET " +
                                 "usuariopaga = '" + this.usuariopaga + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
+                                "valor_pagado = '" + this.valor_pagado + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                                "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "paga = '" + this.paga + "'," +
                                 "referencia = '" + this.referencia + "'," +
@@ -1226,6 +1242,9 @@ namespace ProyectoBrokerDelPuerto
                                 "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
                                 "ultmod = '" + this.ultmod + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
+                                "valor_pagado = '" + this.valor_pagado + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                                "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "cobertura_suma = '" + this.cobertura_suma + "'," +
                                 "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1294,6 +1313,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
                         "'" + this.version + "'" +
+                        
 
                         ") ";
 
@@ -1348,6 +1368,7 @@ namespace ProyectoBrokerDelPuerto
                             "'" + this.nota + "'," +
                             "'" + this.data_barrios + "'," +
                             "'" + this.version + "'" +
+                            
 
                             ") ";
                         }
@@ -1402,6 +1423,9 @@ namespace ProyectoBrokerDelPuerto
                         "ultmod = '" + this.ultmod + "'," +
                         "usuariopaga = '" + this.usuariopaga + "'," +
                         "fecha_paga = '" + this.fecha_paga + "'," +
+                        "valor_pagado = '" + this.valor_pagado + "'," +
+                        "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                        "imputacion = '" + this.imputacion + "'," +
                         "codestado = '" + this.codestado + "'," +
                         "cobertura_suma = '" + this.cobertura_suma + "'," +
                         "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1480,6 +1504,9 @@ namespace ProyectoBrokerDelPuerto
                             "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
                             "ultmod = '" + this.ultmod + "'," +
                             "fecha_paga = '" + this.fecha_paga + "'," +
+                            "valor_pagado = '" + this.valor_pagado + "'," +
+                            "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                            "imputacion = '" + this.imputacion + "'," +
                             "codestado = '" + this.codestado + "'," +
                             "cobertura_suma = '" + this.cobertura_suma + "'," +
                             "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1658,6 +1685,9 @@ namespace ProyectoBrokerDelPuerto
                             "ultmod = '" + this.ultmod + "'," +
                             "usuariopaga = '" + this.usuariopaga + "'," +
                             "fecha_paga = '" + this.fecha_paga + "'," +
+                            "valor_pagado = '" + this.valor_pagado + "'," +
+                            "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                            "imputacion = '" + this.imputacion + "'," +
                             "codestado = '" + this.codestado + "'," +
                             "cobertura_suma = '" + this.cobertura_suma + "'," +
                             "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1740,6 +1770,9 @@ namespace ProyectoBrokerDelPuerto
                                 "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
                                 "ultmod = '" + this.ultmod + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
+                                "valor_pagado = '" + this.valor_pagado + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                                "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "cobertura_suma = '" + this.cobertura_suma + "'," +
                                 "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1808,6 +1841,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
                         "'" + this.version + "'" +
+                        
+
 
                         ") ";
 
@@ -1864,6 +1899,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
                         "'" + this.version + "'" +
+                        
+                        
 
                         ") ";
                     }
@@ -1918,6 +1955,9 @@ namespace ProyectoBrokerDelPuerto
                             "ultmod = '" + this.ultmod + "'," +
                             "usuariopaga = '" + this.usuariopaga + "'," +
                             "fecha_paga = '" + this.fecha_paga + "'," +
+                            "valor_pagado = '" + this.valor_pagado + "'," +
+                            "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                            "imputacion = '" + this.imputacion + "'," +
                             "codestado = '" + this.codestado + "'," +
                             "cobertura_suma = '" + this.cobertura_suma + "'," +
                             "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -1998,6 +2038,9 @@ namespace ProyectoBrokerDelPuerto
                                 "barrio_beneficiario = '" + this.barrio_beneficiario + "'," +
                                 "ultmod = '" + this.ultmod + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
+                                "valor_pagado = '" + this.valor_pagado + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
+                                "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "cobertura_suma = '" + this.cobertura_suma + "'," +
                                 "cobertura_gastos = '" + this.cobertura_gastos + "'," +
@@ -2104,13 +2147,13 @@ namespace ProyectoBrokerDelPuerto
         }
 
 
-        public void pagar(string id_, string prefijo_, string tipopago_, string compago_, string fechapago_ = "" )
+        public void pagar(string id_, string prefijo_, string tipopago_, string compago_, string fechapago_ = "", string valor_pagado_ = "", string fecha_comprobante_ = "")
         {
             if(fechapago_ == "")
                 fechapago_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             sql = "UPDATE propuestas SET paga = 1, usuariopaga = '" + MDIParent1.sesionUser + "', fecha_paga = '" +
-                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "', version = ( version + 2 )  WHERE " +
+                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "',valor_pagado = '" + valor_pagado_ + "',fecha_comprobante = '" + fecha_comprobante_ + "', version = ( version + 2 )  WHERE " +
                 " idpropuesta = '" + id_.Trim() + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
@@ -2186,6 +2229,18 @@ namespace ProyectoBrokerDelPuerto
             return refpro1.ToList();
         }
 
+        public void updateImputaciones(List<string> listId)
+        {
+            if(listId.Count > 0)
+            {
+                string parameterNames = string.Join(",", listId);
+                string sql = "UPDATE propuestas SET envionube = 0, version = (version + 1), imputacion = 1 WHERE id IN (" + parameterNames + ")";
+
+                con.query(sql);
+            }
+            
+        }
+
         public void anular_propuesta(string prefijo_, string idpropuesta_)
         {
             sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 20 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
@@ -2202,6 +2257,40 @@ namespace ProyectoBrokerDelPuerto
         {
             sql = "UPDATE propuestas SET codestado = 0 WHERE id = '" + this.id + "' ";
             con.query(sql);
+        }
+
+        public DataSet getImputaciones(DateTime fecha1, DateTime fecha2, string referencia, string propuesta, int imputacion_)
+        {
+            DataSet cons = new DataSet();
+
+            string filter = "";
+
+            if(referencia != "")
+                filter += " AND referencia = '" + referencia + "' ";
+            if (propuesta != "")
+            {
+                if (MDIParent1.baseDatos == "SQlite")
+                    filter += " AND (prefijo || idpropuesta) LIKE '" + propuesta + "' ";
+                else
+                    filter += " AND CONCAT(prefijo, idpropuesta) LIKE '" + propuesta + "' ";
+            }
+
+            if(fecha1 != null && fecha2 != null)
+            {
+                filter += " AND  fecha_comprobante BETWEEN '"+fecha1.Date.ToString("yyyy-MM-dd")+"' AND '"+ fecha2.Date.ToString("yyyy-MM-dd") + "' ";
+            }
+
+            if(imputacion_ > -1)
+            {
+                filter += " AND imputacion = '" + imputacion_ + "' ";
+            }
+                
+
+            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,valor_pagado,fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
+                "  propuestas WHERE paga > 0 AND  valor_pagado > 0 "+filter+"  order by fecha_paga DESC";
+
+            cons = con.query(sql);
+            return cons;
         }
         
     }

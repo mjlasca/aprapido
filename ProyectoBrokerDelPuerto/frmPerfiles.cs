@@ -162,7 +162,8 @@ namespace ProyectoBrokerDelPuerto
             dataGridView1.Rows.Add("controlventas_nuevo", "Control Ventas Nuevo Archivo");
             dataGridView1.Rows.Add("controlventas_informe", "Control Ventas Análisis de Ventas/comparativo");
             dataGridView1.Rows.Add("ventascredito", "Ventas Crédito");
-            
+            dataGridView1.Rows.Add("imputaciones", "Imputaciones");
+
 
         }
 

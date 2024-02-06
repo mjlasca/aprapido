@@ -725,28 +725,35 @@ namespace ProyectoBrokerDelPuerto
 
         public async Task<bool> pagopropuesta_(string prefijo_ , string idpropuesta_)
         {
+            propuestas pro = new propuestas();
+            pro.idpropuesta = idpropuesta_;
+            pro.prefijo = prefijo_;
+
+            DataSet ds = pro.getprefijo(pro.prefijo, pro.idpropuesta);
+
             string formapago = "";
             string compformapago = "";
+            string valor_pagado = "";
+            DateTime dt_fecComprobante;
 
             frmFormadepago frmpaga = new frmFormadepago();
-
+            frmpaga.ds = ds;
+            frmpaga.ValorPoliza_txt.Text = Convert.ToDecimal( ds.Tables[0].Rows[0]["premio_total"].ToString() ).ToString();
             frmpaga.ShowDialog();
 
             if (frmpaga.DialogResult == DialogResult.OK)
             {
                 formapago = frmpaga.comboBox1.Text;
                 compformapago = frmpaga.textBox2.Text;
+                valor_pagado = frmpaga.ValorPagado_txt.Text;
+                dt_fecComprobante = frmpaga.fecha_comprobante.Value;
             }
             else
             {
                 return false;
             }
 
-            propuestas pro = new propuestas();
-            pro.idpropuesta = idpropuesta_;
-            pro.prefijo = prefijo_;
-
-            DataSet ds = pro.getprefijo(pro.prefijo, pro.idpropuesta);
+            
             if(ds.Tables[0].Rows[0]["version"] != null && ds.Tables[0].Rows[0]["version"].ToString() != "")
             {
                 pro.version = Convert.ToInt16(ds.Tables[0].Rows[0]["version"].ToString()) + 2;
@@ -780,8 +787,13 @@ namespace ProyectoBrokerDelPuerto
                         idpropuesta_,
                         prefijo_,
                         formapago,
-                        compformapago
+                        compformapago,
+                        valor_pagado,
+                        dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
+
+                    frmpaga.processImage();
+
                     MessageBox.Show("El pago se ha hecho con éxito");
                 }
                 else
@@ -825,8 +837,12 @@ namespace ProyectoBrokerDelPuerto
                         prefijo_,
                         formapago,
                         compformapago,
-                        fechapagar
+                        fechapagar,
+                        valor_pagado,
+                        dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
+
+                    frmpaga.processImage();
                     MessageBox.Show("El pago se ha hecho con éxito");
                 }
                 else
@@ -886,8 +902,8 @@ namespace ProyectoBrokerDelPuerto
             Console.WriteLine("\nJSON PAGO\n"+json);
 
 
-            try
-            {
+            /*try
+            {*/
                 string url = MDIParent1.apiuri + "/api/paypro";
                 
                 WebRequest _request = WebRequest.Create(url);
@@ -910,11 +926,11 @@ namespace ProyectoBrokerDelPuerto
 
                 return true;
 
-            }
+            /*}
             catch (Exception ex)
             {
                 return false;
-            }
+            }*/
 
 
 

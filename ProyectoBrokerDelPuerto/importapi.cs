@@ -709,6 +709,9 @@ namespace ProyectoBrokerDelPuerto
                                                     envionube = "1",
                                                     data_barrios = val["data_barrios"] == null ? "{\"barrios\":[]}" : val["data_barrios"],
                                                     version = val["version"] == null ? "" : val["version"],
+                                                    valor_pagado = val["valor_pagado "] == null ? "" : val["valor_pagado "],
+                                                    imputacion = val["imputacion"] == null ? "" : val["imputacion"],
+                                                    fecha_comprobante = val["fecha_comprobante"] == null ? "" : val["fecha_comprobante"],
 
                                                 }).ToList();
 

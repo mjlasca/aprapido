@@ -10,8 +10,8 @@ namespace ProyectoBrokerDelPuerto
     {
         string sql = "";
 
-        string columns = "dato,valor";
-        public string id, dato ="prosimport", valor = "";
+        string columns = "dato,valor,detail";
+        public string id, dato ="prosimport", valor = "", detail= "";
         conexion con = new conexion();
 
         public configuraciones()
@@ -36,8 +36,30 @@ namespace ProyectoBrokerDelPuerto
 
             con.query(sql);
 
+            this.addColumn();
+        }
 
-            
+        private void addColumn()
+        {
+            if (MDIParent1.baseDatos == "MySql")
+            {
+                try
+                {
+
+                    //Add column categoria if NOT exist
+                    if (con.query("SHOW COLUMNS FROM configuraciones WHERE Field = 'detail' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE configuraciones ADD COLUMN detail VARCHAR(300) NULL");
+                }
+                catch
+                {
+                    //
+                }
+            }
+            else
+            {
+                con.query("ALTER TABLE configuraciones ADD COLUMN detail VARCHAR(300) NULL");
+            }
+
 
         }
 
@@ -58,7 +80,20 @@ namespace ProyectoBrokerDelPuerto
 
             return "0";
         }
-        
+
+        public configuraciones get(string field)
+        {
+            sql = "SELECT * FROM configuraciones WHERE dato = '"+field+"' ";
+            if (con.query(sql).Tables[0].Rows.Count > 0)
+            {
+                this.valor = con.query(sql).Tables[0].Rows[0]["valor"].ToString();
+                this.id = con.query(sql).Tables[0].Rows[0]["id"].ToString();
+                this.detail = con.query(sql).Tables[0].Rows[0]["detail"].ToString();
+            }
+
+            return this;
+        }
+
 
         private bool exist()
         {
@@ -78,13 +113,14 @@ namespace ProyectoBrokerDelPuerto
             {
                 if (this.exist())
                 {
-                    sql = "UPDATE configuraciones SET valor = '" + this.valor + "' WHERE dato = '" + this.dato + "' ";
+                    sql = "UPDATE configuraciones SET valor = '" + this.valor + "',detail = '" + this.detail + "'  WHERE dato = '" + this.dato + "' ";
                 }
                 else
                 {
                     sql = "INSERT INTO configuraciones (" + this.columns + ") VALUES(" +
                     "'" + this.dato + "'," +
-                    "'" + this.valor + "'" +
+                    "'" + this.valor + "'," +
+                    "'" + this.detail + "'" +
                     ") ";
                 }
 

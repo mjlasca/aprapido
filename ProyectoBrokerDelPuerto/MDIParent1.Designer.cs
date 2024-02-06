@@ -86,6 +86,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.sinEnviar_btn = new System.Windows.Forms.Button();
             this.timer_parameters = new System.Windows.Forms.Timer(this.components);
+            this.imputacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -312,7 +313,8 @@
             this.agrupaciónDeInformesToolStripMenuItem,
             this.controlDeVentasToolStripMenuItem,
             this.comisionesToolStripMenuItem,
-            this.auditoríaToolStripMenuItem});
+            this.auditoríaToolStripMenuItem,
+            this.imputacionesToolStripMenuItem});
             this.MDinformes.Name = "MDinformes";
             this.MDinformes.Size = new System.Drawing.Size(66, 20);
             this.MDinformes.Text = "Informes";
@@ -593,6 +595,14 @@
             this.timer_parameters.Interval = 600000;
             this.timer_parameters.Tick += new System.EventHandler(this.timer_parameters_Tick);
             // 
+            // imputacionesToolStripMenuItem
+            // 
+            this.imputacionesToolStripMenuItem.Name = "imputacionesToolStripMenuItem";
+            this.imputacionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imputacionesToolStripMenuItem.Text = "Imputaciones";
+            this.imputacionesToolStripMenuItem.Visible = false;
+            this.imputacionesToolStripMenuItem.Click += new System.EventHandler(this.imputacionesToolStripMenuItem_Click);
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -685,6 +695,7 @@
         private System.Windows.Forms.Timer timer_parameters;
         private System.Windows.Forms.ToolStripMenuItem auditoríaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modificaciónDeBarriosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem imputacionesToolStripMenuItem;
     }
 }
 
