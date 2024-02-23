@@ -14,10 +14,10 @@ namespace ProyectoBrokerDelPuerto
         //Si codestado es 1. Està vigente la propuesta, 2. Ya no està vigente, 0. Anulada
         string columns = "documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor,"+
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion,fecha_comprobante";
         public string  id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta,clausula, barrio_beneficiario,ultmod, 
             user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota;
-        public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0", valor_pagado = "0", imputacion = "0", fecha_comprobante = "";
+        public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0", valor_pagado = "0", imputacion = "0", fecha_comprobante = DateTime.Now.ToString("1000-01-01 HH:mm:ss");
         public string fecha_paga = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public string referencia = "", prefijo = "", formadepago = "CONTADO";
         public string prima = "0", nombre = "", datos;
@@ -423,7 +423,7 @@ namespace ProyectoBrokerDelPuerto
             DataSet ds = new DataSet();
 
 
-            sql = "SELECT * FROM propuestas WHERE (codestado = 1 OR codestado = 2) AND idpropuesta = '" + id_ + "' AND prefijo = '" + prefijo_ + "' ";
+            sql = "SELECT * FROM propuestas WHERE (codestado > 0) AND idpropuesta = '" + id_ + "' AND prefijo = '" + prefijo_ + "' ";
             //Console.WriteLine("GETPR--->\n\n"+sql);
             /*try
             {*/
@@ -1312,7 +1312,10 @@ namespace ProyectoBrokerDelPuerto
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
-                        "'" + this.version + "'" +
+                        "'" + this.version + "'," +
+                        "'" + this.valor_pagado + "'," +
+                        "'" + this.imputacion + "'," +
+                        "'" + this.fecha_comprobante + "'" +
                         
 
                         ") ";
@@ -1367,8 +1370,11 @@ namespace ProyectoBrokerDelPuerto
                             "'" + MDIParent1.codempresa + "'," +
                             "'" + this.nota + "'," +
                             "'" + this.data_barrios + "'," +
-                            "'" + this.version + "'" +
-                            
+                            "'" + this.version + "'," +
+                            "'" + this.valor_pagado + "'," +
+                            "'" + this.imputacion + "'," +
+                            "'" + this.fecha_comprobante + "'" +
+
 
                             ") ";
                         }
@@ -1840,8 +1846,11 @@ namespace ProyectoBrokerDelPuerto
                         "'" + MDIParent1.codempresa+ "'," +
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
-                        "'" + this.version + "'" +
-                        
+                        "'" + this.version + "'," +
+                        "'" + this.valor_pagado + "'," +
+                        "'" + this.imputacion + "'," +
+                        "'" + this.fecha_comprobante + "'" +
+
 
 
                         ") ";
@@ -1898,9 +1907,12 @@ namespace ProyectoBrokerDelPuerto
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
-                        "'" + this.version + "'" +
-                        
-                        
+                        "'" + this.version + "'," +
+                        "'" + this.valor_pagado + "'," +
+                        "'" + this.imputacion + "'," +
+                        "'" + this.fecha_comprobante + "'" +
+
+
 
                         ") ";
                     }
@@ -2109,7 +2121,10 @@ namespace ProyectoBrokerDelPuerto
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "', " +
-                        "'" + this.version + "' " +
+                        "'" + this.version + "'," +
+                        "'" + this.valor_pagado + "'," +
+                        "'" + this.imputacion + "'," +
+                        "'" + this.fecha_comprobante + "'" +
 
                         "); ";
 
@@ -2200,9 +2215,14 @@ namespace ProyectoBrokerDelPuerto
             }
             else
             {
-                sql = "UPDATE propuestas AS p, controlventas AS c  " +
-                    "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito  " +
-                    " WHERE ( p.referencia IS NULL OR p.referencia = '' ) AND (p.prefijo || p.idpropuesta) = c.codgrupo  AND c.fecha = '" + fecha_ + "'";
+                sql = "UPDATE propuestas" +
+                    " SET referencia = (SELECT c.referencia FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')," +
+                        " prima = (SELECT c.primaemitida FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')," +
+                        " nota = (SELECT c.notacredito FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')" +
+                    " WHERE(propuestas.referencia IS NULL OR propuestas.referencia = '')" +
+                      " AND EXISTS (SELECT 1 FROM controlventas AS c WHERE(propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "');";
+
+
             }
             con.query(sql);
 
@@ -2259,7 +2279,7 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
-        public DataSet getImputaciones(DateTime fecha1, DateTime fecha2, string referencia, string propuesta, int imputacion_)
+        public DataSet getImputaciones(DateTime fecha1, DateTime fecha2, string referencia, string propuesta,string tipo_fecha, int imputacion_)
         {
             DataSet cons = new DataSet();
 
@@ -2277,7 +2297,11 @@ namespace ProyectoBrokerDelPuerto
 
             if(fecha1 != null && fecha2 != null)
             {
-                filter += " AND  fecha_comprobante BETWEEN '"+fecha1.Date.ToString("yyyy-MM-dd")+"' AND '"+ fecha2.Date.ToString("yyyy-MM-dd") + "' ";
+                
+                if (tipo_fecha == "Comprobante")
+                    filter += " AND  DATE(fecha_comprobante) >= DATE('" + fecha1.Date.ToString("yyyy-MM-dd")+ "') AND DATE(fecha_comprobante) <= DATE('" + fecha2.Date.ToString("yyyy-MM-dd") + "') ";
+                else
+                    filter += " AND  DATE(ultmod) >= DATE('" + fecha1.Date.ToString("yyyy-MM-dd") + "') AND DATE(ultmod) <= DATE('" + fecha2.Date.ToString("yyyy-MM-dd") + "') ";
             }
 
             if(imputacion_ > -1)
@@ -2286,7 +2310,7 @@ namespace ProyectoBrokerDelPuerto
             }
                 
 
-            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,valor_pagado,fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
+            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,DATE(ultmod) AS ultmod,valor_pagado,DATE(fecha_comprobante) AS fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
                 "  propuestas WHERE paga > 0 AND  valor_pagado > 0 "+filter+"  order by fecha_paga DESC";
 
             cons = con.query(sql);

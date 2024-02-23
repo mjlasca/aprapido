@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void frmImputaciones_Load(object sender, EventArgs e)
         {
-
+            comboBox2.SelectedIndex = 0;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -30,7 +30,8 @@ namespace ProyectoBrokerDelPuerto
                 imputacion_ = 1;
             if (comboBox1.Text == "NO")
                 imputacion_ = 0;
-            DataSet ds = pro.getImputaciones(date1.Value, date2.Value, textBox1.Text, textBox2.Text, imputacion_);
+            string tipo_fecha = comboBox2.Text;
+            DataSet ds = pro.getImputaciones(date1.Value, date2.Value, textBox1.Text, textBox2.Text,tipo_fecha, imputacion_);
             if (ds.Tables.Count > 0 && ds.Tables[0].Rows.Count > 0)
             {
                 dataGridView1.Rows.Clear();
@@ -38,6 +39,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     dataGridView1.Rows.Add(
                         ds.Tables[0].Rows[i]["id"].ToString(),
+                        ds.Tables[0].Rows[i]["ultmod"].ToString(),
                         ds.Tables[0].Rows[i]["fecha_comprobante"].ToString(),
                         ds.Tables[0].Rows[i]["referencia"].ToString(),
                         ds.Tables[0].Rows[i]["prefijo"].ToString(),
@@ -57,21 +59,32 @@ namespace ProyectoBrokerDelPuerto
         {
             if (dataGridView1.Rows.Count > 0)
             {
-                List<string> listIn = new List<string>();
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                try
                 {
-                    if (Convert.ToInt16(dataGridView1.Rows[i].Cells["si"].Value) != 1 && Convert.ToBoolean(dataGridView1.Rows[i].Cells["imputado"].Value))
+                    List<string> listIn = new List<string>();
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
-                        listIn.Add(dataGridView1.Rows[i].Cells["id"].Value.ToString());
+                        if (Convert.ToInt16(dataGridView1.Rows[i].Cells["si"].Value) != 1 && Convert.ToBoolean(dataGridView1.Rows[i].Cells["imputado"].Value))
+                        {
+                            listIn.Add(dataGridView1.Rows[i].Cells["id"].Value.ToString());
+                        }
+                        else
+                        {
+                            dataGridView1.Rows[i].Cells["imputado"].ReadOnly = true;
+                        }
                     }
-                    else
-                    {
-                        dataGridView1.Rows[i].Cells["imputado"].ReadOnly = true;
-                    }
+
+                    propuestas pro = new propuestas();
+                    pro.updateImputaciones(listIn);
+
+                    MessageBox.Show("Se ha hecho las imputaciones con éxito");
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Hubo un error al generar las imputaciones" + ex.Message, "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
 
-                propuestas pro = new propuestas();
-                pro.updateImputaciones(listIn);
+                
             }
 
         }
@@ -132,6 +145,21 @@ namespace ProyectoBrokerDelPuerto
                 );
             }
             return dt;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (Convert.ToInt16(dataGridView1.Rows[i].Cells["si"].Value) != 1 && Convert.ToBoolean(dataGridView1.Rows[i].Cells["imputado"].Value))
+                {
+                    dataGridView1.Rows[i].Cells["imputado"].Value = 0;
+                }
+                else
+                {
+                    dataGridView1.Rows[i].Cells["imputado"].Value = 1;
+                }
+            }
         }
     }
 }

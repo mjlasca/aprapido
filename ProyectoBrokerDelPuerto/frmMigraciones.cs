@@ -1563,7 +1563,7 @@ namespace ProyectoBrokerDelPuerto
                                 version = ds.Tables[0].Rows[i]["version"] != null ? Convert.ToInt16(ds.Tables[0].Rows[i]["version"].ToString()) : 0,
                                 valor_pagado = ds.Tables[0].Rows[i]["valor_pagado"].ToString(),
                                 imputacion = ds.Tables[0].Rows[i]["imputacion"].ToString(),
-                                fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"] != null ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "",
+                                fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "1900-01-01",
                             }
                         );
 

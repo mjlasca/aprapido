@@ -770,7 +770,7 @@ namespace ProyectoBrokerDelPuerto
 
             if (frm.polizamanana(false))
             {
-                fechapagar = DateTime.Now.ToString("yyyyy-MM-dd HH:mm:ss");
+                fechapagar = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
                 this.pay.tipopago = formapago;
                 this.pay.idpropuesta = idpropuesta_;
@@ -779,6 +779,8 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.usuariopaga = MDIParent1.sesionUser;
                 this.pay.fecha_paga = fechapagar;
                 this.pay.version = pro.version ;
+                this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
+                this.pay.valor_pagado = Convert.ToDouble( valor_pagado );
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -788,6 +790,7 @@ namespace ProyectoBrokerDelPuerto
                         prefijo_,
                         formapago,
                         compformapago,
+                        fechapagar,
                         valor_pagado,
                         dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
@@ -828,6 +831,8 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.usuariopaga = MDIParent1.sesionUser;
                 this.pay.fecha_paga = fechapagar;
                 this.pay.version = pro.version;
+                this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
+                this.pay.valor_pagado = Convert.ToDouble(valor_pagado);
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -969,5 +974,8 @@ class paypro
     public string codempresa { get; set; }
     public string api_token { get; set; }
     public string rolpuntodeventa { get; set; }
+    public string fecha_comprobante { get; set; }
+    public double valor_pagado { get; set; }
+    public int imputacion { get; set; }
     public int version { get; set; }
 }

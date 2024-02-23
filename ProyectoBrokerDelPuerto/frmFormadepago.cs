@@ -74,7 +74,7 @@ namespace ProyectoBrokerDelPuerto
                     decimal valorpoliza = Convert.ToDecimal(ValorPoliza_txt.Text);
                     if (valorpoliza > valorpagado)
                         error += "\nEl valor pagado no es igual al valor de la póliza";
-                    else
+                    else if(valorpoliza < valorpagado)
                     {
                         if (MessageBox.Show("El valor del comprobante es mayor a la póliza, ¿desea continuar?", "Valor pago comprobante", MessageBoxButtons.YesNo) == DialogResult.No)
                         {
