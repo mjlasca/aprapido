@@ -55,6 +55,8 @@
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.suma_btn = new System.Windows.Forms.Button();
+            this.suma_lbl = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -79,7 +81,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(32, 88);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(906, 364);
+            this.dataGridView1.Size = new System.Drawing.Size(912, 364);
             this.dataGridView1.TabIndex = 0;
             // 
             // id
@@ -208,7 +210,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(660, 59);
+            this.button1.Location = new System.Drawing.Point(650, 58);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 9;
@@ -218,9 +220,9 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(779, 59);
+            this.button2.Location = new System.Drawing.Point(753, 58);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(61, 23);
             this.button2.TabIndex = 10;
             this.button2.Text = "Imputar";
             this.button2.UseVisualStyleBackColor = true;
@@ -228,9 +230,9 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(863, 59);
+            this.button3.Location = new System.Drawing.Point(885, 58);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(59, 23);
             this.button3.TabIndex = 11;
             this.button3.Text = "Exportar";
             this.button3.UseVisualStyleBackColor = true;
@@ -290,11 +292,31 @@
             this.comboBox2.Size = new System.Drawing.Size(92, 21);
             this.comboBox2.TabIndex = 15;
             // 
+            // suma_btn
+            // 
+            this.suma_btn.Location = new System.Drawing.Point(820, 58);
+            this.suma_btn.Name = "suma_btn";
+            this.suma_btn.Size = new System.Drawing.Size(61, 23);
+            this.suma_btn.TabIndex = 17;
+            this.suma_btn.Text = "Sumar";
+            this.suma_btn.UseVisualStyleBackColor = true;
+            this.suma_btn.Click += new System.EventHandler(this.suma_btn_Click);
+            // 
+            // suma_lbl
+            // 
+            this.suma_lbl.AutoSize = true;
+            this.suma_lbl.Location = new System.Drawing.Point(649, 457);
+            this.suma_lbl.Name = "suma_lbl";
+            this.suma_lbl.Size = new System.Drawing.Size(0, 13);
+            this.suma_lbl.TabIndex = 18;
+            // 
             // frmImputaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 482);
+            this.Controls.Add(this.suma_lbl);
+            this.Controls.Add(this.suma_btn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.checkBox1);
@@ -349,5 +371,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn comprobante;
         private System.Windows.Forms.DataGridViewCheckBoxColumn imputado;
         private System.Windows.Forms.DataGridViewTextBoxColumn si;
+        private System.Windows.Forms.Button suma_btn;
+        private System.Windows.Forms.Label suma_lbl;
     }
 }

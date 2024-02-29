@@ -161,5 +161,20 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
         }
+
+        private void suma_btn_Click(object sender, EventArgs e)
+        {
+            suma_lbl.Text = "";
+            double suma_total = 0;
+            for (int i = 0; i < dataGridView1.Rows.Count; i++)
+            {
+                if (Convert.ToBoolean(dataGridView1.Rows[i].Cells["imputado"].Value))
+                {
+                    suma_total += dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["valor_comprobante"].Value) : 0;
+                }
+                
+            }
+            suma_lbl.Text = "Total valor pagado seleccionado " + suma_total.ToString("c");
+        }
     }
 }

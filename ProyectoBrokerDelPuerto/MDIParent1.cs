@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "6.0";
+        public static string versionsistema { get; set; } = "6.4";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "http://apibarrios.3enterprise.online"; //http://apibarrios.3enterprise.online
+        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //http://apibarrios.3enterprise.online
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -463,6 +463,7 @@ namespace ProyectoBrokerDelPuerto
             clasificaciones cla = new clasificaciones(true);
             arqueos arrq = new arqueos(true);
             AuditoriaBarrios aud = new AuditoriaBarrios(true);
+            configuraciones confiprosimport = new configuraciones(true);
         }
 
         private void faseCobranzas()
@@ -686,14 +687,17 @@ namespace ProyectoBrokerDelPuerto
 
                 if (dsAr.Tables[0].Rows[0]["allow"].ToString() == "1")
                 {
-                    arqueos ar = new arqueos();
-                    dsAr = ar.get_all_rendiciones(DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
-                    if (dsAr.Tables[0].Rows.Count > 0)
+                    Task.Run(() =>
                     {
-                        frmRendiciones frmred = new frmRendiciones();
-                        frmred.dateTimePicker1.Value = DateTime.Now.AddDays(-10);
-                        frmred.ShowDialog();
-                    }
+                        arqueos ar = new arqueos();
+                        dsAr = ar.get_all_rendiciones(DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
+                        if (dsAr.Tables[0].Rows.Count > 0)
+                        {
+                            frmRendiciones frmred = new frmRendiciones();
+                            frmred.dateTimePicker1.Value = DateTime.Now.AddDays(-10);
+                            frmred.ShowDialog();
+                        }
+                    });
                 }
 
                 
@@ -1195,7 +1199,7 @@ namespace ProyectoBrokerDelPuerto
         {
             frmImputaciones frm = new frmImputaciones();
             frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();
+            frm.Show();
         }
     }
 }

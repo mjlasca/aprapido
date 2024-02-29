@@ -49,6 +49,11 @@ namespace ProyectoBrokerDelPuerto
                     per.save();
                 }
 
+                frmMigraciones frmmig = new frmMigraciones();
+                Task.Run(() => {
+                    return frmmig.exportarPerfiles();
+                });
+
                 this.llenarCombo();
 
                 comboBox1.Text = nombrePerfil;

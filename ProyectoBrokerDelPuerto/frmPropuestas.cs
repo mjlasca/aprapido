@@ -270,8 +270,12 @@ namespace ProyectoBrokerDelPuerto
 
             dataGridView1.Rows.Clear();
 
-            frmListadoVencimiento frm = new frmListadoVencimiento();
-            frm.ShowDialog();
+            Task.Run(() => {
+                frmListadoVencimiento frm = new frmListadoVencimiento();
+                frm.ShowDialog();
+            });
+
+            
 
             fec1.Value = fec1.Value.AddDays(-1);
             this.busqueda_grid();
@@ -795,7 +799,8 @@ namespace ProyectoBrokerDelPuerto
                         dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
 
-                    frmpaga.processImage();
+                    if(frmpaga.ruta != "")
+                        frmpaga.processImage();
 
                     MessageBox.Show("El pago se ha hecho con éxito");
                 }
@@ -847,7 +852,8 @@ namespace ProyectoBrokerDelPuerto
                         dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
 
-                    frmpaga.processImage();
+                    if (frmpaga.ruta != "")
+                        frmpaga.processImage();
                     MessageBox.Show("El pago se ha hecho con éxito");
                 }
                 else

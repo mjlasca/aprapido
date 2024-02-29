@@ -86,7 +86,7 @@ namespace ProyectoBrokerDelPuerto
 
             this.addColumn();
             this.addIndex();
-            this.enviohechoFecha();
+            //this.enviohechoFecha();
         }
 
         private void transicion()
@@ -215,6 +215,38 @@ namespace ProyectoBrokerDelPuerto
                         con.query(sql1);
                     }
 
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'propuestas'  AND INDEX_NAME = 'idx.fecha_comprobante'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX `idx.fecha_comprobante` ON `propuestas` (`fecha_comprobante`);";
+                        con.query(sql1);
+                    }
+
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'propuestas'  AND INDEX_NAME = 'idx.imputacion'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX `idx.imputacion` ON `propuestas` (`imputacion`);";
+                        con.query(sql1);
+                    }
+
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'propuestas'  AND INDEX_NAME = 'idx.fecha_paga'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX `idx.fecha_paga` ON `propuestas` (`fecha_paga`);";
+                        con.query(sql1);
+                    }
+
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'propuestas'  AND INDEX_NAME = 'idx.formadepago'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX `idx.formadepago` ON `propuestas` (`formadepago`);";
+                        con.query(sql1);
+                    }
+
 
                 }
                 catch
@@ -236,7 +268,11 @@ namespace ProyectoBrokerDelPuerto
                     sql += "CREATE INDEX  idx_codgrupo ON controlventas(codgrupo);";
                     con.query(sql);
                     con.query("CREATE INDEX `idx.idpropuesta` ON `propuestas` (`idpropuesta`);");
-                        con.query("CREATE INDEX `idx.prefijo` ON `propuestas` (`prefijo`);");
+                    con.query("CREATE INDEX `idx.prefijo` ON `propuestas` (`prefijo`);");
+                    con.query("CREATE INDEX `idx.imputacion` ON `propuestas` (`imputacion`);");
+                    con.query("CREATE INDEX `idx.fecha_paga` ON `propuestas` (`fecha_paga`);");
+                    con.query("CREATE INDEX `idx.formadepago` ON `propuestas` (`formadepago`);");
+                    con.query("CREATE INDEX `idx.fecha_comprobante` ON `propuestas` (`fecha_comprobante`);");
                 }
                 catch
                 {
@@ -952,7 +988,7 @@ namespace ProyectoBrokerDelPuerto
                 "  INNER JOIN usuarios t3 ON " +
                 " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
                 + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" + coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
-                " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
+                " t2.nombres LIKE '" + coincidencia + "' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
@@ -2311,7 +2347,7 @@ namespace ProyectoBrokerDelPuerto
                 
 
             sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,DATE(ultmod) AS ultmod,valor_pagado,DATE(fecha_comprobante) AS fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
-                "  propuestas WHERE paga > 0 AND  valor_pagado > 0 "+filter+"  order by fecha_paga DESC";
+                "  propuestas WHERE paga > 0 AND  formadepago = 'CREDITO' AND tipopago != 'EFECTIVO' " + filter+"  order by fecha_paga DESC";
 
             cons = con.query(sql);
             return cons;

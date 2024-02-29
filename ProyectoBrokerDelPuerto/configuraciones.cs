@@ -14,9 +14,10 @@ namespace ProyectoBrokerDelPuerto
         public string id, dato ="prosimport", valor = "", detail= "";
         conexion con = new conexion();
 
-        public configuraciones()
+        public configuraciones(bool inst = false)
         {
-            this.install();
+            if(inst)
+                this.install();
         }
 
 

@@ -490,6 +490,47 @@ namespace ProyectoBrokerDelPuerto
             return false;
         }
 
+        public async Task<bool> exportarPerfiles()
+        {
+            this.confprosimport.valor = "1";
+            this.confprosimport.save();
+            //MDIParent1.prosimport = true;
+            this.datastar();
+
+            migraciones mig = new migraciones();
+            mig.tipo = "EXPORTACION";
+            mig.tabla = "perfiles";
+            string fecha = mig.get_ultimafecha().ToString("yyyy-MM-dd HH:mm:ss");
+            this.data.fechamigracion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.migrarPerfiles(fecha);
+            string jsonlistpropuestas = JsonConvert.SerializeObject(this.data);
+            bool res = await this.enviar_json(jsonlistpropuestas);
+            this.confprosimport.valor = "0";
+            this.confprosimport.save();
+            //MDIParent1.prosimport = false;
+            if (res)
+            {
+                try
+                {
+                    this.miPerfiles.save();
+                    perfiles perrr = new perfiles();
+                    perrr.envioHecho();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    logs log = new logs();
+                    log.coderror = "EXP103";
+                    log.mensaje = "ERROR al tratar de guardar migración de perfiles";
+                    log.save();
+                    return false;
+                }
+
+            }
+
+            return false;
+        }
+
         private async Task<bool> exportarData( migraciones mig, string fecha)
         {
 
@@ -1097,13 +1138,12 @@ namespace ProyectoBrokerDelPuerto
             mi.tipo = "EXPORTACION";
             mi.fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             mi.tabla = "perfiles";
-            if (!mi.exist())
-            {
+            
                 int cantregistros = 0;
                 string consecutivos = "";
 
                 perfiles per = new perfiles();
-                DataSet ds = per.get_all_fecha(fecha);
+                DataSet ds = per.getEnvioNube();
 
                 textBox1.Text += "EXPORTACIÓN PERFILES / " + ds.Tables[0].Rows.Count + " Registros " + Environment.NewLine;
                 if (ds.Tables[0].Rows.Count > 0)
@@ -1152,14 +1192,6 @@ namespace ProyectoBrokerDelPuerto
                 miPerfiles = mi;
 
                 textBox1.Text += Environment.NewLine + Environment.NewLine;
-
-            }
-            else
-            {
-                MessageBox.Show("La migración de perfiles del " + fecha + " ya se ha hecho");
-            }
-
-
 
 
         }

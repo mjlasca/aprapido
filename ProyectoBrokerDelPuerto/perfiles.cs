@@ -10,8 +10,8 @@ namespace ProyectoBrokerDelPuerto
     class perfiles
     {
         string sql = "";
-        string columns = "nombre,modulo,access,vista,edicion,eliminar,exportar,codempresa";
-        public string reg = "", nombre = "", modulo = "", vista = "0", edicion = "0", eliminar = "0",exportar = "0", codempresa = "";
+        string columns = "nombre,modulo,access,vista,edicion,eliminar,exportar,codempresa,envionube";
+        public string reg = "", nombre = "", modulo = "", vista = "0", edicion = "0", eliminar = "0",exportar = "0", codempresa = "", envionube = "0";
         public int access = 0;
         conexion con = new conexion();
 
@@ -713,6 +713,8 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE perfiles ADD COLUMN exportar int(1) DEFAULT 0;");
                     if (con.query("SHOW COLUMNS FROM perfiles WHERE Field = 'codempresa' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE perfiles ADD COLUMN codempresa VARCHAR(150) NULL;");
+                    if (con.query("SHOW COLUMNS FROM perfiles WHERE Field = 'envionube' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE perfiles ADD COLUMN envionube INT(1) DEFAULT 0;");
 
                 }
                 catch
@@ -727,6 +729,7 @@ namespace ProyectoBrokerDelPuerto
                 con.query("ALTER TABLE perfiles ADD COLUMN eliminar int(1) NULL;");
                 con.query("ALTER TABLE perfiles ADD COLUMN exportar int(1) DEFAULT 0;");
                 con.query("ALTER TABLE perfiles ADD COLUMN codempresa VARCHAR(150) NULL;");
+                con.query("ALTER TABLE perfiles ADD COLUMN envionube INT(1) DEFAULT 0;");
             }
 
         }
@@ -802,6 +805,23 @@ namespace ProyectoBrokerDelPuerto
             return ds;
         }
 
+        public DataSet getEnvioNube()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM perfiles WHERE envionube = 0 ";
+            try
+            {
+                ds = con.query(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar coberturas");
+            }
+
+            return ds;
+        }
+
 
 
         public bool save()
@@ -820,7 +840,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.edicion + "'," +
                         "'" + this.eliminar + "'," +
                         "'" + this.exportar + "'," +
-                        "'" + MDIParent1.codempresa + "'" +
+                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.envionube + "'" +
                         ") ;";
 
                         
@@ -889,6 +910,11 @@ namespace ProyectoBrokerDelPuerto
         public void save_concat_sql(string query_)
         {
             con.query("INSERT INTO perfiles (" + this.columns + ") VALUES "+query_);
+        }
+
+        public void envioHecho()
+        {
+            con.query("UPDATE perfiles SET envionube = 1 WHERE envionube = 0 ");
         }
 
 

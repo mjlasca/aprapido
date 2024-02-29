@@ -15,7 +15,7 @@ namespace ProyectoBrokerDelPuerto
     {
         public decimal valorAPAgar = 0;
         public DataSet ds = new DataSet();
-        private string ruta = "";
+        public string ruta = "";
         public frmFormadepago()
         {
             InitializeComponent();
@@ -23,6 +23,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            imageProcess.Enabled = true;
             label2.Visible = false;
             textBox1.Visible = false;
 
@@ -30,6 +31,11 @@ namespace ProyectoBrokerDelPuerto
             {
                 label2.Visible = true;
                 textBox1.Visible = true;
+            }
+            if(comboBox1.Text == "EFECTIVO")
+            {
+                imageProcess.Enabled = false;
+                this.ruta = "";
             }
             
         }
@@ -88,10 +94,15 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
 
-            
+            if (comboBox1.Text != "EFECTIVO" && this.ruta == "")
+            {
+                error += "\nDebe cargar la imagen del comprobante";
+            }
 
 
-            return error;
+
+
+                return error;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -159,19 +170,21 @@ namespace ProyectoBrokerDelPuerto
 
         public void processImage()
         {
-            
-            string carpetaDestino = @textBox3.Text + @"\" + DateTime.Now.ToString("dd-MM-yyyy");
-
-            // Crear la carpeta si no existe
-            if (!Directory.Exists(carpetaDestino))
+            if(this.ruta != "")
             {
-                Directory.CreateDirectory(carpetaDestino);
-            }
-            string extension = Path.GetExtension(this.ruta);
-            string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extension); // Combinar la carpeta de destino con el nombre del archivo
+                string carpetaDestino = @textBox3.Text + @"\" + DateTime.Now.ToString("dd-MM-yyyy");
 
-            // Copiar el archivo
-            File.Copy(this.ruta, rutaDestino, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+                // Crear la carpeta si no existe
+                if (!Directory.Exists(carpetaDestino))
+                {
+                    Directory.CreateDirectory(carpetaDestino);
+                }
+                string extension = Path.GetExtension(this.ruta);
+                string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extension); // Combinar la carpeta de destino con el nombre del archivo
+
+                // Copiar el archivo
+                File.Copy(this.ruta, rutaDestino, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+            }
         }
     }
 }
