@@ -156,7 +156,17 @@ namespace ProyectoBrokerDelPuerto
             {
                 WebClient mywebClient = new WebClient();
                 mywebClient.DownloadFile(MDIParent1.apiuri+"/ProyectoBrokerDelPuerto.exe", "ProyectoBrokerDelPuerto_" + this.versOnline + ".exe");
-                mywebClient.DownloadFile(MDIParent1.apiuri+"/logoap.ico", "logoap.ico");
+                mywebClient.DownloadFile(MDIParent1.apiuri+"/filelist.txt", "filelist.txt");
+                string fileListContent = System.IO.File.ReadAllText("filelist.txt");
+                    
+                string[] fileUrls = fileListContent.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (string fileUrl in fileUrls)
+                {
+                    mywebClient.DownloadFile(MDIParent1.apiuri + fileUrl, fileUrl.Replace("/downloadfiles/", ""));
+                    Console.WriteLine($"Descargado: {MDIParent1.apiuri + fileUrl} -> {fileUrl.Replace("/downloadfiles/", "")}");
+                }
+
                 return true;
             }catch(Exception ex)
             {

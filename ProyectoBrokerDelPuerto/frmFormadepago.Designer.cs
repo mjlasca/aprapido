@@ -123,7 +123,7 @@
             this.ValorPagado_txt.Location = new System.Drawing.Point(12, 154);
             this.ValorPagado_txt.Name = "ValorPagado_txt";
             this.ValorPagado_txt.Size = new System.Drawing.Size(128, 20);
-            this.ValorPagado_txt.TabIndex = 7;
+            this.ValorPagado_txt.TabIndex = 5;
             // 
             // label4
             // 
@@ -147,9 +147,11 @@
             // 
             this.fecha_comprobante.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.fecha_comprobante.Location = new System.Drawing.Point(12, 194);
+            this.fecha_comprobante.MaxDate = new System.DateTime(3000, 2, 20, 0, 0, 0, 0);
             this.fecha_comprobante.Name = "fecha_comprobante";
             this.fecha_comprobante.Size = new System.Drawing.Size(128, 20);
             this.fecha_comprobante.TabIndex = 11;
+            this.fecha_comprobante.Value = new System.DateTime(2024, 2, 29, 0, 0, 0, 0);
             // 
             // ValorPoliza_txt
             // 

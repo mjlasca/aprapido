@@ -42,17 +42,22 @@ namespace ProyectoBrokerDelPuerto
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string val = this.validation();
-            if (val == "valormayor")
-                return;
-            if ( val == "")
-            {
-                this.DialogResult = DialogResult.OK;
-            }
-            else
-            {
-                MessageBox.Show("Hay errores de validación: " + val, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            
+                string val = this.validation();
+                if (val == "valormayor")
+                    return;
+                if (val == "")
+                {
+                    if (MessageBox.Show("¿Está seguro(a) que la fecha es " + fecha_comprobante.Value.ToString("dd/MM/yyyy") + " ?", "Confirmar pago", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        this.DialogResult = DialogResult.OK;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Hay errores de validación: " + val, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            
         }
 
         public string validation()
@@ -99,10 +104,12 @@ namespace ProyectoBrokerDelPuerto
                 error += "\nDebe cargar la imagen del comprobante";
             }
 
+            if(DateTime.Now.Date.CompareTo(fecha_comprobante.Value.Date) < 0)
+            {
+                error += "\nLa fecha no puede ser mayor a la actual";
+            }
 
-
-
-                return error;
+            return error;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -172,7 +179,7 @@ namespace ProyectoBrokerDelPuerto
         {
             if(this.ruta != "")
             {
-                string carpetaDestino = @textBox3.Text + @"\" + DateTime.Now.ToString("dd-MM-yyyy");
+                string carpetaDestino = @textBox3.Text + @"\" + fecha_comprobante.Value.ToString("dd-MM-yyyy");
 
                 // Crear la carpeta si no existe
                 if (!Directory.Exists(carpetaDestino))

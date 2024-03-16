@@ -322,7 +322,7 @@ namespace ProyectoBrokerDelPuerto
                 parCobertura.Alignment = Element.ALIGN_LEFT;
                 doc.Add(parCobertura);
 
-                parr = "(*) Se aclara que son asegurables personas de 17 a 65 años inclusive.\n" +
+                parr = "(*) Se aclara que son asegurables personas de 14 a 70 años inclusive.\n" +
                     "(**) Se deja constancia que se dará cobertura a la actividad declarada hasta 15 metros de altura.se deberá cumplir además con el resto de condiciones de asegurabilidad de Sancor Coop.de Seguros Ltda.\n" +
                     "Coberturas y Capitales Asegurados\n" +
                     "Hechos ocurridos a causa de las actividades y/o tareas declaradas en la correspondiente solicitud, exclusivamente cuando las mismas sean desempeñadas por el asegurado o los asegurados en los Barrios Privados declarados, incluido los trayectos para trasladarse de un barrio Privado a otro y/o in itinere.-\n" +
