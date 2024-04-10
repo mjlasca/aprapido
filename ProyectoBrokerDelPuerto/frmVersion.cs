@@ -170,7 +170,7 @@ namespace ProyectoBrokerDelPuerto
                 return true;
             }catch(Exception ex)
             {
-                MessageBox.Show("Hay un error al descargar el archivo de actualización \n"+ex);
+                Console.WriteLine("Hay un error al descargar el archivo de actualización \n"+ex);
                 return false;
             }
         }

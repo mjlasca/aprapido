@@ -164,6 +164,7 @@
     <Compile Include="arqueos.cs" />
     <Compile Include="barrios.cs" />
     <Compile Include="barrios_propuesta.cs" />
+    <Compile Include="CacheManager.cs" />
     <Compile Include="clasificaciones.cs" />
     <Compile Include="clientes.cs" />
     <Compile Include="coberturas.cs" />

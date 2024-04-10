@@ -265,14 +265,13 @@ namespace ProyectoBrokerDelPuerto
                 empleado_txt.Items.Add(dsu.Tables[0].Rows[i]["nombre"].ToString());
             }
 
-            propuestas pro = new propuestas();
-            pro.no_vigente_all(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-
             dataGridView1.Rows.Clear();
 
             Task.Run(() => {
                 frmListadoVencimiento frm = new frmListadoVencimiento();
                 frm.ShowDialog();
+                propuestas pro = new propuestas();
+                pro.no_vigente_all(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             });
 
             
@@ -724,7 +723,7 @@ namespace ProyectoBrokerDelPuerto
         {
 
             bool res = await this.pagopropuesta_(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(),dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString());
-            this.busqueda_grid();
+            dataGridView1.CurrentRow.Cells["paga"].Value = "PAGADO";
         }
 
         public async Task<bool> pagopropuesta_(string prefijo_ , string idpropuesta_)

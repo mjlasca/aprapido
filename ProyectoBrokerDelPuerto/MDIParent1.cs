@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "7.0";
+        public static string versionsistema { get; set; } = "7.2";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "http://apibarrios.3enterprise.online"; //http://apibarrios.3enterprise.online
+        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //http://apibarrios.3enterprise.online
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -526,7 +526,7 @@ namespace ProyectoBrokerDelPuerto
             /*FIX*/
             try
             {
-                string sqlfix = "UPDATE propuestas SET organizador = '150430' WHERE organizador = '510430' AND  ultmod > '2023-02-27'";
+                string sqlfix = "UPDATE propuestas SET organizador = '150430' WHERE organizador = '510430' AND  ultmod > '"+DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd")+"'";
                 conexion con = new conexion();
                 con.query(sqlfix);
             }
@@ -653,8 +653,12 @@ namespace ProyectoBrokerDelPuerto
                     this.establecerPerfilUsuario(sesionUser);
             }
 
-            //import parameters
-            this.importCloudParametersLong(false);
+            gruposbarrios gb = new gruposbarrios();
+            gb.importGetApi();
+            this.importCloudParametersLong();
+            
+
+
             /*Automatization of migration */
             this.automatizationMigrate();
 
@@ -674,10 +678,6 @@ namespace ProyectoBrokerDelPuerto
                     if(dsAr.Tables[0].Rows[0]["adminempresa"].ToString() == "1")
                         adminsitio = true;
                 }
-                
-                timer1.Start();
-                timer_parameters.Start();
-
 
                 string organizador_user = dsAr.Tables[0].Rows[0]["codorganizador"] != null ? dsAr.Tables[0].Rows[0]["codorganizador"].ToString() : conf.get("ORGANIZADOR").Tables[0].Rows[0]["nombre"].ToString();
 
@@ -700,7 +700,9 @@ namespace ProyectoBrokerDelPuerto
                     });
                 }
 
-                
+                timer1.Start();
+                timer_parameters.Start();
+
 
 
             }
@@ -716,8 +718,7 @@ namespace ProyectoBrokerDelPuerto
                 usu.updateCreateVersion_import();
                 if (allImport)
                 {
-                    gruposbarrios gb = new gruposbarrios();
-                    gb.importGetApi();
+                    
                     coberturas cob = new coberturas();
                     cob.importGetApi();
                     actividades act = new actividades();

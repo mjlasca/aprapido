@@ -94,27 +94,29 @@ namespace ProyectoBrokerDelPuerto
 
             DateTime fec1 = dateTimePicker1.Value;
             DateTime fec2 = dateTimePicker2.Value;
+
             
-            
-            while (DateTime.Compare(fec1.Date, fec2.Date) <= 0)
+            /*while (DateTime.Compare(fec1.Date, fec2.Date) <= 0)
             {
                 if(DateTime.Compare(fec1.Date, Convert.ToDateTime("2021-03-20")) < 0)
                 {
                     ar.eliminarblancos(fec1.ToString("yyyy-MM-dd"));
                 }
                 fec1 = fec1.AddDays(1);
-            }
+            }*/
 
             DataSet ds;
 
             string todos_ = comboBox1.Text;
             if (todos_ == "Todo")
                 todos_ = "";
-
+            
             ds = ar.get_all_busqueda(textBox1.Text, dateTimePicker1.Value.ToString("yyyy-MM-dd"), dateTimePicker2.Value.ToString("yyyy-MM-dd"), todos_);
             dataGridView1.Rows.Clear();
+            
             if (ds.Tables.Count > 0)
             {
+                
                 double totalpolizas = 0;
                 double totaltodo = 0;
                 double totalcontado = 0;

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -261,11 +263,16 @@ namespace ProyectoBrokerDelPuerto
 
 
 
-        public DataSet get_all_busqueda(string busqueda, string fecha1, string fecha2, string cierre = "")
+        public DataSet get_all_busqueda(string busqueda, string fecha1, string fecha2, string cierre = " ")
         {
             DataSet ds = new DataSet();
 
             
+            object cacheGet = CacheManager.GetFromCache(busqueda + fecha1 + fecha2);
+            if(cacheGet != null)
+            {
+                //return (DataSet)cacheGet;
+            }
 
             if(cierre == "Sin Cerrar")
             {
@@ -276,9 +283,10 @@ namespace ProyectoBrokerDelPuerto
                 cierre = " AND ( t1.supervisor != '' OR t1.supervisor IS NOT NULL ) ";
             }
 
-            if (MDIParent1.baseDatos == "MySql")
+            /*if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "SELECT *, ( SELECT COUNT(1) FROM propuestas WHERE codestado >  '0' AND DATE(ultmod) = t1.fechadia AND user_edit = t1.usuario ) as cantpoli," +
+                sql = "SELECT t1.id,t1.fechadia,t1.nombre,t1.usuario,t1.valormanual,t1.cuadredescuadre,t1.nombresupervisor,t1.observaciones,"+
+                    "( SELECT COUNT(1) FROM propuestas WHERE codestado >  '0' AND DATE(ultmod) = t1.fechadia AND user_edit = t1.usuario ) as cantpoli," +
                 "( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0' AND ( DATE(ultmod) = t1.fechadia AND user_edit = t1.usuario AND formadepago = 'CONTADO') ) as contado, " +
                 "( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0'   AND DATE(ultmod) = t1.fechadia AND user_edit = t1.usuario  AND formadepago = 'CREDITO'  ) as credito," +
                 " ( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0' AND DATE(ultmod) = t1.fechadia AND user_edit = t1.usuario ) as total,  " +
@@ -286,7 +294,9 @@ namespace ProyectoBrokerDelPuerto
                 " ( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0' AND ( DATE(fecha_paga) = t1.fechadia AND usuariopaga = t1.usuario AND paga = 1 AND formadepago = 'CREDITO' AND tipopago != 'EFECTIVO') ) as pagoscreditos_difefectivo,  " +
                 " ( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0' AND ( DATE(fecha_paga) = t1.fechadia AND usuariopaga = t1.usuario AND paga = 1) ) as realcaja " +
                 " FROM arqueos t1 WHERE t1.fechadia  BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t1.codestado = 1 " +
-                " AND ( id = '" + busqueda + "' OR nombre LIKE ('%" + busqueda + "%') OR nombresupervisor LIKE ('%" + busqueda + "%') ) " + cierre + " ORDER BY t1.id DESC ";
+                " AND ( t1.id = '" + busqueda + "' OR t1.nombre LIKE ('%" + busqueda + "%') OR t1.nombresupervisor LIKE ('%" + busqueda + "%') ) " + cierre + " ORDER BY t1.id DESC ";
+
+                
             }
             else
             {
@@ -299,16 +309,67 @@ namespace ProyectoBrokerDelPuerto
                 " ( SELECT SUM(premio_total) FROM propuestas WHERE codestado >  '0' AND ( DATE(fecha_paga) = t1.fechadia AND usuariopaga = t1.usuario AND paga = 1) ) as realcaja " +
                 " FROM arqueos t1 WHERE t1.fechadia  BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t1.codestado = 1 "+
                 " AND ( id = '" + busqueda + "' OR nombre LIKE ('%" + busqueda + "%') OR nombresupervisor LIKE ('%" + busqueda + "%') ) " + cierre + " ORDER BY t1.id DESC ";
-            }
+            }*/
 
-            Console.WriteLine("\n\nSQL ARQUEO "+sql);
+            SqlCommand cmd = new SqlCommand();
+            cmd.CommandText = @"
+                                   SELECT t1.id,t1.fechadia,t1.nombre,t1.usuario,t1.valormanual,t1.cuadredescuadre,t1.nombresupervisor,t1.observaciones, 
+                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario THEN 1 ELSE 0 END) AS cantpoli,
+                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CONTADO' THEN p1.premio_total ELSE 0 END) AS contado,
+                                           SUM(CASE WHEN  DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CREDITO' THEN p1.premio_total ELSE 0 END) AS credito,
+                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario THEN p1.premio_total ELSE 0 END) AS total,
+                                           SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND p1.paga = 1 AND p1.formadepago = 'CREDITO' THEN p1.premio_total ELSE 0 END) AS pagoscreditos,
+                                           SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND  p1.paga = 1 AND p1.formadepago = 'CREDITO' AND p1.tipopago != 'EFECTIVO' THEN p1.premio_total ELSE 0 END) AS pagoscreditos_difefectivo,
+                                           SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND p1.paga = 1 THEN p1.premio_total ELSE 0 END) AS realcaja
+                                    FROM arqueos t1
+                                    LEFT JOIN propuestas p1 ON p1.id > 0
+                                    WHERE t1.fechadia BETWEEN '@fecha1' AND '@fecha2'
+                                      AND t1.codestado = 1
+                                      AND p1.codestado > 0
+                                      AND ( t1.id = '%@busqueda%' OR t1.nombre LIKE '%@busqueda%' OR t1.nombresupervisor LIKE '%@busqueda%' )
+                                    @cierre  
+                                    GROUP BY t1.id
+                                    ORDER BY t1.id DESC;
+                                ";
+
+            // Añadir parámetros al comando SQL
+            cmd.Parameters.AddWithValue("@fecha1", fecha1);
+            cmd.Parameters.AddWithValue("@fecha2", fecha2);
+            cmd.Parameters.AddWithValue("@busqueda", busqueda);
+            cmd.Parameters.AddWithValue("@cierre", cierre);
+            string consultaConParametros = cmd.CommandText;
+            foreach (SqlParameter param in cmd.Parameters)
+            {
+                consultaConParametros = consultaConParametros.Replace(param.ParameterName, param.Value.ToString());
+            }
+            Console.WriteLine(sql);
+            // Imprimir la consulta SQL con los parámetros incluidos
+            Console.WriteLine(consultaConParametros);
+            sql = consultaConParametros;
+
+            Console.WriteLine(sql);
+            
             try
             {
                 ds = con.query(sql);
+                if(fecha1 != "")
+                {
+                    DateTime fec1 = Convert.ToDateTime(fecha1);
+                    if (DateTime.Compare(fec1.Date, DateTime.Now.AddDays(-2)) < 0)
+                    {
+                        CacheManager.AddToCache(
+                            busqueda + fecha1 + fecha2,
+                            ds,
+                            new TimeSpan(1, 1, 1)
+                        );
+                    }
+                }
+                
+                
             }
             catch (Exception ex)
             {
-                Console.Write("ERROR al consultar arqueos");
+                Console.Write("ERROR al consultar arqueos "+ex.Message);
             }
 
             return ds;

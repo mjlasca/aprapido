@@ -16,6 +16,7 @@ namespace ProyectoBrokerDelPuerto
         public decimal valorAPAgar = 0;
         public DataSet ds = new DataSet();
         public string ruta = "";
+        public bool comprobanteExistente = false;
         public frmFormadepago()
         {
             InitializeComponent();
@@ -46,8 +47,14 @@ namespace ProyectoBrokerDelPuerto
                 string val = this.validation();
                 if (val == "valormayor")
                     return;
+
+                
+
+                
                 if (val == "")
                 {
+                   
+
                     if (MessageBox.Show("¿Está seguro(a) que la fecha es " + fecha_comprobante.Value.ToString("dd/MM/yyyy") + " ?", "Confirmar pago", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         this.DialogResult = DialogResult.OK;
@@ -74,7 +81,25 @@ namespace ProyectoBrokerDelPuerto
                         error += "\nHa seleccionado otra forma de pago pero no se ha especificado";
                 }
             }
-            if(ValorPagado_txt.Text == "")
+
+            if(comboBox1.Text != "EFECTIVO" && textBox2.Text == "")
+            {
+                error += "\nEl número de comprobante es obligatorio";
+            }else
+            {
+                propuestas pr = new propuestas();
+                
+                if (comboBox1.Text != "EFECTIVO" && pr.getNumComprobante(textBox2.Text) && MessageBox.Show("¿El número de comprobante ya fue ingresado anteriormente, ¿Desea continuar?" , "Comprobante existente", MessageBoxButtons.YesNo) == DialogResult.No)
+                {
+                    error += "\nEl número de comprobante ya fue ingresado";
+                }else
+                {
+                    this.comprobanteExistente = true;
+                }
+            }
+
+
+            if (ValorPagado_txt.Text == "")
             {
                 error += "\nEl valor pagado no puede estar vacío";
             }else
@@ -108,6 +133,8 @@ namespace ProyectoBrokerDelPuerto
             {
                 error += "\nLa fecha no puede ser mayor a la actual";
             }
+
+            
 
             return error;
         }
@@ -151,6 +178,7 @@ namespace ProyectoBrokerDelPuerto
             configuraciones confiprosimport = new configuraciones();
             confiprosimport.get("ruta_drive");
             textBox3.Text = confiprosimport.detail.Replace("-",@"\");
+            fecha_comprobante.Value = DateTime.Now;
         }
 
         private void imageProcess_Click(object sender, EventArgs e)
@@ -186,11 +214,31 @@ namespace ProyectoBrokerDelPuerto
                 {
                     Directory.CreateDirectory(carpetaDestino);
                 }
-                string extension = Path.GetExtension(this.ruta);
-                string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extension); // Combinar la carpeta de destino con el nombre del archivo
+                
 
-                // Copiar el archivo
-                File.Copy(this.ruta, rutaDestino, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+                string extension = Path.GetExtension(this.ruta);
+                string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + textBox2.Text + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() ); // Combinar la carpeta de destino con el nombre del archivo
+
+
+                string[] archivos = Directory.GetFiles(carpetaDestino, "*-" + textBox2.Text + "-*");
+
+                if ( textBox2.Text != "" && archivos.Length > 0)
+                {
+                    // Cambiar el nombre de los archivos encontrados
+                    foreach (string archivo in archivos)
+                    {
+                        string nombreArchivoSinExtension = Path.GetFileNameWithoutExtension(archivo);
+                        string extensionArchivo = Path.GetExtension(archivo);
+                        string nuevoNombre = nombreArchivoSinExtension + "_" +  ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extensionArchivo;
+                        string nuevoNombreArchivo = Path.Combine(Path.GetDirectoryName(archivo), nuevoNombre);
+                        File.Move(archivo, nuevoNombreArchivo);
+                    }
+                }else
+                {
+                    // Copiar el archivo
+                    File.Copy(this.ruta, rutaDestino + extension, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+                }
+                
             }
         }
     }

@@ -546,11 +546,11 @@ namespace ProyectoBrokerDelPuerto
             if(codorganizador_ != "TODOS")
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE DATE(fecha_paga) = '" + fecha_ + "' AND codestado > 0 AND organizador = '"+codorganizador_+"'";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59' AND codestado > 0 AND organizador = '" + codorganizador_+"'";
             else
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE DATE(fecha_paga) = '" + fecha_ + "' AND codestado > 0 ";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59'  AND codestado > 0 ";
             try
             {
                 ds = con.query(sql);
@@ -2355,6 +2355,17 @@ namespace ProyectoBrokerDelPuerto
 
             cons = con.query(sql);
             return cons;
+        }
+
+        public bool getNumComprobante(string compformapago_)
+        {
+            sql = $"SELECT compformapago FROM propuestas WHERE compformapago = '{compformapago_}'";
+
+            DataSet ds = con.query(sql);
+            if (ds.Tables.Count < 1)
+                return false;
+
+            return true;
         }
         
     }

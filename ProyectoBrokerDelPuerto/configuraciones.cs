@@ -133,6 +133,7 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
+                Console.WriteLine("ERROR configuraciones "+ex.Message);
                 return false;
             }
 

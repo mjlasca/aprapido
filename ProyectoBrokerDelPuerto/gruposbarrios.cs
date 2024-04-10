@@ -138,7 +138,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT nombre FROM gruposbarrios WHERE codestado = '1' GROUP BY nombre ORDER BY nombre ASC ";
+            sql = "SELECT nombre FROM gruposbarrios WHERE codestado = '1' GROUP BY id ORDER BY nombre ASC ";
             try
             {
                 ds = con.query(sql);
@@ -155,7 +155,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT reg,id,nombre,idbarrio,TRIM(nombrebarrio) as nombrebarrio,ultmod FROM gruposbarrios WHERE nombre = '" + this.nombre+"' AND codestado = '1' ";
+            sql = "SELECT reg,id,nombre,idbarrio,TRIM(nombrebarrio) as nombrebarrio,ultmod FROM gruposbarrios WHERE nombre = '" + this.nombre+ "' AND codestado = '1' GROUP BY id,idbarrio  ORDER BY nombre ASC ";
             try
             {
                 ds = con.query(sql);
@@ -174,7 +174,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM gruposbarrios  WHERE envionube > '0' ";
+            sql = "SELECT * FROM gruposbarrios  WHERE envionube > '0' GROUP BY id,idbarrio  ORDER BY nombre ASC";
             try
             {
                 ds = con.query(sql);
@@ -205,8 +205,8 @@ namespace ProyectoBrokerDelPuerto
                     "'" + this.idbarrio + "'," +
                     "'" + this.nombrebarrio + "'," +
                     "'" + this.ultmod + "'," +
-                    "'0'" +
-                    "'"+ this.codestado + "'," +
+                    "'1'," +
+                    "'"+ this.codestado + "'" +
                     ") ";
 
 
@@ -235,8 +235,8 @@ namespace ProyectoBrokerDelPuerto
                     "'" + this.envionube + "'," +
                     "'" + this.codestado + "'" +
                     ") ";
-               
 
+                Console.WriteLine(sql);
                 con.query(sql);
                 return true;
 
@@ -248,39 +248,68 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
+        public bool get_id_idbarrio()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT id FROM gruposbarrios WHERE id = '" + this.id + "' AND idbarrio = '"+this.idbarrio+"' ";
+            try
+            {
+                ds = con.query(sql);
+                if(ds.Tables[0].Rows.Count >0)
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar gruposbarrios " + ex.Message);
+            }
+
+            return false;
+        }
+
         public async void importGetApi()
         {
             ApiGrupoBarrios ap = new ApiGrupoBarrios();
             List<gruposbarrios> ls = await ap.Get();
             validaciones val = new validaciones();
-            if (val.dataComparacion("api_gruposbarrios", ls))
+            if (ls.Count > 0)
             {
-                var concat_ = new System.Text.StringBuilder();
-                List<string> noms = new List<string>();
-
-                if (ls.Count > 0)
-                {
+                configuraciones config_grb = new configuraciones();
+                config_grb = config_grb.get("grupos_iguales");
+                
+                if (config_grb.id == null || config_grb.id == "") {
+                    //delete all groups
                     gruposbarrios gb = new gruposbarrios();
-                    gb.delete_all();
-                    foreach (gruposbarrios obj in ls)
+                    gb.delete_all_f();
+
+                    config_grb = new configuraciones();
+                    config_grb.dato = "grupos_iguales";
+                    config_grb.valor = "1";
+                    config_grb.save();
+                }
+                var concat_ = new System.Text.StringBuilder();
+                foreach (gruposbarrios obj in ls)
+                {
+                    if(obj.get_id_idbarrio() == false)
                     {
-                        if (obj.idbarrio != null && noms.IndexOf(obj.nombre.Trim().Trim().Trim() + obj.idbarrio.Trim()) < 0)
-                        {
-                            /*if (concat_.ToString() != "")
-                                concat_.AppendLine(", " + obj.concat_sql());
-                            else
-                                concat_.AppendLine(obj.concat_sql());*/
-                            obj.codestado = "1";
-                            obj.envionube = "0";
-                            obj.save();
-
-                            noms.Add(obj.nombre.Trim().Trim().Trim().Trim() + obj.idbarrio);
-                        }
-
+                        //obj.save();
+                        if (concat_.ToString() != "")
+                            concat_.AppendLine(", " + obj.concat_sql());
+                        else
+                            concat_.AppendLine(obj.concat_sql());
                     }
                 }
 
-                val.createData0("api_gruposbarrios");
+                if(concat_.ToString() != "")
+                {
+                    gruposbarrios gb = new gruposbarrios();
+                    gb = new gruposbarrios();
+                    gb.save_concat(concat_.ToString());
+                }
+
+                
             }
 
 
@@ -292,6 +321,11 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
+        public void delete_all_f()
+        {
+            sql = "DELETE FROM gruposbarrios WHERE id > 0 ";
+            con.query(sql);
+        }
         public void delete_all()
         {
             sql = "DELETE FROM gruposbarrios WHERE id > 0 AND envionube < 1 ";
