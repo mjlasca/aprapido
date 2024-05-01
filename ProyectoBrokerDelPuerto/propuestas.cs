@@ -2295,8 +2295,15 @@ namespace ProyectoBrokerDelPuerto
             {
                 string parameterNames = string.Join(",", listId);
                 string sql = "UPDATE propuestas SET envionube = 0, version = (version + 1), imputacion = 1 WHERE id IN (" + parameterNames + ")";
-
-                con.query(sql);
+                try
+                {
+                    con.query(sql);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error {ex.Message}");
+                }
+                
             }
             
         }
@@ -2339,9 +2346,9 @@ namespace ProyectoBrokerDelPuerto
             {
                 
                 if (tipo_fecha == "Comprobante")
-                    filter += " AND  DATE(fecha_comprobante) >= DATE('" + fecha1.Date.ToString("yyyy-MM-dd")+ "') AND DATE(fecha_comprobante) <= DATE('" + fecha2.Date.ToString("yyyy-MM-dd") + "') ";
+                    filter += " AND  fecha_comprobante >= '" + fecha1.Date.ToString("yyyy-MM-dd")+ "' AND fecha_comprobante <= '" + fecha2.Date.ToString("yyyy-MM-dd") + "' ";
                 else
-                    filter += " AND  DATE(ultmod) >= DATE('" + fecha1.Date.ToString("yyyy-MM-dd") + "') AND DATE(ultmod) <= DATE('" + fecha2.Date.ToString("yyyy-MM-dd") + "') ";
+                    filter += " AND  ultmod >= '" + fecha1.Date.ToString("yyyy-MM-dd 00:00:00") + "' AND ultmod <= '" + fecha2.Date.ToString("yyyy-MM-dd 23:59:59") + "' ";
             }
 
             if(imputacion_ > -1)
@@ -2350,22 +2357,24 @@ namespace ProyectoBrokerDelPuerto
             }
                 
 
-            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,DATE(ultmod) AS ultmod,valor_pagado,DATE(fecha_comprobante) AS fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
+            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,DATE(ultmod) AS ultmod,codestado,valor_pagado,DATE(fecha_comprobante) AS fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
                 "  propuestas WHERE paga > 0 AND  formadepago = 'CREDITO' AND tipopago != 'EFECTIVO' " + filter+"  order by fecha_paga DESC";
 
             cons = con.query(sql);
             return cons;
         }
 
-        public bool getNumComprobante(string compformapago_)
+        public string getNumComprobante(string compformapago_)
         {
-            sql = $"SELECT compformapago FROM propuestas WHERE compformapago = '{compformapago_}'";
-
+            sql = $"SELECT compformapago,prefijo,idpropuesta FROM propuestas WHERE compformapago = '{compformapago_}' OR compformapago LIKE '%{compformapago_}-%'  OR compformapago LIKE '%-{compformapago_}%'";
             DataSet ds = con.query(sql);
-            if (ds.Tables.Count < 1)
-                return false;
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                return ds.Tables[0].Rows[0]["prefijo"].ToString() +"-"+ ds.Tables[0].Rows[0]["idpropuesta"].ToString();
+            }
+                
 
-            return true;
+            return "";
         }
         
     }

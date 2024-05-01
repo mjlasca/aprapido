@@ -798,7 +798,7 @@ namespace ProyectoBrokerDelPuerto
                         dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
 
-                    if(frmpaga.ruta != "")
+                    if(frmpaga.ruta.Count > 0)
                         frmpaga.processImage();
 
                     MessageBox.Show("El pago se ha hecho con éxito");
@@ -851,7 +851,7 @@ namespace ProyectoBrokerDelPuerto
                         dt_fecComprobante.ToString("yyyy-MM-dd")
                     );
 
-                    if (frmpaga.ruta != "")
+                    if (frmpaga.ruta.Count > 0)
                         frmpaga.processImage();
                     MessageBox.Show("El pago se ha hecho con éxito");
                 }

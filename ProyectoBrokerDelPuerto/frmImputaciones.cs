@@ -50,6 +50,11 @@ namespace ProyectoBrokerDelPuerto
                         Convert.ToBoolean(ds.Tables[0].Rows[i]["imputacion"]),
                         Convert.ToInt16(ds.Tables[0].Rows[i]["imputacion"])
                     );
+
+                    if (ds.Tables[0].Rows[i]["codestado"] != null && ds.Tables[0].Rows[i]["codestado"].ToString() == "0")
+                    {
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    }
                 }
             }
 
@@ -129,10 +134,10 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("no.comprobante", typeof(string));
             dt.Columns.Add("imputado", typeof(string));
 
-            
+            double total_ = 0;
+            double sum_total = 0;
             for (int i = 0; i < dataGridView1.Rows.Count; i++)
             {
-
                 dt.Rows.Add(
                     dataGridView1.Rows[i].Cells["fecha"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["referencia"].Value.ToString(),
@@ -143,7 +148,19 @@ namespace ProyectoBrokerDelPuerto
                     dataGridView1.Rows[i].Cells["comprobante"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["imputado"].Value.ToString() == "True" ? "SI" : "NO"
                 );
+                total_ += dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["valor_comprobante"].Value) : 0;
+                sum_total += dataGridView1.Rows[i].Cells["suma_total"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["suma_total"].Value) : 0;
             }
+            dt.Rows.Add(
+                    "TOTALES",
+                    "",
+                    "",
+                    "",
+                    sum_total,
+                    total_,
+                    "",
+                    ""
+                );
             return dt;
         }
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -15,7 +16,7 @@ namespace ProyectoBrokerDelPuerto
     {
         public decimal valorAPAgar = 0;
         public DataSet ds = new DataSet();
-        public string ruta = "";
+        public List<string> ruta = new List<string>();
         public bool comprobanteExistente = false;
         public frmFormadepago()
         {
@@ -36,7 +37,7 @@ namespace ProyectoBrokerDelPuerto
             if(comboBox1.Text == "EFECTIVO")
             {
                 imageProcess.Enabled = false;
-                this.ruta = "";
+                this.ruta = new List<string>();
             }
             
         }
@@ -47,14 +48,8 @@ namespace ProyectoBrokerDelPuerto
                 string val = this.validation();
                 if (val == "valormayor")
                     return;
-
-                
-
-                
                 if (val == "")
                 {
-                   
-
                     if (MessageBox.Show("¿Está seguro(a) que la fecha es " + fecha_comprobante.Value.ToString("dd/MM/yyyy") + " ?", "Confirmar pago", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         this.DialogResult = DialogResult.OK;
@@ -87,14 +82,29 @@ namespace ProyectoBrokerDelPuerto
                 error += "\nEl número de comprobante es obligatorio";
             }else
             {
-                propuestas pr = new propuestas();
-                
-                if (comboBox1.Text != "EFECTIVO" && pr.getNumComprobante(textBox2.Text) && MessageBox.Show("¿El número de comprobante ya fue ingresado anteriormente, ¿Desea continuar?" , "Comprobante existente", MessageBoxButtons.YesNo) == DialogResult.No)
+                string patron = @"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$";
+
+
+                if (!Regex.IsMatch(textBox2.Text, patron))
                 {
-                    error += "\nEl número de comprobante ya fue ingresado";
+                    error += "\nEl número de comprobante no está bien escrito\nRecuerde: Alfanumérico y si son varios separados por guiones (21546464-f545464...)" ;
                 }else
                 {
-                    this.comprobanteExistente = true;
+                    string[] partes = textBox2.Text.Split('-');
+                    propuestas pr = new propuestas();
+                    
+                    foreach (string parte in partes)
+                    {
+                        string resultS = pr.getNumComprobante(parte);
+                        if (comboBox1.Text != "EFECTIVO" && resultS != "" && MessageBox.Show("¿El número de comprobante ya fue ingresado (" + resultS + ") anteriormente, ¿Desea continuar?", "Comprobante existente", MessageBoxButtons.YesNo) == DialogResult.No)
+                        {
+                            error += $"\nEl número de comprobante {parte} ya fue ingresado\nel comprobante se registró en la propuesta " + resultS;
+                        }
+                        else
+                        {
+                            this.comprobanteExistente = true;
+                        }
+                    }
                 }
             }
 
@@ -124,7 +134,7 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
 
-            if (comboBox1.Text != "EFECTIVO" && this.ruta == "")
+            if (comboBox1.Text != "EFECTIVO" && this.ruta.Count == 0)
             {
                 error += "\nDebe cargar la imagen del comprobante";
             }
@@ -132,6 +142,15 @@ namespace ProyectoBrokerDelPuerto
             if(DateTime.Now.Date.CompareTo(fecha_comprobante.Value.Date) < 0)
             {
                 error += "\nLa fecha no puede ser mayor a la actual";
+            }
+
+            if(textBox2.Text != "")
+            {
+                string[] parts = textBox2.Text.Split('-');
+                if(this.ruta.Count < parts.Length)
+                {
+                    error += $"\nSólo ha cargado {this.ruta.Count} de {parts.Length} archivos";
+                }
             }
 
             
@@ -183,29 +202,63 @@ namespace ProyectoBrokerDelPuerto
 
         private void imageProcess_Click(object sender, EventArgs e)
         {
-            imageProcess.Text = "Guardar Imagen";
-            imageProcess.BackColor = Color.Gray;
-            this.ruta = "";
-            OpenFileDialog openfile = new OpenFileDialog();
-            openfile.Filter = "Archivos de Imagen/PDF|*.jpg;*.jpeg;*.png;*.gif;*.pdf";
-            if (openfile.ShowDialog() == DialogResult.OK)
+            string patron = @"^[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*$";
+
+            if (textBox2.Text == "")
             {
-                foreach (String file in openfile.FileNames)
+                MessageBox.Show("Por favor ingrese el número de comprobante primero", "Error de validacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            if (textBox2.Text != "" && !Regex.IsMatch(textBox2.Text, patron))
+            {
+                MessageBox.Show("El número de comprobante no está bien escrito\nRecuerde: Alfanumérico y si son varios separados por guiones (21546464-f545464...)", "Error de validacion", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }else
+            {
+                string[] parts = textBox2.Text.Split('-');
+
+                if(parts.Length > this.ruta.Count)
                 {
-                    this.ruta = @file;
+                    
+
+                    OpenFileDialog openfile = new OpenFileDialog();
+                    openfile.Filter = "Archivos de Imagen/PDF|*.jpg;*.jpeg;*.png;*.gif;*.pdf";
+                    if (openfile.ShowDialog() == DialogResult.OK)
+                    {
+                        foreach (String file in openfile.FileNames)
+                        {
+                            this.ruta.Add(@file);
+                        }
+
+                        if (this.ruta.Count > 0)
+                        {
+                            imageProcess.Text = $"Imagen {parts[this.ruta.Count - 1]} Cargada";
+                            //imageProcess.BackColor = Color.Green;
+                            string varios = this.ruta.Count == 1 ? "imagen" : "imágenes";
+
+                            label8.Text = $"Se ha cargado {this.ruta.Count} {varios} de {parts.Length} comprobantes";
+                        }
+                    }
+                    
+                }
+                else
+                {
+                    if (MessageBox.Show("Ya se ha cargado todos los archivos ¿Quiere volver a cargarlos?", "Confirmación", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        this.ruta = new List<string>();
+                        label8.Text = "";
+                        imageProcess.Text = "Guardar Imagen";
+                        imageProcess.BackColor = Color.Gray;
+                    }
                 }
 
-                if(this.ruta != "")
-                {
-                    imageProcess.Text = "Imagen Cargada";
-                    imageProcess.BackColor = Color.Green;
-                }
             }
+            
         }
 
         public void processImage()
         {
-            if(this.ruta != "")
+            if(this.ruta.Count > 0)
             {
                 string carpetaDestino = @textBox3.Text + @"\" + fecha_comprobante.Value.ToString("dd-MM-yyyy");
 
@@ -215,31 +268,54 @@ namespace ProyectoBrokerDelPuerto
                     Directory.CreateDirectory(carpetaDestino);
                 }
                 
-
-                string extension = Path.GetExtension(this.ruta);
-                string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + textBox2.Text + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() ); // Combinar la carpeta de destino con el nombre del archivo
-
-
-                string[] archivos = Directory.GetFiles(carpetaDestino, "*-" + textBox2.Text + "-*");
-
-                if ( textBox2.Text != "" && archivos.Length > 0)
+                for(int i= 0; i < this.ruta.Count; i++)
                 {
-                    // Cambiar el nombre de los archivos encontrados
-                    foreach (string archivo in archivos)
+                    string rut = this.ruta[i];
+                    string comp = textBox2.Text.Split('-')[i];
+                    string extension = Path.GetExtension(rut);
+                    string rutaDestino = Path.Combine(carpetaDestino, ds.Tables[0].Rows[0]["documento"].ToString() + "-" + comp + "-" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString()); // Combinar la carpeta de destino con el nombre del archivo
+
+
+                    string[] archivos = Directory.GetFiles(carpetaDestino, "*-" + comp + "-*");
+
+                    if (textBox2.Text != "" && archivos.Length > 0)
                     {
-                        string nombreArchivoSinExtension = Path.GetFileNameWithoutExtension(archivo);
-                        string extensionArchivo = Path.GetExtension(archivo);
-                        string nuevoNombre = nombreArchivoSinExtension + "_" +  ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extensionArchivo;
-                        string nuevoNombreArchivo = Path.Combine(Path.GetDirectoryName(archivo), nuevoNombre);
-                        File.Move(archivo, nuevoNombreArchivo);
+                        // Cambiar el nombre de los archivos encontrados
+                        foreach (string archivo in archivos)
+                        {
+                            string nombreArchivoSinExtension = Path.GetFileNameWithoutExtension(archivo);
+                            string extensionArchivo = Path.GetExtension(archivo);
+                            string nuevoNombre = nombreArchivoSinExtension + "_" + ds.Tables[0].Rows[0]["prefijo"].ToString() + ds.Tables[0].Rows[0]["idpropuesta"].ToString() + extensionArchivo;
+                            string nuevoNombreArchivo = Path.Combine(Path.GetDirectoryName(archivo), nuevoNombre);
+                            File.Move(archivo, nuevoNombreArchivo);
+                        }
                     }
-                }else
-                {
-                    // Copiar el archivo
-                    File.Copy(this.ruta, rutaDestino + extension, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+                    else
+                    {
+                        // Copiar el archivo
+                        File.Copy(rut, rutaDestino + extension, true); // El tercer parámetro indica si se sobreescribe el archivo si ya existe
+                    }
                 }
                 
+                
             }
+        }
+
+        private void textBox2_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.OemMinus || e.KeyCode == Keys.Subtract)
+            {
+                // Realiza la acción que desees cuando se detecte el guion -
+                Console.WriteLine("Se ha ingresado el guion -");
+            }
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            this.ruta = new List<string>();
+            label8.Text = "";
+            imageProcess.Text = "Guardar Imagen";
+            imageProcess.BackColor = Color.Gray;
         }
     }
 }
