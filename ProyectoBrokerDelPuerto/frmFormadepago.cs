@@ -144,7 +144,7 @@ namespace ProyectoBrokerDelPuerto
                 error += "\nLa fecha no puede ser mayor a la actual";
             }
 
-            if(textBox2.Text != "")
+            if(textBox2.Text != "" && comboBox1.Text != "EFECTIVO")
             {
                 string[] parts = textBox2.Text.Split('-');
                 if(this.ruta.Count < parts.Length)
