@@ -12,6 +12,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 
 namespace ProyectoBrokerDelPuerto
@@ -291,6 +292,7 @@ namespace ProyectoBrokerDelPuerto
                     btnVer.Enabled = false;
                     btnPagar.Enabled = false;
                     libreDeuda_btn.Enabled = false;
+                    fiscalizador_btn.Enabled = false;
                     return;
                 }
 
@@ -322,11 +324,13 @@ namespace ProyectoBrokerDelPuerto
                 {
                     btnPagar.Enabled = true;
                     libreDeuda_btn.Enabled = false;
+                    fiscalizador_btn.Enabled = false;
                 }
                 else
                 {
                     btnPagar.Enabled = false;
                     libreDeuda_btn.Enabled = true;
+                    fiscalizador_btn.Enabled = true;
                 }
 
 
@@ -963,8 +967,73 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
         }
+
+        private void fiscalizador_btn_Click(object sender, EventArgs e)
+        {
+            if(dataGridView1.CurrentRow.Cells["paga"].Value != null && dataGridView1.CurrentRow.Cells["paga"].Value.ToString() == "PAGADO")
+            {
+                string path = "";
+                configuraciones conf = new configuraciones();
+                conf.get("fiscalizador");
+                if(conf.detail == "")
+                {
+                    MessageBox.Show("No se ha creado la ruta del fiscalizador");
+                    this.getPathFiscalizador();
+                }else
+                {
+                    path = conf.detail.Replace("-", @"\");
+                    try
+                    {
+                        Process process = new Process();
+                        process.StartInfo.FileName = path;
+                        process.Start();
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex.Message.IndexOf("encontrar") > -1)
+                        {
+                            if (MessageBox.Show($"El sistema no puedo encontrar el fiscalizador en la ruta:\n{path}\n¿Desea crear otra ruta?", "Ruta no encontrada", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                            {
+                                this.getPathFiscalizador();
+                            }
+                        }
+                        Console.WriteLine("fdsklfjsd");
+                    }
+                }
+                
+                
+            }
+        }
+        public string getPathFiscalizador()
+        {
+            string path = "";
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                // Configuración del diálogo para que filtre y solo muestre archivos .exe
+                ofd.Filter = "Executable Files|*.exe";
+                ofd.Title = "Selecciona un archivo .exe";
+
+                if (ofd.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(ofd.FileName))
+                {
+                    path = ofd.FileName;
+                }
+
+                if (path != "")
+                {
+                    configuraciones conf = new configuraciones();
+                    conf.dato = "fiscalizador";
+                    conf.detail = path.Replace(@"\", "-"); ;
+                    conf.save();
+                }
+            }
+
+            return path;
+        }
     }
+
+    
 }
+
 
 class paypro
 {

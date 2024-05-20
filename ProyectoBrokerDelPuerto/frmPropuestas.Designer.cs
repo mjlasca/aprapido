@@ -68,6 +68,7 @@
             this.libreDeuda_btn = new System.Windows.Forms.Button();
             this.orden_select = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.fiscalizador_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -446,11 +447,23 @@
             this.label5.TabIndex = 30;
             this.label5.Text = "Ordenar por";
             // 
+            // fiscalizador_btn
+            // 
+            this.fiscalizador_btn.Enabled = false;
+            this.fiscalizador_btn.Location = new System.Drawing.Point(627, 520);
+            this.fiscalizador_btn.Name = "fiscalizador_btn";
+            this.fiscalizador_btn.Size = new System.Drawing.Size(115, 23);
+            this.fiscalizador_btn.TabIndex = 32;
+            this.fiscalizador_btn.Text = "Fiscalizador";
+            this.fiscalizador_btn.UseVisualStyleBackColor = true;
+            this.fiscalizador_btn.Click += new System.EventHandler(this.fiscalizador_btn_Click);
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 555);
+            this.Controls.Add(this.fiscalizador_btn);
             this.Controls.Add(this.orden_select);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.libreDeuda_btn);
@@ -527,5 +540,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_paga;
         private System.Windows.Forms.ComboBox orden_select;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button fiscalizador_btn;
     }
 }

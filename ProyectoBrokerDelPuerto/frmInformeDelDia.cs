@@ -594,23 +594,31 @@ namespace ProyectoBrokerDelPuerto
 
                                 if (ds.Tables[0].Rows[i]["data_barrios"].ToString() != "")
                                 {
-                                    JsonTextReader reader = new JsonTextReader(new StringReader(ds.Tables[0].Rows[i]["data_barrios"].ToString()));
-                                    JObject obj = JObject.Load(reader);
-                                    if (obj["barrios"] != null)
+                                    try
                                     {
-                                        List<barrios_propuesta> json_barrios_propuesta = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
-                                                                                          select new barrios_propuesta()
-                                                                                          {
-                                                                                              id_barrio = val["id_barrio"],
-                                                                                              nombre = val["nombre"],
-                                                                                          }).ToList();
-
-                                        foreach (barrios_propuesta bp in json_barrios_propuesta)
+                                        JsonTextReader reader = new JsonTextReader(new StringReader(ds.Tables[0].Rows[i]["data_barrios"].ToString()));
+                                        JObject obj = JObject.Load(reader);
+                                        if (obj["barrios"] != null)
                                         {
-                                            nombreBarrios += bp.nombre + ", ";
-                                            cuitBarrios += bp.id_barrio + ", ";
+                                            List<barrios_propuesta> json_barrios_propuesta = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
+                                                                                              select new barrios_propuesta()
+                                                                                              {
+                                                                                                  id_barrio = val["id_barrio"],
+                                                                                                  nombre = val["nombre"],
+                                                                                              }).ToList();
+
+                                            foreach (barrios_propuesta bp in json_barrios_propuesta)
+                                            {
+                                                nombreBarrios += bp.nombre + ", ";
+                                                cuitBarrios += bp.id_barrio + ", ";
+                                            }
                                         }
+                                    }catch(Exception ex)
+                                    {
+                                        logs log_ = new logs();
+                                        log_.newError("JSONINFORME",$"Error con los barrios en propuesta {ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString()}");
                                     }
+                                    
                                 } else
                                 {
                                     //En ésta sección de código se concatenan los barrios y los cuits de los barrios
