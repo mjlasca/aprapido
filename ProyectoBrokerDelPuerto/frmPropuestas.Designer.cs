@@ -452,9 +452,9 @@
             this.fiscalizador_btn.Enabled = false;
             this.fiscalizador_btn.Location = new System.Drawing.Point(627, 520);
             this.fiscalizador_btn.Name = "fiscalizador_btn";
-            this.fiscalizador_btn.Size = new System.Drawing.Size(115, 23);
+            this.fiscalizador_btn.Size = new System.Drawing.Size(76, 23);
             this.fiscalizador_btn.TabIndex = 32;
-            this.fiscalizador_btn.Text = "Fiscalizador";
+            this.fiscalizador_btn.Text = "Taker";
             this.fiscalizador_btn.UseVisualStyleBackColor = true;
             this.fiscalizador_btn.Click += new System.EventHandler(this.fiscalizador_btn_Click);
             // 

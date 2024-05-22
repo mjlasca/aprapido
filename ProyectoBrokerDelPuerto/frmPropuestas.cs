@@ -981,7 +981,7 @@ namespace ProyectoBrokerDelPuerto
                     this.getPathFiscalizador();
                 }else
                 {
-                    path = conf.detail.Replace("-", @"\");
+                    path = conf.detail.Replace("/", @"\");
                     try
                     {
                         Process process = new Process();
@@ -1022,7 +1022,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     configuraciones conf = new configuraciones();
                     conf.dato = "fiscalizador";
-                    conf.detail = path.Replace(@"\", "-"); ;
+                    conf.detail = path.Replace(@"\", "/"); ;
                     conf.save();
                 }
             }
