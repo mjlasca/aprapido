@@ -1607,8 +1607,10 @@ namespace ProyectoBrokerDelPuerto
                 this.concattextbox += "IMPORTACIÓN Perfiles / " + obj["perfiles"].Count() + " Registros " + Environment.NewLine;
 
                 string concat_ = "";
-                foreach (dynamic val in obj["perfiles"])
+                for (int i = 0; i < obj["perfiles"].Count(); i++)
                 {
+                    dynamic val = obj["perfiles"][i];
+                
                     perfiles per = new perfiles();
                     per.reg = val["reg"];
                     per.nombre = val["nombre"];
@@ -1629,11 +1631,15 @@ namespace ProyectoBrokerDelPuerto
 
                     try
                     {
-                        string aaa = per.concat_sql();
-                        if (concat_ != "")
-                            concat_ += "," + aaa;
-                        else
-                            concat_ += aaa;
+                        if(per.nombre != null && per.nombre != "")
+                        {
+                            string aaa = per.concat_sql();
+                            if (concat_ != "")
+                                concat_ += "," + aaa;
+                            else
+                                concat_ += aaa;
+                        }
+                        
                     }
                     catch (Exception ex)
                     {

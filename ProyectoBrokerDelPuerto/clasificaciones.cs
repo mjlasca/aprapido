@@ -82,19 +82,9 @@ namespace ProyectoBrokerDelPuerto
 
         public string corregir_nombre(string res)
         {
-            try
-            {
-
-                if (Convert.ToInt16(res.Substring(0, 1)) >= 0)
-                {
-                    return res.Substring(res.IndexOf("-") + 2, res.Length - res.IndexOf("-") - 2);
-                }
-            }
-            catch
-            {
-                return res;
-            }
-
+            int result = 0;
+            if (int.TryParse(res.Substring(0, 1), out result) && Convert.ToInt16(res.Substring(0, 1)) >= 0)
+                return res.Substring(res.IndexOf("-") + 2, res.Length - res.IndexOf("-") - 2);
             return res;
         }
 

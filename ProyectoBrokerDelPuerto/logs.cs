@@ -49,6 +49,13 @@ namespace ProyectoBrokerDelPuerto
             this.save();
         }
 
+        public static void regError(string coderror_, string msg)
+        {
+            logs log = new logs();
+            log.coderror = coderror_;
+            log.mensaje = msg;
+            log.save();
+        }
 
         public bool save_1()
         {

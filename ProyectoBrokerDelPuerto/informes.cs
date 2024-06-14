@@ -125,7 +125,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM informes WHERE nomtipo = '" + tipo_ + "'  AND DATE(diacierre) = DATE('" + fecha_ + "') ORDER BY id DESC LIMIT 1 ";
+            sql = "SELECT (1) FROM informes WHERE nomtipo = '" + tipo_ + "'  AND DATE(diacierre) = DATE('" + fecha_ + "') ORDER BY id DESC LIMIT 1 ";
             Console.WriteLine("---> "+sql);
             
             try

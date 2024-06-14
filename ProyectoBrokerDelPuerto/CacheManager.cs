@@ -17,6 +17,14 @@ namespace ProyectoBrokerDelPuerto
             Cache.Add(key, value, DateTimeOffset.Now.Add(expiration));
         }
 
+        public static IEnumerable<KeyValuePair<string, object>> GetAllCacheItems()
+        {
+            foreach (var item in Cache)
+            {
+                yield return item;
+            }
+        }
+
         public static object GetFromCache(string key)
         {
             return Cache.Get(key);
@@ -25,6 +33,17 @@ namespace ProyectoBrokerDelPuerto
         public static void RemoveFromCache(string key)
         {
             Cache.Remove(key);
+        }
+
+        public static void RemoveFromCachePref(string pref)
+        {
+            foreach (var item in GetAllCacheItems())
+            {
+                if(item.Key.IndexOf(pref) != -1)
+                {
+                    Cache.Remove(item.Key);
+                }
+            }
         }
     }
 

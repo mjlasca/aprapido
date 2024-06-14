@@ -329,7 +329,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 //GENERAR EL TERMINADO DE LA COLUMNA TERMINADO
-                if (dataGridView1.CurrentCell.ColumnIndex == 1)
+                if (dataGridView1.CurrentCell != null && dataGridView1.CurrentCell.ColumnIndex == 1)
                 {
                     int fil = dataGridView1.CurrentRow.Index;
                     if (dataGridView1.CurrentRow.Cells["nodocumento"].Value != null)
@@ -361,9 +361,9 @@ namespace ProyectoBrokerDelPuerto
                 }
 
             }
-            catch
+            catch(Exception ex)
             {
-                Console.Write("error lectura, change");
+                Console.Write("error de lectura, change "+ex.Message);
             }
 
         }

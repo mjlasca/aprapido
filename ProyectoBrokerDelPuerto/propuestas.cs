@@ -770,34 +770,51 @@ namespace ProyectoBrokerDelPuerto
             if (MDIParent1.baseDatos == "MySql")
             {
 
-                sql = "SELECT *,(SELECT CONCAT(t1.nombres,' ',t1.apellidos)  FROM clientes t1 WHERE t1.id = documento LIMIT 1) as nombre FROM propuestas " +
-                " WHERE codestado > 0 AND  DATE(ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
-                "'  AND formadepago = 'CREDITO' AND user_edit LIKE '%" + user_ + "%' AND paga " + sinpagar + " ";
+                sql = "SELECT propuestas.prefijo,propuestas.idpropuesta,propuestas.referencia,propuestas.ultmod,"+
+                    "propuestas.premio_total,propuestas.master,propuestas.organizador,propuestas.productor,propuestas.user_edit,"+
+                    "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago,"+
+                    "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
+                    " LEFT JOIN clientes ON clientes.id = propuestas.documento "+
+                " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.user_edit LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 if (quienpaga)
                 {
-                    sql = "SELECT *,(SELECT CONCAT(t1.nombres,' ',t1.apellidos)  FROM clientes t1 WHERE t1.id = documento LIMIT 1) as nombre FROM propuestas " +
+                    /*sql = "SELECT *,(SELECT CONCAT(t1.nombres,' ',t1.apellidos)  FROM clientes t1 WHERE t1.id = documento LIMIT 1) as nombre FROM propuestas " +
                     " WHERE codestado > 0 AND DATE(fecha_paga) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                     "'  AND formadepago = 'CREDITO' AND usuariopaga LIKE '%" + user_ + "%'  AND paga  " + sinpagar + " ";
+                    */
+                    sql = "SELECT propuestas.prefijo,propuestas.idpropuesta,propuestas.referencia,propuestas.ultmod," +
+                    "propuestas.premio_total,propuestas.master,propuestas.organizador,propuestas.productor,propuestas.user_edit," +
+                    "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
+                    "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
+                    " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
+                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.usuariopaga LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 }
             }
             else
             {
-                sql = "SELECT *,(SELECT (t1.nombres|| ' ' || t1.apellidos)  FROM clientes t1 WHERE t1.id = documento LIMIT 1) as nombre FROM propuestas " +
-                " WHERE codestado > 0 AND  DATE(ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
-                "'  AND formadepago = 'CREDITO' AND user_edit LIKE '%" + user_ + "%' AND paga " + sinpagar + " ";
+                sql = "SELECT propuestas.prefijo,propuestas.idpropuesta,propuestas.referencia,propuestas.ultmod," +
+                    "propuestas.premio_total,propuestas.master,propuestas.organizador,propuestas.productor,propuestas.user_edit," +
+                    "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
+                    "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
+                    " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
+                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.user_edit LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 if (quienpaga)
                 {
-                    sql = "SELECT *,(SELECT (t1.nombres|| ' ' || t1.apellidos)  FROM clientes t1 WHERE t1.id = documento LIMIT 1) as nombre FROM propuestas " +
-                    " WHERE codestado > 0 AND DATE(fecha_paga) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
-                    "'  AND formadepago = 'CREDITO' AND usuariopaga LIKE '%" + user_ + "%'  AND paga  " + sinpagar + " ";
-
+                    sql = "SELECT propuestas.prefijo,propuestas.idpropuesta,propuestas.referencia,propuestas.ultmod," +
+                    "propuestas.premio_total,propuestas.master,propuestas.organizador,propuestas.productor,propuestas.user_edit," +
+                    "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
+                    "(clientes.nombres || ' ' || clientes.apellidos) as nombre FROM propuestas " +
+                    " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
+                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.usuariopaga LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
                 }
             }
-
-            Console.WriteLine("CRÉDITO \n "+sql);
 
             try
             {
@@ -805,7 +822,7 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
-                Console.Write("ERROR al consultar propuestas");
+                logs.regError("CRED100", ex.Message);
             }
 
             return ds;
@@ -923,41 +940,21 @@ namespace ProyectoBrokerDelPuerto
         public DataSet get_vencimientos(string fecha_vence)
         {
             DataSet ds = new DataSet();
+            if (CacheManager.GetFromCache("vencimiento") != null)
+                return (DataSet)CacheManager.GetFromCache("vencimiento");
             controlventas control = new controlventas(true);
-            if (MDIParent1.baseDatos == "MySql")
-            {
-                sql = "SELECT t1.idpropuesta,t1.referencia,t1.prefijo,t1.formadepago,"+
-                " (SELECT t0.nombres FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1 ) as nombres,"+
-                " (SELECT t0.apellidos FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1 ) as apellidos," +
-                " (SELECT t0.id FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as id," +
-                " (SELECT t0.fecha_nacimiento FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as fecha_nacimiento," +
-                " (SELECT t0.email FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as email," +
-                " (SELECT t0.telefono FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as telefono," +
-                " t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde,t1.user_edit,t1.prima,t1.premio, t1.fechaHasta, t1.paga, t1.codestado,t1.nota " +
-                " FROM propuestas t1 WHERE " +
-                " DATE(t1.fechaHasta) BETWEEN  '" + DateTime.Today.ToString("yyyy-MM-dd") + "' AND '" + fecha_vence + "' AND  t1.codestado = 1  " +
-                " ORDER BY t1.id DESC";
-            }
-            else
-            {
-                sql = "SELECT t1.idpropuesta,t1.referencia,t1.prefijo,t1.formadepago,"+
-                " (SELECT t0.nombres FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1 ) as nombres," +
-                " (SELECT t0.apellidos FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1 ) as apellidos," +
-                " (SELECT t0.id FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as id," +
-                " (SELECT t0.fecha_nacimiento FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as fecha_nacimiento," +
-                " (SELECT t0.email FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as email," +
-                " (SELECT t0.telefono FROM clientes t0 WHERE t0.id = t1.documento LIMIT 1) as telefono," +
-                " t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde,t1.user_edit,t1.prima,t1.premio, t1.fechaHasta, t1.paga, t1.codestado,t1.nota " +
-                " FROM propuestas t1 WHERE " +
-                " DATE(t1.fechaHasta) BETWEEN  '" + DateTime.Today.ToString("yyyy-MM-dd") + "' AND '" + fecha_vence + "' AND  t1.codestado = 1 " +
-                " ORDER BY t1.id DESC";
-            }
-                
-
-            Console.WriteLine("********** \n"+sql);
+            sql = "SELECT t1.idpropuesta,t1.referencia,t1.prefijo,t1.formadepago,"+
+            " t0.nombres, t0.apellidos,t0.id,t0.fecha_nacimiento,t0.email,t0.telefono, " +
+            " t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde,t1.user_edit,t1.prima,"+
+            "t1.premio, t1.fechaHasta, t1.paga, t1.codestado,t1.nota " +
+            " FROM propuestas t1 LEFT JOIN clientes t0 ON t0.id = t1.documento WHERE " +
+            " DATE(t1.fechaHasta) BETWEEN  '" + DateTime.Today.ToString("yyyy-MM-dd") + "' AND '" + fecha_vence + "' AND  t1.codestado = 1  " +
+            " ORDER BY t1.id DESC";
+            
             try
             {
                 ds = con.query(sql);
+                CacheManager.AddToCache("vencimiento", ds, new TimeSpan(8, 0, 0));
             }
             catch (Exception ex)
             {
@@ -969,7 +966,16 @@ namespace ProyectoBrokerDelPuerto
 
         public DataSet get_all_busqueda(string coincidencia, string estado_ = "", string fecha1 = "", string fecha2 = "")
         {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(coincidencia + estado_ + fecha1 + fecha2);
+            string base64String = Convert.ToBase64String(bytes);
+
             DataSet ds = new DataSet();
+
+            var dataCache = CacheManager.GetFromCache("propuestas:" + base64String);
+            if(dataCache != null)
+            {
+                return (DataSet)dataCache;
+            }
 
             if (fecha1 == "")
                 fecha1 = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
@@ -987,11 +993,13 @@ namespace ProyectoBrokerDelPuerto
 
             if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
-                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga FROM propuestas t1 INNER JOIN clientes t2  " +
-                "  INNER JOIN usuarios t3 ON " +
-                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
-                + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" + coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
+                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,"+
+                    "t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura,"+
+                    " t1.fechaDesde, t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga "+
+                    "FROM propuestas t1 INNER JOIN clientes t2 INNER JOIN usuarios t3 ON " +
+                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND "+
+                " t1.user_edit = t3.loggin WHERE " + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" +
+                coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '" + coincidencia + "' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
@@ -1007,11 +1015,14 @@ namespace ProyectoBrokerDelPuerto
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
-            Console.WriteLine("Propuestas \n" + sql);
+            
 
             try
             {
+                
                 ds = con.query(sql);
+
+                CacheManager.AddToCache("propuestas:"+base64String,ds,new TimeSpan(8,0,0));
             }
             catch (Exception ex)
             {
@@ -1023,7 +1034,16 @@ namespace ProyectoBrokerDelPuerto
 
         public DataSet get_all_busqueda_paga(string coincidencia, string estado_ = "", string fecha1="", string fecha2 = "")
         {
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(coincidencia + estado_ + fecha1 + fecha2);
+            string base64String = Convert.ToBase64String(bytes);
+
             DataSet ds = new DataSet();
+
+            var dataCache = CacheManager.GetFromCache("propuestas-paga:" + base64String);
+            if (dataCache != null)
+            {
+                return (DataSet)dataCache;
+            }
 
             if (fecha1 == "")
                 fecha1 = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
@@ -1061,11 +1081,12 @@ namespace ProyectoBrokerDelPuerto
                 "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
-            Console.WriteLine("Propuestas \n"+sql);
+            
      
             try
             {
                 ds = con.query(sql);
+                CacheManager.AddToCache("propuestas-paga:" + base64String, ds, new TimeSpan(8, 0, 0));
             }
             catch (Exception ex)
             {
@@ -1959,6 +1980,7 @@ namespace ProyectoBrokerDelPuerto
                 }
 
                 con.query(sql);
+                CacheManager.RemoveFromCachePref("propuestas:");
                 return true;
 
             }
