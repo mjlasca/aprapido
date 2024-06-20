@@ -143,19 +143,19 @@ namespace ProyectoBrokerDelPuerto
             }
             else
             {
-                /*try
-                {*/
+                try
+                {
                     this.conectarDBSQLITE();
                     SQLiteDataAdapter adapter = new SQLiteDataAdapter(sql, connectionSQLite);
                     adapter.Fill(DS);
                     connectionSQLite.Close();
                     return DS;
-                /*}
+                }
                 catch (Exception ex)
                 {
                     //MessageBox.Show("Error de conexión con la base de datos\n" + ex.Message, "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return DS;
-                }*/
+                }
             }
             
             

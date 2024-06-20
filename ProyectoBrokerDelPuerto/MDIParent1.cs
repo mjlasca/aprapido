@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "7.9";
+        public static string versionsistema { get; set; } = "8.1";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -718,7 +718,6 @@ namespace ProyectoBrokerDelPuerto
                 usu.updateCreateVersion_import();
                 if (allImport)
                 {
-                    
                     coberturas cob = new coberturas();
                     cob.importGetApi();
                     actividades act = new actividades();

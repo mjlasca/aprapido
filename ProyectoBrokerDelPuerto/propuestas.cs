@@ -2287,7 +2287,7 @@ namespace ProyectoBrokerDelPuerto
 
             }
             con.query(sql);
-
+            CacheManager.RemoveFromCachePref("propuestas:");
 
         }
 
@@ -2334,12 +2334,14 @@ namespace ProyectoBrokerDelPuerto
         {
             sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 20 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
+            CacheManager.RemoveFromCachePref("propuestas:");
         }
 
         public void modificacionClausulas(string prefijo_, string idpropuesta_)
         {
             sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+ "', version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
+            CacheManager.RemoveFromCachePref("propuestas:");
         }
 
         public void delete()
