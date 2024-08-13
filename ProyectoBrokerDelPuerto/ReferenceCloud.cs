@@ -64,8 +64,6 @@ namespace ProyectoBrokerDelPuerto
             {
                 refpro = con.connectionSQLite.Query<RegistroRef>(sql);
             }
-            Console.WriteLine("----------------------------------------------------------------");
-            Console.WriteLine("--- "+ refpro.Count());
             var concat_ = new System.Text.StringBuilder();
             if (refpro.Count() > 0)
             {

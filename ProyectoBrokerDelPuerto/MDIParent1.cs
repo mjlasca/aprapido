@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "8.3";
+        public static string versionsistema { get; set; } = "8.4";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "http://apibarrios.3enterprise.online"; //http://apibarrios.3enterprise.online
+        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -709,10 +709,10 @@ namespace ProyectoBrokerDelPuerto
             
         }
 
-        private void importCloudParametersLong(bool allImport = true)
+        private async void importCloudParametersLong(bool allImport = true)
         {
             Console.WriteLine("\n\nPARAMETROS sensibles\n\n");
-            Task.Run(() => { 
+            Task.Run( async () => { 
                 
                 usuarios usu = new usuarios();
                 usu.updateCreateVersion_import();
@@ -727,6 +727,7 @@ namespace ProyectoBrokerDelPuerto
                 }
                 
             });
+            await Task.Delay(60000);
         }
         private async Task<bool> asignarrol()
         {
@@ -1051,14 +1052,17 @@ namespace ProyectoBrokerDelPuerto
                 migp.tipo = "IMPORTACION";
 
                 
-                if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 7.5)
+                if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 10)
                 {
+
+                    int waitTime = 60000;
 
                     RegisterPending regpend = new RegisterPending();
                     Task.Run(async () => {
                         regpend.sendListPending();
                     });
 
+                    await Task.Delay(waitTime);
 
                     frmMigraciones frmmig = new frmMigraciones();
                     solicitudes s = new solicitudes();
@@ -1066,41 +1070,30 @@ namespace ProyectoBrokerDelPuerto
                     s.solicitud_lineas_propuestas = true;
                     bool solop = true;
 
-                    bool pross_end = await Task.Run(() => {
+                    Task.Run(async () => {
                         return frmmig.importarData(s, solop);
                     });
 
+                    await Task.Delay(waitTime);
 
                     frmmig = new frmMigraciones();
                     s = new solicitudes();
                     s.solicitud_clientes = true;
 
-                    pross_end = await Task.Run(() => {
+                    Task.Run(async () => {
                         return frmmig.importarData(s, solop);
                     });
-
+                    await Task.Delay(waitTime);
 
                     frmmig = new frmMigraciones();
                     s = new solicitudes();
                     s.solicitud_barrios = true;
 
-                    pross_end = await Task.Run(() => {
+                    Task.Run(async () => {
                         return frmmig.importarData(s, solop);
                     });
-
-
-
-
-                    if (pross_end)
-                    {
-                        flagtimer = DateTime.Now;
-                    }else if(server500.IndexOf("conectar") > -1)
-                    {
-                        server500 = " ERROR 500\nNo hay conexión\n";
-                    }
-
+                    await Task.Delay(waitTime);
                     this.enviarPropuestasNube();
-
                     this.textBoxImport();
 
                 }
@@ -1139,17 +1132,19 @@ namespace ProyectoBrokerDelPuerto
                 DataSet ds555 = pro.get_all_date(prefijo);
                 if (ds555.Tables[0].Rows.Count > 0)
                 {
-                    bool res = await Task.Run(() => {
+                    Task.Run(async () => {
                         
                         return frmmig.exportarPropuestas();
                     });
+                    await Task.Delay(60000);
                 }
 
-                bool res1 = await Task.Run(() => {
+                Task.Run(async () => {
                     return frmmig.exportarBarrios();
                 });
+                await Task.Delay(60000);
 
-                
+
             }
             catch (Exception ex)
             {
@@ -1172,7 +1167,7 @@ namespace ProyectoBrokerDelPuerto
             this.textBoxImport();
         }
 
-        private void importCloudParameters()
+        private async void importCloudParameters()
         {
             RegisterPending regpen = new RegisterPending();
             if (regpen.allowImport())
@@ -1185,6 +1180,7 @@ namespace ProyectoBrokerDelPuerto
                     }
                     
                 });
+                await Task.Delay(60000);
             }
         }
 

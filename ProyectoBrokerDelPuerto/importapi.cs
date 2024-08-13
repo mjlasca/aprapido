@@ -459,7 +459,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     res = ors.ReadToEnd().Trim();
                 }
-                if (res != "")
+            if (res != "")
                     {
 
 

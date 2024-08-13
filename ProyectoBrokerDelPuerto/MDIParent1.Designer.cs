@@ -69,6 +69,7 @@
             this.listaLiquidacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.auditoríaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modificaciónDeBarriosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imputacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
@@ -86,7 +87,6 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.sinEnviar_btn = new System.Windows.Forms.Button();
             this.timer_parameters = new System.Windows.Forms.Timer(this.components);
-            this.imputacionesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -194,7 +194,6 @@
             this.migracionesToolStripMenuItem.Name = "migracionesToolStripMenuItem";
             this.migracionesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.migracionesToolStripMenuItem.Text = "Migraciones";
-            this.migracionesToolStripMenuItem.Visible = false;
             this.migracionesToolStripMenuItem.Click += new System.EventHandler(this.migracionesToolStripMenuItem_Click);
             // 
             // puntoDeVentaToolStripMenuItem
@@ -447,6 +446,14 @@
             this.modificaciónDeBarriosToolStripMenuItem.Text = "Modificación de barrios en propuestas";
             this.modificaciónDeBarriosToolStripMenuItem.Click += new System.EventHandler(this.modificaciónDeBarriosToolStripMenuItem_Click);
             // 
+            // imputacionesToolStripMenuItem
+            // 
+            this.imputacionesToolStripMenuItem.Name = "imputacionesToolStripMenuItem";
+            this.imputacionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.imputacionesToolStripMenuItem.Text = "Imputaciones";
+            this.imputacionesToolStripMenuItem.Visible = false;
+            this.imputacionesToolStripMenuItem.Click += new System.EventHandler(this.imputacionesToolStripMenuItem_Click);
+            // 
             // helpMenu
             // 
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -460,7 +467,7 @@
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.contentsToolStripMenuItem.Text = "Contacto";
             this.contentsToolStripMenuItem.Visible = false;
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
@@ -468,12 +475,12 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(149, 6);
             // 
             // versiónToolStripMenuItem
             // 
             this.versiónToolStripMenuItem.Name = "versiónToolStripMenuItem";
-            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.versiónToolStripMenuItem.Text = "Versión";
             this.versiónToolStripMenuItem.Click += new System.EventHandler(this.versiónToolStripMenuItem_Click);
             // 
@@ -594,14 +601,6 @@
             // 
             this.timer_parameters.Interval = 600000;
             this.timer_parameters.Tick += new System.EventHandler(this.timer_parameters_Tick);
-            // 
-            // imputacionesToolStripMenuItem
-            // 
-            this.imputacionesToolStripMenuItem.Name = "imputacionesToolStripMenuItem";
-            this.imputacionesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.imputacionesToolStripMenuItem.Text = "Imputaciones";
-            this.imputacionesToolStripMenuItem.Visible = false;
-            this.imputacionesToolStripMenuItem.Click += new System.EventHandler(this.imputacionesToolStripMenuItem_Click);
             // 
             // MDIParent1
             // 

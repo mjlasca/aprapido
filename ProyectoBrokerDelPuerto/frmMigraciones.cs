@@ -1798,11 +1798,6 @@ namespace ProyectoBrokerDelPuerto
 
         private async Task<bool> enviar_json(string json)
         {
-            
-            Console.WriteLine("JSON START");
-            Console.WriteLine(json);
-            Console.WriteLine("JSON FINISH");
-
             try
             {
                 string url = MDIParent1.apiuri +"/api/propuestas";
@@ -1821,9 +1816,6 @@ namespace ProyectoBrokerDelPuerto
                 }
 
                 WebResponse _response = _request.GetResponse();
-
-                Console.WriteLine("Ya envió");
-
                 using (var ors = new StreamReader(_response.GetResponseStream()))
                 {
                     string res = ors.ReadToEnd().Trim();
@@ -1833,7 +1825,8 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error al enviar datos a la api "+ex.Message);
+                logs log = new logs();
+                log.newError("MIG500", "Error al enviar datos propuestas " + ex.Message + " / "+ json);
                 return false;
             }
             

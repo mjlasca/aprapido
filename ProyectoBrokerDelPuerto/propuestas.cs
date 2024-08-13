@@ -971,10 +971,11 @@ namespace ProyectoBrokerDelPuerto
 
             DataSet ds = new DataSet();
 
-            var dataCache = CacheManager.GetFromCache("propuestas:" + base64String);
-            if(dataCache != null)
+            var dataCache = CacheManager.GetFromCache("propuestas");
+            if(dataCache == null)
             {
-                return (DataSet)dataCache;
+                /*MDIParent1.importExportMain();
+                MDIParent1.importMain();*/
             }
 
             if (fecha1 == "")
@@ -1019,10 +1020,8 @@ namespace ProyectoBrokerDelPuerto
 
             try
             {
-                
                 ds = con.query(sql);
-
-                CacheManager.AddToCache("propuestas:"+base64String,ds,new TimeSpan(8,0,0));
+                CacheManager.AddToCache("propuestas","success",new TimeSpan(0,20,0));
             }
             catch (Exception ex)
             {
@@ -1039,10 +1038,11 @@ namespace ProyectoBrokerDelPuerto
 
             DataSet ds = new DataSet();
 
-            var dataCache = CacheManager.GetFromCache("propuestas-paga:" + base64String);
-            if (dataCache != null)
+            var dataCache = CacheManager.GetFromCache("propuestas");
+            if (dataCache == null)
             {
-                return (DataSet)dataCache;
+                /*MDIParent1.importExportMain();
+                MDIParent1.importMain();*/
             }
 
             if (fecha1 == "")
@@ -1086,7 +1086,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 ds = con.query(sql);
-                CacheManager.AddToCache("propuestas-paga:" + base64String, ds, new TimeSpan(8, 0, 0));
+                CacheManager.AddToCache("propuestas", "success", new TimeSpan(0, 20, 0));
             }
             catch (Exception ex)
             {
@@ -1973,14 +1973,12 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.imputacion + "'," +
                         "'" + this.fecha_comprobante + "'" +
 
-
-
                         ") ";
                     }
                 }
 
                 con.query(sql);
-                CacheManager.RemoveFromCachePref("propuestas:");
+                CacheManager.RemoveFromCache("propuestas");
                 return true;
 
             }
@@ -2287,7 +2285,7 @@ namespace ProyectoBrokerDelPuerto
 
             }
             con.query(sql);
-            CacheManager.RemoveFromCachePref("propuestas:");
+            CacheManager.RemoveFromCache("propuestas");
 
         }
 
@@ -2334,14 +2332,14 @@ namespace ProyectoBrokerDelPuerto
         {
             sql = "UPDATE propuestas SET codestado = 0, envionube = 0, version = ( version + 20 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
-            CacheManager.RemoveFromCachePref("propuestas:");
+            CacheManager.RemoveFromCache("propuestas");
         }
 
         public void modificacionClausulas(string prefijo_, string idpropuesta_)
         {
             sql = "UPDATE propuestas SET  envionube = 0, data_barrios = '"+this.data_barrios+ "', version = ( version + 1 ) WHERE idpropuesta = '" + idpropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
-            CacheManager.RemoveFromCachePref("propuestas:");
+            CacheManager.RemoveFromCache("propuestas");
         }
 
         public void delete()
