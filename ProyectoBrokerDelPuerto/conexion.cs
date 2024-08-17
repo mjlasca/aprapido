@@ -123,8 +123,8 @@ namespace ProyectoBrokerDelPuerto
             DataSet DS = new DataSet();
             if (MDIParent1.baseDatos == "MySql")
             {
-                 /*try
-                 {*/
+                 try
+                 {
                     this.conectarDB();
                     
                     //instancia del DataSet que viene siendo como una matriz
@@ -132,14 +132,13 @@ namespace ProyectoBrokerDelPuerto
                     conecction.Close();
                     DP.Fill(DS);
                     return DS;
-                /*}
+                }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Error QUERY "+sql +"\n"+ex.Message);
-                    //MessageBox.Show("Error de conexión con la base de datos\n" + ex.Message + "\nQUERY\n"+ sql, "Error de conexión", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    //MessageBox.Show("No hay conexión con la base de datos");
+                    logs log = new logs();
+                    log.newError("DB",sql + "\n" + ex.Message);
                     return DS;
-                }*/
+                }
             }
             else
             {

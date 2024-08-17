@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "8.4";
+        public static string versionsistema { get; set; } = "8.5";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -1055,7 +1055,7 @@ namespace ProyectoBrokerDelPuerto
                 if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 10)
                 {
 
-                    int waitTime = 60000;
+                    /*int waitTime = 60000;
 
                     RegisterPending regpend = new RegisterPending();
                     Task.Run(async () => {
@@ -1092,7 +1092,7 @@ namespace ProyectoBrokerDelPuerto
                     Task.Run(async () => {
                         return frmmig.importarData(s, solop);
                     });
-                    await Task.Delay(waitTime);
+                    await Task.Delay(waitTime);*/
                     this.enviarPropuestasNube();
                     this.textBoxImport();
 
@@ -1136,14 +1136,11 @@ namespace ProyectoBrokerDelPuerto
                         
                         return frmmig.exportarPropuestas();
                     });
-                    await Task.Delay(60000);
+                    
                 }
-
                 Task.Run(async () => {
                     return frmmig.exportarBarrios();
                 });
-                await Task.Delay(60000);
-
 
             }
             catch (Exception ex)

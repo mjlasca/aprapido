@@ -576,12 +576,12 @@ namespace ProyectoBrokerDelPuerto
             if (MDIParent1.baseDatos == "MySql")
             {
                 sql = "SELECT *, (SELECT CONCAT(nombres,' ',apellidos) FROM clientes WHERE id = t1.documento LIMIT 1) as nombre, (SELECT fecha_nacimiento FROM clientes" +
-                " WHERE id = t1.documento LIMIT 1) as fecha_nacimiento FROM propuestas t1 WHERE  (t1.envionube = '0' " + prefijo_ + ") OR (t1.envionube = '0' AND t1.codestado = '0' AND DATE(t1.ultmod) > '2023-02-04' ) ";
+                " WHERE id = t1.documento LIMIT 1) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0' " + prefijo_ ;
             }
             else
             {
                 sql = "SELECT *, (SELECT nombres || ' ' || apellidos FROM clientes WHERE id = t1.documento LIMIT 1 ) as nombre, (SELECT fecha_nacimiento FROM clientes" +
-                   " WHERE id = t1.documento LIMIT 1 ) as fecha_nacimiento FROM propuestas t1 WHERE  (t1.envionube = '0'  " + prefijo_ + ") OR (t1.envionube = '0' AND t1.codestado = '0' AND DATE(t1.ultmod) > '2023-02-04' ) ";
+                   " WHERE id = t1.documento LIMIT 1 ) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0'  " + prefijo_ ;
             }
             
 
@@ -2236,9 +2236,12 @@ namespace ProyectoBrokerDelPuerto
         public void enviohecho()
         {
             sql = "UPDATE propuestas SET envionube = 1 WHERE envionube = 0   ";
+            con.query(sql);
+        }
 
-            Console.WriteLine("\nENVIO HECHO \n"+sql);
-
+        public void enviohecho_date(string date_)
+        {
+            sql = "UPDATE propuestas SET envionube = 1 WHERE envionube = 0 AND ultmod < '"+date_+"'  ";
             con.query(sql);
         }
 

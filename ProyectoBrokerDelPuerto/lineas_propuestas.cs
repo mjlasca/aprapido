@@ -301,8 +301,7 @@ namespace ProyectoBrokerDelPuerto
             sql = "SELECT * FROM lineas_propuestas WHERE  id_propuesta= '" + idPropuesta_ + "' AND prefijo = '" + prefijo_ + "' ";
             try
             {
-               Console.WriteLine("CONSULTA "+sql);
-                ds = con.query(sql);
+               ds = con.query(sql);
             }
             catch (Exception ex)
             {

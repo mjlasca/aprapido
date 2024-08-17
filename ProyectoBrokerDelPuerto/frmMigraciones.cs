@@ -298,6 +298,9 @@ namespace ProyectoBrokerDelPuerto
         
         public async Task<bool> exportarPropuestas()
         {
+            propuestas pro = new propuestas();
+            pro.enviohecho_date(DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd"));
+
             this.confprosimport.valor = "1";
             this.confprosimport.save();
             //MDIParent1.prosimport = true;
@@ -329,7 +332,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     if (this.miPropuestas.save())
                     {
-                        propuestas pro = new propuestas();
+                        pro = new propuestas();
                         pro.enviohecho();
                     }
                     return true;
@@ -1819,7 +1822,9 @@ namespace ProyectoBrokerDelPuerto
                 using (var ors = new StreamReader(_response.GetResponseStream()))
                 {
                     string res = ors.ReadToEnd().Trim();
-                    
+                    logs l = new logs();
+                    l.newError("EXP201", "Se genera la exportación " + (res.Length > 200 ? res.Substring(0, 200) : res));
+
                 }
                 return true;
             }
