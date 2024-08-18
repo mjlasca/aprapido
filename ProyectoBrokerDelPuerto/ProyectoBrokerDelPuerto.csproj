@@ -222,6 +222,7 @@
     <Compile Include="cobranzas\datauploadtemp.cs" />
     <Compile Include="cobranzas\logaseguradora.cs" />
     <Compile Include="cobranzas\perfilesaseguradoras.cs" />
+    <Compile Include="Cola.cs" />
     <Compile Include="comisiones.cs" />
     <Compile Include="commission.cs" />
     <Compile Include="commission_user.cs" />

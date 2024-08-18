@@ -10,8 +10,9 @@ namespace ProyectoBrokerDelPuerto
     class clientes
     {
         string sql = "";
-        string columns = "id,nombres,apellidos,tipo_id,telefono,direccion,email, codpostal, localidad,ciudad, sexo, fecha_nacimiento, situacion,ultmod,user_edit,codestado,categoria,codempresa,idaseguradora";
+        string columns = "id,nombres,apellidos,tipo_id,telefono,direccion,email, codpostal, localidad,ciudad, sexo, fecha_nacimiento, situacion,ultmod,user_edit,codestado,categoria,codempresa,idaseguradora,envionube";
         public string id, nombres, apellidos, tipo_id, telefono, direccion, email, codpostal, localidad, ciudad, sexo, fecha_nacimiento, situacion, ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codestado = "1", categoria, codempresa, idaseguradora = "";
+        public int envionube = 0;
         conexion con = new conexion();
 
         public clientes(bool installsi = false)
@@ -85,8 +86,6 @@ namespace ProyectoBrokerDelPuerto
             {
                 try
                 {
-
-                    //Add column categoria if NOT exist
                     if (con.query("SHOW COLUMNS FROM clientes WHERE Field = 'categoria' ").Tables[0].Rows.Count == 0)
                     {
                         con.query("ALTER TABLE clientes ADD COLUMN categoria VARCHAR(80) NULL");
@@ -95,6 +94,8 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE clientes ADD COLUMN codempresa VARCHAR(150) NULL;");
                     if (con.query("SHOW COLUMNS FROM clientes WHERE Field = 'idaseguradora' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE clientes ADD COLUMN idaseguradora VARCHAR(150) NULL;");
+                    if (con.query("SHOW COLUMNS FROM clientes WHERE Field = 'envionube' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE clientes ADD COLUMN envionube INT(1) DEFAULT 1;");
                 }
                 catch
                 {
@@ -106,6 +107,7 @@ namespace ProyectoBrokerDelPuerto
                 con.query("ALTER TABLE clientes ADD COLUMN categoria VARCHAR(80) NULL");
                 con.query("ALTER TABLE clientes ADD COLUMN codempresa VARCHAR(150) NULL;");
                 con.query("ALTER TABLE clientes ADD COLUMN idaseguradora VARCHAR(150) NULL;");
+                con.query("ALTER TABLE clientes ADD COLUMN envionube INT(1) DEFAULT 1;");
             }
             
 
@@ -210,6 +212,36 @@ namespace ProyectoBrokerDelPuerto
             return ds;
         }
 
+        public DataSet getEnvioNube()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM clientes  WHERE envionube = 0 ";
+            try
+            {
+                ds = con.query(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar actividades");
+            }
+
+            return ds;
+        }
+
+        public void setEnvioNube()
+        {
+            sql = "UPDATE clientes  SET envionube = 1 WHERE envionube = 0 ";
+            try
+            {
+                con.query(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar actividades");
+            }
+        }
+
 
         public DataSet get_all_fecha(string fecha, int index = 0, int length = 2000)
         {
@@ -287,6 +319,7 @@ namespace ProyectoBrokerDelPuerto
                         "codestado  = '" + this.codestado + "'," +
                         "categoria = '" + this.categoria + "', " +
                         "idaseguradora = '" + this.idaseguradora + "', " +
+                        "idaseguradora = '" + this.idaseguradora + "', " +
                         "codempresa = '" + MDIParent1.codempresa + "' " +
                         " WHERE id = '" + this.id + "' ;";
                 }
@@ -357,6 +390,7 @@ namespace ProyectoBrokerDelPuerto
                         "codestado  = '" + this.codestado + "'," +
                         "categoria = '" + this.categoria + "', " +
                         "idaseguradora = '" + this.idaseguradora + "', " +
+                        "envionube = '" + this.envionube + "', " +
                         "codempresa = '" + MDIParent1.codempresa + "' " +
                         " WHERE id = '" + this.id + "'";
                 }
@@ -381,12 +415,13 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.codestado + "'," +
                         "'" + this.categoria + "'," +
                         "'" + MDIParent1.codempresa + "'," +
-                        "'" + this.idaseguradora + "'" +
+                        "'" + idaseguradora + "'," +
+                        "'" + this.envionube + "'" +
                         ") ";
                 }
 
 
-                Console.WriteLine("INS CLI "+sql);
+                
                 con.query(sql);
                 return true;
 

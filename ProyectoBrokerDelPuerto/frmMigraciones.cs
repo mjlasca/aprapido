@@ -334,6 +334,8 @@ namespace ProyectoBrokerDelPuerto
                     {
                         pro = new propuestas();
                         pro.enviohecho();
+                        clientes cl = new clientes();
+                        cl.setEnvioNube();
                     }
                     return true;
                 }
@@ -341,6 +343,42 @@ namespace ProyectoBrokerDelPuerto
                 {
                     logs l = new logs();
                     l.newError("EXP_PRO101", "hubo un error al tratar de guardar los datos de exportación " + ex.Message);
+                    return false;
+                }
+
+            }
+
+            return false;
+        }
+
+        public async Task<bool> exportarClientes_2()
+        {
+            this.confprosimport.valor = "1";
+            this.confprosimport.save();
+            this.datastar();
+
+            migraciones mig = new migraciones();
+            mig.tipo = "EXPORTACION";
+            mig.tabla = "clientes";
+            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.migrarListaTomador(fecha);
+
+            string jsonlistpropuestas = JsonConvert.SerializeObject(this.data);
+            bool res = await this.enviar_json(jsonlistpropuestas);
+            this.confprosimport.valor = "0";
+            this.confprosimport.save();
+            //MDIParent1.prosimport = false;
+            if (res)
+            {
+                try
+                {
+                    clientes clie = new clientes();
+                    clie.setEnvioNube();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("hubo un error al guardar datos exportación barrios" + ex.Message);
                     return false;
                 }
 
@@ -1043,9 +1081,7 @@ namespace ProyectoBrokerDelPuerto
                 string consecutivos = "";
 
                 clientes cli = new clientes();
-                DataSet ds = cli.get_all_fecha(fecha, index);
-
-                
+                DataSet ds = cli.getEnvioNube();
                 if (ds.Tables[0].Rows.Count > 0)
                 {
                     this.listtomador = (from DataRow dr in ds.Tables[0].AsEnumerable().ToList()
@@ -1069,56 +1105,10 @@ namespace ProyectoBrokerDelPuerto
                                             codestado = dr["codestado"].ToString(),
                                             codempresa = dr["codempresa"].ToString()
                                         }).ToList();
-
-
-                    /*for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                    {
-                        Console.WriteLine("---< "+ ds.Tables[0].Rows[i]["nombres"].ToString());
-
-                        
-                        
-                        
-
-                        /*this.listtomador.Add(
-                            new clientes()
-                            {
-                                id = ds.Tables[0].Rows[i]["id"].ToString(),
-                                nombres = ds.Tables[0].Rows[i]["nombres"].ToString(),
-                                apellidos = ds.Tables[0].Rows[i]["apellidos"].ToString(),
-                                telefono = ds.Tables[0].Rows[i]["telefono"].ToString(),
-                                direccion = ds.Tables[0].Rows[i]["direccion"].ToString(),
-                                email = ds.Tables[0].Rows[i]["email"].ToString(),
-                                ciudad = ds.Tables[0].Rows[i]["ciudad"].ToString(),
-                                codpostal = ds.Tables[0].Rows[i]["codpostal"].ToString(),
-                                localidad = ds.Tables[0].Rows[i]["localidad"].ToString(),
-                                fecha_nacimiento = Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("yyyy-MM-dd"),
-                                tipo_id = ds.Tables[0].Rows[i]["tipo_id"].ToString(),
-                                sexo = ds.Tables[0].Rows[i]["sexo"].ToString(),
-                                situacion = ds.Tables[0].Rows[i]["situacion"].ToString(),
-                                ultmod = Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
-                                user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
-                                codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
-                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString()
-                            }
-                        );
-
-                    
-                    
-
-                        textBox1.Text += "Cliente: " + ds.Tables[0].Rows[i]["nombres"].ToString() + " "+ ds.Tables[0].Rows[i]["apellidos"].ToString() + Environment.NewLine;
-
-                        cantregistros = i + 1;
-                        consecutivos += ds.Tables[0].Rows[i]["id"].ToString() + ",";
-                    }*/
-
-                    //this.data.listtomador = listtomador;
-
                 }
 
                 if (cantregistros > 0)
                     mi.numeracion = consecutivos;
-
-
                 mi.cantidad_registros = cantregistros.ToString();
                 miTomador = mi;
 
@@ -1665,7 +1655,7 @@ namespace ProyectoBrokerDelPuerto
         private void migrarListaTomador(string doc)
         {
             clientes cli = new clientes();
-            DataSet ds = cli.get(doc);
+            DataSet ds = cli.getEnvioNube();
 
             bool err = false;
             
@@ -1756,7 +1746,7 @@ namespace ProyectoBrokerDelPuerto
                             }
                         );
 
-                        this.migrarListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
+                        //this.migrarListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
 
                 }
 
@@ -1822,16 +1812,11 @@ namespace ProyectoBrokerDelPuerto
                 using (var ors = new StreamReader(_response.GetResponseStream()))
                 {
                     string res = ors.ReadToEnd().Trim();
-                    logs l = new logs();
-                    l.newError("EXP201", "Se genera la exportación " + (res.Length > 200 ? res.Substring(0, 200) : res));
-
                 }
                 return true;
             }
             catch (Exception ex)
             {
-                logs log = new logs();
-                log.newError("MIG500", "Error al enviar datos propuestas " + ex.Message + " / "+ json);
                 return false;
             }
             

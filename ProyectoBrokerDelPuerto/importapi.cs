@@ -61,6 +61,7 @@ namespace ProyectoBrokerDelPuerto
                 this.para.reset = "1";
 
             this.para.apiversion = MDIParent1.apiversion;
+            
             this.para.codempresa = MDIParent1.codempresa;
             this.para.prefijositio = MDIParent1.prefijo;
             this.para.rolpuntodeventa = this.rolpuntodeventa;
@@ -79,6 +80,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_propuestas";
+                    this.para.cola = Cola.getLastCola("propuestas");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (res)
@@ -101,7 +103,7 @@ namespace ProyectoBrokerDelPuerto
                 
             }
 
-            if (s.solicitud_lineas_propuestas)
+            /*if (s.solicitud_lineas_propuestas)
             {
                 try
                 {
@@ -119,8 +121,7 @@ namespace ProyectoBrokerDelPuerto
                     Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
                 }
                 
-            }
-
+            }*/
             
 
             if (s.solicitud_clientes)
@@ -434,9 +435,8 @@ namespace ProyectoBrokerDelPuerto
         private async Task<bool> enviardatos(string json)
         {
 
-            Console.WriteLine("JSON IMP \n"+json);
-            /*try
-            {*/
+            try
+            {
                 string url = MDIParent1.apiuri + "/api/parametros";
                 Console.WriteLine("URL IMP \n"+url);
                 WebRequest _request = WebRequest.Create(url);
@@ -457,73 +457,19 @@ namespace ProyectoBrokerDelPuerto
                 string res = "";
                 using (var ors = new StreamReader(_response.GetResponseStream()))
                 {
-                    res = ors.ReadToEnd().Trim();
+                     res = ors.ReadToEnd().Trim();
                 }
-            if (res != "")
-                    {
-
-
-                    if (!File.Exists(@"file_importaciones/importacion_" + this.para.solicitud + ".txt"))
-                    {
-                        System.IO.Directory.CreateDirectory("file_importaciones");
-                        System.IO.File.WriteAllText(@"file_importaciones/importacion_" + this.para.solicitud + ".txt", " ");
-                    }
-                    else
-                    {
-                        if (this.para.reset == "1")
-                        {
-                            System.IO.File.WriteAllText(@"file_importaciones/importacion_" + this.para.solicitud + ".txt", " ");
-                        }
-
-                    }
-
-                    System.IO.File.WriteAllText(@"file_importaciones/importacion_" + this.para.solicitud + "1.txt", res);
-                    if (val.FileCompare(@"file_importaciones/importacion_" + this.para.solicitud + ".txt", @"file_importaciones/importacion_" + this.para.solicitud + "1.txt"))
-                    {
-                        return false;
-                    }
-                    
-                        
-                    
-                        
-
-
-
-
+                if (res != "" && res != "[]")
+                {
                     JsonTextReader reader = new JsonTextReader(new StringReader(res));
                         JObject obj = JObject.Load(reader);
-                        /*if (obj.Count > 0)
-                        {
-                            this.fechaimportacion = obj["fechaimportacion"].ToString();
-                        }*/
-                        await Task.Run(() =>
-                        {
-                            if (this.para.rolpuntodeventa == "COLABORADOR" && this.para.solopropuestas != "1")
-                            {
-                                //if (this.para.solicitud == "solicitud_actividades")
-                                    //this.tarea_actividades(res);
-                                //if (this.para.solicitud == "solicitud_clasificaciones")
-                                    //this.tarea_clasificaciones(res);
-                                //if (this.para.solicitud == "solicitud_coberturas")
-                                    //this.tarea_coberturas(res);
-                                //if (this.para.solicitud == "solicitud_barrios")
-                                    //this.tarea_barrios(res);
-                                //if (this.para.solicitud == "solicitud_gruposbarrios")
-                                    //this.tarea_grupos_barrios(res);
-                                if (this.para.solicitud == "solicitud_provincias")
-                                    this.tarea_provincias(res);
-                            }
-                                
-                        });
-                        
                         await Task.Run(() =>
                         {
                             if (this.para.solicitud == "solicitud_propuestas")
+                            {
                                 this.tarea_propuestas(res);
-                            if (this.para.solicitud == "solicitud_lineas_propuestas")
                                 this.tarea_lineas_propuestas(res);
-                            //if (this.para.solicitud == "solicitud_barrios_propuestas")
-                              //  this.tarea_barrios_propuestas(res);
+                            }
                             if (this.para.solicitud == "solicitud_clientes")
                                 this.tarea_clientes(res);
                             if (this.para.solicitud == "solicitud_arqueos")
@@ -538,18 +484,16 @@ namespace ProyectoBrokerDelPuerto
                                 this.tarea_perfiles(res);
                             if (this.para.solicitud == "solicitud_barrios" )
                                 this.tarea_barrios(res);
+                            if (this.para.solicitud == "solicitud_provincias")
+                                this.tarea_provincias(res);
 
                         });
 
                     }
-                    
-                
-
-                System.IO.File.WriteAllText(@"file_importaciones/importacion_" + this.para.solicitud + ".txt", res);
 
                 return true;
 
-            /*}
+            }
             catch (Exception ex)
             {
                 log.coderror = "I130";
@@ -557,7 +501,7 @@ namespace ProyectoBrokerDelPuerto
                 log.save();
                 MDIParent1.server500 = ex.Message;
                 return false;
-            }*/
+            }
 
 
             
@@ -659,8 +603,6 @@ namespace ProyectoBrokerDelPuerto
             JsonTextReader reader = new JsonTextReader(new StringReader(@json));
             JObject obj = JObject.Load(reader);
 
-            
-
             if (obj["propuestas"] != null)
             {
                 if(obj["propuestas"].Count() > 0)
@@ -668,6 +610,14 @@ namespace ProyectoBrokerDelPuerto
                     Console.WriteLine("Importando  propuestas (" + obj["propuestas"].Count() + ") " + DateTime.Now);
 
                     this.concattextbox += "IMPORTACIÓN PROPUESTAS / " + obj["propuestas"].Count() + " Registros " + Environment.NewLine;
+
+                    List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                          select new Cola()
+                                          {
+                                              id = val["id"] == null ? "" : val["id"],
+                                              entity = val["entity"] == null ? "" : val["entity"],
+                                              entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                          }).ToList();
 
                     List<propuestas> listobj = (from dynamic val in obj["propuestas"].AsEnumerable().ToList()
                                                 select new propuestas()
@@ -722,12 +672,11 @@ namespace ProyectoBrokerDelPuerto
                     int aux = 0;
                     try
                     {
-                            for (int i = aux; i < listobj.Count; i++)
-                            {
-                                listobj[i].save_import();
-                                concat_1 += listobj[i].prefijo + listobj[i].idpropuesta + ",";
-                            }
-
+                        for (int i = aux; i < listobj.Count; i++)
+                        {
+                            listobj[i].save_import();
+                            concat_1 += listobj[i].prefijo + listobj[i].idpropuesta + ",";
+                        }
                         if (concat_1 != "")
                         {
                                 this.concattextbox += Environment.NewLine + Environment.NewLine;
@@ -741,6 +690,8 @@ namespace ProyectoBrokerDelPuerto
                                 mig.useredit = MDIParent1.sesionUser;
                                 miPropuestas = mig;
                         }
+
+                        Cola.setLastCola(liscola);
 
                     }
                     catch (Exception ex)
@@ -1676,7 +1627,8 @@ namespace ProyectoBrokerDelPuerto
         public string rolpuntodeventa { get; set; }
 
         public string solicitud { get; set; } = string.Empty;
-        
+        public int cola { get; set; }
+
 
     }
 

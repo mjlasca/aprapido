@@ -99,7 +99,7 @@ namespace ProyectoBrokerDelPuerto
         private bool exist()
         {
             sql = "SELECT * FROM configuraciones WHERE dato = '"+this.dato+"' ";
-            if(con.query(sql).Tables[0].Rows.Count > 0)
+            if(con.query(sql).Tables.Count > 0 && con.query(sql).Tables[0].Rows.Count > 0)
             {
                 return true;
             }
