@@ -11,7 +11,7 @@ namespace ProyectoBrokerDelPuerto
     {
         string sql = "";
         string columns = "id,nombre,idbarrio,nombrebarrio,ultmod,envionube,codestado";
-        public string reg, id, nombre, idbarrio, nombrebarrio = "", envionube = "1",codestado = "1";
+        public string reg, id, nombre, idbarrio, nombrebarrio = "", envionube = "0",codestado = "1";
         public string ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public int access = 0;
         conexion con = new conexion();
@@ -174,7 +174,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM gruposbarrios  WHERE envionube > '0' GROUP BY id,idbarrio  ORDER BY nombre ASC";
+            sql = "SELECT * FROM gruposbarrios  WHERE envionube = '0' GROUP BY id,idbarrio  ORDER BY nombre ASC";
             try
             {
                 ds = con.query(sql);
@@ -317,7 +317,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void actualizar_envionube()
         {
-            sql = "UPDATE gruposbarrios SET envionube = '0' WHERE envionube = '1' ";
+            sql = "UPDATE gruposbarrios SET envionube = '1' WHERE envionube = '0' ";
             con.query(sql);
         }
 

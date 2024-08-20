@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
             }
             else
             {
-                sql = "CREATE TABLE if not exists colas (reg serial PRIMARY KEY, id INT(10), entity VARCHAR(100), entity_id INT(10),  " +
+                sql = "CREATE TABLE if not exists colas (reg INTEGER PRIMARY KEY, id INT(10), entity VARCHAR(100), entity_id INT(10),  " +
                 " ultmod DATETIME, user_edit VARCHAR(100));";
             }
 

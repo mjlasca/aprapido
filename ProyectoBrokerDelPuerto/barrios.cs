@@ -94,7 +94,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM barrios  WHERE envionube > '0'  ";
+            sql = "SELECT * FROM barrios  WHERE envionube = '0'  ";
             try
             {
                 ds = con.query(sql);
@@ -299,7 +299,7 @@ namespace ProyectoBrokerDelPuerto
                         "codestado = '" + this.codestado + "'," +
                         "envionube = '" + this.envionube + "' ," +
                         "observaciones = '" + this.observaciones + "'" +
-                        " WHERE id = '" + this.id + "' AND envionube < 1 ";
+                        " WHERE id = '" + this.id ;
                 }
                 else
                 {
@@ -411,7 +411,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void envionube_()
         {
-            sql = "UPDATE barrios SET envionube = '0' WHERE envionube = '1' ";
+            sql = "UPDATE barrios SET envionube = '1' WHERE envionube = '0' ";
             con.query(sql);
         }
 

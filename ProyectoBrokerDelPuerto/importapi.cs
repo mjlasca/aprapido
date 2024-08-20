@@ -130,6 +130,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clientes";
+                    this.para.cola = Cola.getLastCola("clientes");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -151,6 +152,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_usuarios";
+                    this.para.cola = Cola.getLastCola("usuarios");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -193,6 +195,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_arqueos";
+                    this.para.cola = Cola.getLastCola("arqueos");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -212,6 +215,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_rendiciones";
+                    this.para.cola = Cola.getLastCola("rendiciones");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -227,7 +231,7 @@ namespace ProyectoBrokerDelPuerto
                 
             }
 
-            if (s.solicitud_lineas_rendiciones)
+            /*if (s.solicitud_lineas_rendiciones)
             {
                 try
                 {
@@ -246,7 +250,7 @@ namespace ProyectoBrokerDelPuerto
                 }
                     
              
-            }
+            }*/
 
             if (s.solicitud_actividades)
             {
@@ -317,6 +321,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_barrios";
+                    this.para.cola = Cola.getLastCola("barrios");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -469,6 +474,7 @@ namespace ProyectoBrokerDelPuerto
                             {
                                 this.tarea_propuestas(res);
                                 this.tarea_lineas_propuestas(res);
+                                this.tarea_clientes(res);
                             }
                             if (this.para.solicitud == "solicitud_clientes")
                                 this.tarea_clientes(res);
@@ -885,6 +891,14 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine("Importando CLIENTES (" + obj["clientes"].Count() + ") " + DateTime.Now);
                 this.concattextbox += "IMPORTAR CLIENTES / " + obj["clientes"].Count() + " Registros " + Environment.NewLine;
 
+                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                      select new Cola()
+                                      {
+                                          id = val["id"] == null ? "" : val["id"],
+                                          entity = val["entity"] == null ? "" : val["entity"],
+                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                      }).ToList();
+
                 List<clientes> listobj = (from dynamic val in obj["clientes"].AsEnumerable().ToList()
                                           select new clientes()
                                           {
@@ -912,30 +926,13 @@ namespace ProyectoBrokerDelPuerto
                 try
                 {
                     int bandera_concat = 1000;
-                    for (int i = 0; i < listobj.Count; i++)
+                    foreach(clientes cliente in listobj)
                     {
-                    
-                        //listobj[i].delete_id();
-                        if (concat_.ToString().Trim() != "")
-                        {
-                            if(listobj[i].concat_sql() != "")
-                                concat_.AppendLine(", " + listobj[i].concat_sql());
-                        }
-                        else
-                            concat_.AppendLine(listobj[i].concat_sql());
-
-
-                        if ((i >= bandera_concat &&  concat_.ToString() != "") || i >= (listobj.Count - 1))
-                        {
-                            clientes c = new clientes();
-                            c.save_concat(concat_.ToString());
-                            
-                            concat_ = new System.Text.StringBuilder();
-                            bandera_concat = bandera_concat + 1000;
-                        }
-
+                        cliente.envionube = 1;
+                        cliente.save();
                     }
-                    
+
+                    Cola.setLastCola(liscola);
 
                 }
                 catch (Exception ex)
@@ -1330,6 +1327,14 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine( "IMPORTACIÓN Barrios / " + obj["barrios"].Count() + " Registros " + Environment.NewLine);
                 this.concattextbox += "IMPORTACIÓN Barrios / " + obj["barrios"].Count() + " Registros " + Environment.NewLine;
 
+                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                      select new Cola()
+                                      {
+                                          id = val["id"] == null ? "" : val["id"],
+                                          entity = val["entity"] == null ? "" : val["entity"],
+                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                      }).ToList();
+
                 List<barrios> listobj = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
                                          select new barrios()
                                          {
@@ -1352,12 +1357,21 @@ namespace ProyectoBrokerDelPuerto
                                          }).ToList();
                 
                 var concat_ = new System.Text.StringBuilder();
-
-                for (int i = 0; i < listobj.Count; i++)
+                try
                 {
-                    listobj[i].envionube = 0;
-                    listobj[i].save();
+                    foreach(barrios barrio in listobj) { 
+                        barrio.envionube = 1;
+                        barrio.save();
+                    }
+
+                    Cola.setLastCola(liscola);
                 }
+                catch(Exception ex)
+                {
+                    logs log = new logs();
+                    log.newError("IMPBARRIOS", ex.Message);
+                }
+                
                 
 
 
