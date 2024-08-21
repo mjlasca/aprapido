@@ -28,6 +28,12 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
+        public bool specailCharacters(string text)
+        {
+            Regex regex = new Regex(@"[^a-zA-Z0-9]");
+            return regex.IsMatch(text);
+        }
+
         public bool estavacio(string texto)
         {
             if (texto != "")
@@ -68,8 +74,13 @@ namespace ProyectoBrokerDelPuerto
             return txt;
         }
 
-       
 
+        public static string RemoveSpecialCharacters(string input)
+        {
+            if (input == "")
+                return input;
+            return Regex.Replace(input, @"[^a-zA-Z0-9]", "");
+        }
 
 
 

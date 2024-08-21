@@ -267,16 +267,6 @@ namespace ProyectoBrokerDelPuerto
             }
 
             dataGridView1.Rows.Clear();
-
-            Task.Run(() => {
-                frmListadoVencimiento frm = new frmListadoVencimiento();
-                frm.ShowDialog();
-                propuestas pro = new propuestas();
-                pro.no_vigente_all(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
-            });
-
-            
-
             fec1.Value = fec1.Value.AddDays(-1);
             this.busqueda_grid();
         }

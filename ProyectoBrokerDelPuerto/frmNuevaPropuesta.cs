@@ -483,6 +483,7 @@ namespace ProyectoBrokerDelPuerto
                 //  return -1;
 
                 clientes cli = new clientes();
+                dataGridView1.Rows[i].Cells["nodocumento"].Value = validaciones.RemoveSpecialCharacters(dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString()) ?? "";
                 cli.id = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
 
                 if (!cli.validar_id())
@@ -1437,6 +1438,7 @@ namespace ProyectoBrokerDelPuerto
         private void guardar_cliente()
         {
             clientes cli = new clientes();
+            textBox1.Text = validaciones.RemoveSpecialCharacters(textBox1.Text.Trim());
             cli.id = textBox1.Text.Trim();
             DataSet ds = cli.get(cli.id);
             if (ds.Tables.Count > 0)

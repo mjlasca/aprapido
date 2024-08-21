@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -72,10 +74,10 @@ namespace ProyectoBrokerDelPuerto
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(dataGridView1.Rows.Count > 0)
+            if (dataGridView1.Rows.Count > 0)
             {
-                //try
-                //{
+                try
+                {
                     excelDocuments xls = new excelDocuments();
                     string ruta = "";
 
@@ -83,7 +85,8 @@ namespace ProyectoBrokerDelPuerto
                     SaveFileDialog saveFileDialog = new SaveFileDialog();
                     saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
                     saveFileDialog.Filter = "Archivos de texto (*.xlsx)|*.xls|Todos los archivos (*.*)|*.*";
-                    saveFileDialog.FileName = "Vencimiento a "+textBox1.Text+ " días del " + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
+                    saveFileDialog.FileName = "Vencimiento a " + textBox1.Text + " días del " + DateTime.Now.ToString("dd-MM-yyyy") + ".xlsx";
+                
                     if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
                     {
                         string FileName = saveFileDialog.FileName;
@@ -92,12 +95,13 @@ namespace ProyectoBrokerDelPuerto
                         xls.baseExcel(ruta, this.generar_informe());
                         MessageBox.Show("Archivo generado con éxito en " + ruta);
                     }
-                    
-                /*}
+                
+                }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Error al generar el .xls de vencimientos");
-                }*/
+                    logs log = new logs();
+                    log.newError("VENCI", ex.Message);
+                }
             }
         }
 

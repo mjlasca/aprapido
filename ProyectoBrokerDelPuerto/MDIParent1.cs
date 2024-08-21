@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "9.0";
+        public static string versionsistema { get; set; } = "9.3";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -556,7 +556,30 @@ namespace ProyectoBrokerDelPuerto
         {
             Cola cola = new Cola(true);
             barrios bar = new barrios();
-            bar.envionube_();
+            configuraciones config = new configuraciones();
+            
+            if(config.get("aux21Ago").valor == "") {
+                try
+                {
+                    conexion con = new conexion();
+                    string sql = "UPDATE propuestas SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
+                    con.query(sql);
+                    sql = "UPDATE clientes SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
+                    con.query(sql);
+                    sql = "UPDATE barrios SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
+                    con.query(sql);
+
+                    config.dato = "aux21Ago";
+                    config.valor = "success";
+                    config.valor = "envío nube a 0";
+                    config.save();
+                }
+                catch (Exception ex){
+                    logs log = new logs();
+                    log.newError("FIX21AGO", ex.Message);
+                } 
+            }
+            
         }
 
 

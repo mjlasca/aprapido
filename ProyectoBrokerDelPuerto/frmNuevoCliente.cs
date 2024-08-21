@@ -57,10 +57,10 @@ namespace ProyectoBrokerDelPuerto
                 errores += "\nCampos obligatorios están vacíos";
             }
 
-            /*if (!val.esnumero(txtIdentificacion.Text))
+            if (!val.specailCharacters(txtIdentificacion.Text))
             {
-                errores += "\nLa identificación debe tener sólo números";
-            }*/
+                errores += "\nLa identificación debe tener caracteres especiales";
+            }
 
             /*if (!val.estexto(txtApellidos.Text))
             {

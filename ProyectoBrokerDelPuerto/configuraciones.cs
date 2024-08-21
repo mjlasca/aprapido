@@ -11,7 +11,7 @@ namespace ProyectoBrokerDelPuerto
         string sql = "";
 
         string columns = "dato,valor,detail";
-        public string id, dato ="prosimport", valor = "", detail= "";
+        public string id, dato ="", valor = "", detail= "";
         conexion con = new conexion();
 
         public configuraciones(bool inst = false)
@@ -112,30 +112,32 @@ namespace ProyectoBrokerDelPuerto
         {
             try
             {
-                if (this.exist())
+                if(this.dato != "")
                 {
-                    sql = "UPDATE configuraciones SET valor = '" + this.valor + "',detail = '" + this.detail + "'  WHERE dato = '" + this.dato + "' ";
+                    if (this.exist())
+                    {
+                        sql = "UPDATE configuraciones SET valor = '" + this.valor + "',detail = '" + this.detail + "'  WHERE dato = '" + this.dato + "' ";
+                    }
+                    else
+                    {
+                        sql = "INSERT INTO configuraciones (" + this.columns + ") VALUES(" +
+                        "'" + this.dato + "'," +
+                        "'" + this.valor + "'," +
+                        "'" + this.detail + "'" +
+                        ") ";
+                    }
+                    con.query(sql);
+                    return true;
                 }
-                else
-                {
-                    sql = "INSERT INTO configuraciones (" + this.columns + ") VALUES(" +
-                    "'" + this.dato + "'," +
-                    "'" + this.valor + "'," +
-                    "'" + this.detail + "'" +
-                    ") ";
-                }
-
-                Console.WriteLine("\n\nSQL PROSIMPORT "+sql);
-
-                con.query(sql);
-                return true;
-
+                return false;
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ERROR configuraciones "+ex.Message);
                 return false;
             }
+
+            
 
         }
     }

@@ -942,15 +942,13 @@ namespace ProyectoBrokerDelPuerto
             DataSet ds = new DataSet();
             if (CacheManager.GetFromCache("vencimiento") != null)
                 return (DataSet)CacheManager.GetFromCache("vencimiento");
-            controlventas control = new controlventas(true);
             sql = "SELECT t1.idpropuesta,t1.referencia,t1.prefijo,t1.formadepago,"+
             " t0.nombres, t0.apellidos,t0.id,t0.fecha_nacimiento,t0.email,t0.telefono, " +
             " t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde,t1.user_edit,t1.prima,"+
             "t1.premio, t1.fechaHasta, t1.paga, t1.codestado,t1.nota " +
             " FROM propuestas t1 LEFT JOIN clientes t0 ON t0.id = t1.documento WHERE " +
-            " DATE(t1.fechaHasta) BETWEEN  '" + DateTime.Today.ToString("yyyy-MM-dd") + "' AND '" + fecha_vence + "' AND  t1.codestado = 1  " +
+            " t1.fechaHasta BETWEEN  '" + DateTime.Today.ToString("yyyy-MM-dd 00:01:00") + "' AND '" + fecha_vence + "' AND  t1.codestado = 1  " +
             " ORDER BY t1.id DESC";
-            
             try
             {
                 ds = con.query(sql);

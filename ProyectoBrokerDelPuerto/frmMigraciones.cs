@@ -1841,8 +1841,6 @@ namespace ProyectoBrokerDelPuerto
             }
 
             if(this.urlapi == ""){
-                MessageBox.Show("La configuración del punto de venta no está completa, la dirección del servidor no existe",
-                "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }else{
                 return true;
@@ -1868,7 +1866,7 @@ namespace ProyectoBrokerDelPuerto
         {
             this.data.rolpuntodeventa = MDIParent1.rolPuntodeventa;
             this.data.prefpuntodeventa = MDIParent1.prefijo;
-
+            
             if (this.data.rolpuntodeventa == "")
             {
                 MessageBox.Show("El sistema no tiene un colaborador válido al sistema", "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1879,7 +1877,7 @@ namespace ProyectoBrokerDelPuerto
 
             if (!this.revisarurlapi())
             {
-                this.Close();
+                //this.Close();
             }
 
 

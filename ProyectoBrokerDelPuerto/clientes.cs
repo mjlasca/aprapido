@@ -370,6 +370,8 @@ namespace ProyectoBrokerDelPuerto
         {
             try
             {
+                if (this.id != "")
+                    this.id = validaciones.RemoveSpecialCharacters(this.id);
                 if (this.exist())
                 {
                     sql = "UPDATE clientes SET " +
@@ -431,6 +433,8 @@ namespace ProyectoBrokerDelPuerto
             }
 
         }
+
+
 
         public void save_concat(string sql1)
         {

@@ -598,7 +598,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void pdfRecibos(string idpropuesta, clientes tomador, DataGridView dgv, string vigenciaDesde, string vigenciaHasta, string barrio, coberturas cobertura, double premioTotal, bool abrir = true, bool pagado = false, string path = @"RecibosEmitidos")
         {
-            try { 
+            //try { 
 
                 DateTime datett = DateTime.Now;
                 Document doc = new Document(PageSize.LETTER);
@@ -1323,11 +1323,11 @@ namespace ProyectoBrokerDelPuerto
 
                 
 
-            }
+            /*}
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
 
 
 
