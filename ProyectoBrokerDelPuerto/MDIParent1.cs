@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "9.3";
+        public static string versionsistema { get; set; } = "9.4";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -558,20 +558,15 @@ namespace ProyectoBrokerDelPuerto
             barrios bar = new barrios();
             configuraciones config = new configuraciones();
             
-            if(config.get("aux21Ago").valor == "") {
+            if(config.get("fix22Ago").valor == "") {
                 try
                 {
                     conexion con = new conexion();
-                    string sql = "UPDATE propuestas SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
+                    string sql = "DELETE FROM colas WHERE ultmod > '2024-08-20 16:00:00'";
                     con.query(sql);
-                    sql = "UPDATE clientes SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
-                    con.query(sql);
-                    sql = "UPDATE barrios SET envionube = 0 WHERE ultmod > '2024-08-21 09:00:00'";
-                    con.query(sql);
-
-                    config.dato = "aux21Ago";
+                    config.dato = "fix22Ago";
                     config.valor = "success";
-                    config.valor = "envío nube a 0";
+                    config.detail = "envío nube a 0 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") ;
                     config.save();
                 }
                 catch (Exception ex){
@@ -1084,8 +1079,8 @@ namespace ProyectoBrokerDelPuerto
                 migp.tipo = "IMPORTACION";
 
                 
-                if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 10)
-                {
+                /*if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 10)
+                {*/
 
                     int waitTime = 60000;
 
@@ -1128,7 +1123,7 @@ namespace ProyectoBrokerDelPuerto
                     this.enviarPropuestasNube();
                     this.textBoxImport();
 
-                }
+                //}
                 
                 server500 = "";
 
