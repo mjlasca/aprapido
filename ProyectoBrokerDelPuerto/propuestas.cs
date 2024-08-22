@@ -2271,7 +2271,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 sql = "UPDATE propuestas AS p, controlventas AS c  " +
                     "SET p.referencia = c.referencia, p.prima = c.primaemitida, p.nota = c.notacredito  " +
-                    " WHERE ( p.referencia IS NULL OR p.referencia = '' ) AND CONCAT(p.prefijo,p.idpropuesta) = c.codgrupo  AND c.fecha = '" + fecha_+"'";
+                    " WHERE  CONCAT(p.prefijo,p.idpropuesta) = c.codgrupo  AND c.fecha = '" + fecha_+"'";
                 
             }
             else
@@ -2280,8 +2280,7 @@ namespace ProyectoBrokerDelPuerto
                     " SET referencia = (SELECT c.referencia FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')," +
                         " prima = (SELECT c.primaemitida FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')," +
                         " nota = (SELECT c.notacredito FROM controlventas AS c WHERE (propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "')" +
-                    " WHERE(propuestas.referencia IS NULL OR propuestas.referencia = '')" +
-                      " AND EXISTS (SELECT 1 FROM controlventas AS c WHERE(propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "');";
+                    " WHERE EXISTS (SELECT 1 FROM controlventas AS c WHERE(propuestas.prefijo || propuestas.idpropuesta) = c.codgrupo AND c.fecha = '" + fecha_ + "');";
 
 
             }

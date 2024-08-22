@@ -272,14 +272,15 @@ namespace ProyectoBrokerDelPuerto
 
         private void button2_Click_1(object sender, EventArgs e)
         {
-            
+            if(txtFechaBorrar.Text != "")
+            {
                 controlventas cont = new controlventas();
                 if (cont.get_date(Convert.ToDateTime(txtFechaBorrar.Text).ToString("yyyy-MM-dd")))
                 {
                     if (MessageBox.Show("¿Segur@ desea borrar los registros?", "Confirmación", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
                         cont.delete_date(Convert.ToDateTime(txtFechaBorrar.Text).ToString("yyyy-MM-dd"));
-                        MessageBox.Show("Los registros de "+txtFechaBorrar.Text+" han sido borrados con éxito");
+                        MessageBox.Show("Los registros de " + txtFechaBorrar.Text + " han sido borrados con éxito");
                         txtFechaBorrar.Text = "";
                     }
                 }
@@ -287,6 +288,8 @@ namespace ProyectoBrokerDelPuerto
                 {
                     MessageBox.Show("No hay registros para esa fecha");
                 }
+            }
+                
 
             
         }
