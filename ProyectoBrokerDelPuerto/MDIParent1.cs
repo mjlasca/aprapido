@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "9.5";
+        public static string versionsistema { get; set; } = "9.6";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -712,7 +712,7 @@ namespace ProyectoBrokerDelPuerto
                     " - COD. ORGANIZADOR : "+ organizador_user + " - PRODUCTOR : " 
                     + dsAr.Tables[0].Rows[0]["nombre"].ToString();
 
-                if (dsAr.Tables[0].Rows[0]["allow"].ToString() == "1")
+                /*if (dsAr.Tables[0].Rows[0]["allow"].ToString() == "1")
                 {
                     Task.Run(() =>
                     {
@@ -725,7 +725,7 @@ namespace ProyectoBrokerDelPuerto
                             frmred.ShowDialog();
                         }
                     });
-                }
+                }*/
 
                 timer1.Start();
                 timer_parameters.Start();

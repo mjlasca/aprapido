@@ -799,7 +799,7 @@ namespace ProyectoBrokerDelPuerto
                 sql = "SELECT propuestas.prefijo,propuestas.idpropuesta,propuestas.referencia,propuestas.ultmod," +
                     "propuestas.premio_total,propuestas.master,propuestas.organizador,propuestas.productor,propuestas.user_edit," +
                     "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
-                    "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
+                    "(clientes.nombres || ' ' || clientes.apellidos) as nombre FROM propuestas " +
                     " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
                     " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                     "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.user_edit LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";

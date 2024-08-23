@@ -1592,7 +1592,7 @@ namespace ProyectoBrokerDelPuerto
                             }
                         );
 
-                        this.migrarListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
+                        this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
                         this.migrarLineasPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
                         //this.migrarBarriosPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
                         
@@ -1710,6 +1710,64 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
+        private void migrarUserListaTomador(string doc)
+        {
+            clientes cli = new clientes();
+            DataSet ds = cli.get(doc);
+
+            bool err = false;
+
+
+            if (ds.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                {
+
+                    try
+                    {
+                        this.listtomador.Add(
+                            new clientes()
+                            {
+                                id = ds.Tables[0].Rows[i]["id"].ToString(),
+                                nombres = ds.Tables[0].Rows[i]["nombres"].ToString(),
+                                apellidos = ds.Tables[0].Rows[i]["apellidos"].ToString(),
+                                telefono = ds.Tables[0].Rows[i]["telefono"].ToString(),
+                                direccion = ds.Tables[0].Rows[i]["direccion"].ToString(),
+                                email = ds.Tables[0].Rows[i]["email"].ToString(),
+                                ciudad = ds.Tables[0].Rows[i]["ciudad"].ToString(),
+                                codpostal = ds.Tables[0].Rows[i]["codpostal"].ToString(),
+                                localidad = ds.Tables[0].Rows[i]["localidad"].ToString(),
+                                fecha_nacimiento = ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("yyyy-MM-dd") : "1900-01-01",
+                                tipo_id = ds.Tables[0].Rows[i]["tipo_id"].ToString(),
+                                sexo = ds.Tables[0].Rows[i]["sexo"].ToString(),
+                                situacion = ds.Tables[0].Rows[i]["situacion"].ToString(),
+                                ultmod = ds.Tables[0].Rows[i]["ultmod"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                                user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
+                                codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
+                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString()
+                            }
+
+                        );
+
+                        err = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        logs log = new logs();
+                        log.newError("Tf205", "Error al enviar tomador en migraciones " + ex.Message + "\n" + ds.Tables[0].Rows[i]["id"].ToString() + "-" + ds.Tables[0].Rows[i]["nombres"].ToString());
+                        err = false;
+                    }
+
+
+                }
+
+                if (err)
+                    this.data.listtomador = listtomador;
+            }
+
+
+        }
+
 
         private void migrarLineasPropuestas(string id,string prefijo)
         {
@@ -1746,7 +1804,7 @@ namespace ProyectoBrokerDelPuerto
                             }
                         );
 
-                        //this.migrarListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
+                        this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
 
                 }
 
