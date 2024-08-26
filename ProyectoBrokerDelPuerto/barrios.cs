@@ -299,7 +299,7 @@ namespace ProyectoBrokerDelPuerto
                         "codestado = '" + this.codestado + "'," +
                         "envionube = '" + this.envionube + "' ," +
                         "observaciones = '" + this.observaciones + "'" +
-                        " WHERE id = '" + this.id ;
+                        " WHERE id = '" + this.id + "'";
                 }
                 else
                 {
