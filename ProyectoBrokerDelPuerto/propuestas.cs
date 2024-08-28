@@ -569,19 +569,15 @@ namespace ProyectoBrokerDelPuerto
             DataSet ds = new DataSet();
 
 
-            if (prefijo_ != "")
-            {
-                prefijo_ = " AND t1.prefijo = '"+prefijo_+"' ";
-            }
             if (MDIParent1.baseDatos == "MySql")
             {
                 sql = "SELECT *, (SELECT CONCAT(nombres,' ',apellidos) FROM clientes WHERE id = t1.documento LIMIT 1) as nombre, (SELECT fecha_nacimiento FROM clientes" +
-                " WHERE id = t1.documento LIMIT 1) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0' " + prefijo_ ;
+                " WHERE id = t1.documento LIMIT 1) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0' ";
             }
             else
             {
                 sql = "SELECT *, (SELECT nombres || ' ' || apellidos FROM clientes WHERE id = t1.documento LIMIT 1 ) as nombre, (SELECT fecha_nacimiento FROM clientes" +
-                   " WHERE id = t1.documento LIMIT 1 ) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0'  " + prefijo_ ;
+                   " WHERE id = t1.documento LIMIT 1 ) as fecha_nacimiento FROM propuestas t1 WHERE  t1.envionube = '0'  ";
             }
             
 

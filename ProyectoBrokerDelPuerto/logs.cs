@@ -42,6 +42,14 @@ namespace ProyectoBrokerDelPuerto
             
         }
 
+        public static void setError(string coderror_, string mensaje_)
+        {
+            logs log = new logs();
+            log.coderror = coderror_;
+            log.mensaje = mensaje_;
+            log.save();
+        }
+
         public void newError(string coderror_, string mensaje_)
         {
             this.coderror = coderror_;

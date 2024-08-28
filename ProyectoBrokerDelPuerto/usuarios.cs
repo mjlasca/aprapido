@@ -583,7 +583,8 @@ namespace ProyectoBrokerDelPuerto
             ApiUsuarios apusu = new ApiUsuarios();
             List<usuarios> lsusu = await apusu.Get();
             validaciones val = new validaciones();
-            if(val.dataComparacion("api_usuarios", lsusu))
+            
+            try
             {
                 foreach (usuarios u in lsusu)
                 {
@@ -591,8 +592,20 @@ namespace ProyectoBrokerDelPuerto
                     if (versionUpdate(u.loggin, u.codempresa, u.version))
                         u.save_import();
                 }
-                val.createData0("api_usuarios");
+                //val.createData0("api_usuarios");
+
+                if (CacheManager.GetFromCache("importUsuarios") != null)
+                {
+                    Cola.setLastCola((List<Cola>)CacheManager.GetFromCache("importUsuarios"));
+                    CacheManager.AddToCache("importUsuarios", null, new TimeSpan(0, 0, 5));
+                }
             }
+            catch(Exception ex)
+            {
+                logs.setError("importUser", ex.Message);
+            }
+                
+            
             
         }
 

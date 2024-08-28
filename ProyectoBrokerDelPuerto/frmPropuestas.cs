@@ -268,6 +268,8 @@ namespace ProyectoBrokerDelPuerto
 
             dataGridView1.Rows.Clear();
             fec1.Value = fec1.Value.AddDays(-1);
+            propuestas pro = new propuestas();
+            pro.no_vigente_all(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
             this.busqueda_grid();
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)

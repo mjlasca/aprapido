@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -38,7 +39,7 @@ namespace ProyectoBrokerDelPuerto
             client.BaseAddress = new Uri(this.baseEndPoint);
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(this.path+ "/" + MDIParent1.codempresa, UriKind.Relative),
+                RequestUri = new Uri(this.path+ "/" + MDIParent1.codempresa + "?reg=" + Cola.getLastCola("usuarios"), UriKind.Relative),
                 Method = HttpMethod.Get,
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.apiKey);
@@ -49,8 +50,14 @@ namespace ProyectoBrokerDelPuerto
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<List<usuarios>>(jsonContent);
-                    lsUs = result;
+                    if(jsonContent != "[]")
+                    {
+                        var jsonObject = JObject.Parse(jsonContent);
+                        var usuariosList = jsonObject["usuarios"].ToObject<List<usuarios>>();
+                        var colasList = jsonObject["colas"].ToObject<List<Cola>>();
+                        lsUs = usuariosList;
+                        CacheManager.AddToCache("importUsuarios", colasList, new TimeSpan(1, 0, 0));
+                    }
                 }
                 else
                 {
@@ -127,5 +134,9 @@ namespace ProyectoBrokerDelPuerto
             
         }
     }
+
+   
 }
+
+
 

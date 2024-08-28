@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "9.7";
+        public static string versionsistema { get; set; } = "9.8";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -634,40 +634,8 @@ namespace ProyectoBrokerDelPuerto
             }
 
 
-            if (File.Exists(@"file_importaciones/importacion_solicitud_propuestas.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_propuestas.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_propuestas1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_propuestas1.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_barrios.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_barrios.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_barrios1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_barrios1.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_gruposbarrios.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_gruposbarrios.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_gruposbarrios1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_gruposbarrios1.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_lineas_propuestas.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_lineas_propuestas.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_lineas_propuestas1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_lineas_propuestas1.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_clientes.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_clientes.txt");
-            if (File.Exists(@"file_importaciones/importacion_solicitud_clientes1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_solicitud_clientes1.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_coberturas.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_coberturas.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_coberturas1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_coberturas1.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_actividades.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_actividades.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_actividades1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_actividades1.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_clasificaciones.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_clasificaciones.txt");
-            if (File.Exists(@"file_importaciones/importacion_api_clasificaciones1.txt"))
-                System.IO.File.Delete(@"file_importaciones/importacion_api_clasificaciones1.txt");
-
-            this.importCloudParameters();
+            //this.importCloudParameters();
+            this.importCloudParametersLong();
             
 
             frmSesion frm = new frmSesion();
@@ -682,7 +650,6 @@ namespace ProyectoBrokerDelPuerto
 
             gruposbarrios gb = new gruposbarrios();
             gb.importGetApi();
-            this.importCloudParametersLong();
             
 
 
@@ -738,7 +705,6 @@ namespace ProyectoBrokerDelPuerto
 
         private async void importCloudParametersLong(bool allImport = true)
         {
-            Console.WriteLine("\n\nPARAMETROS sensibles\n\n");
             Task.Run( async () => { 
                 
                 usuarios usu = new usuarios();
@@ -1191,7 +1157,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void timer_parameters_Tick(object sender, EventArgs e)
         {
-            this.importCloudParameters();
+            //this.importCloudParameters();
             this.importCloudParametersLong();
             this.textBoxImport();
         }
