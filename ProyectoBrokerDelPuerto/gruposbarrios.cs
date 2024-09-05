@@ -252,7 +252,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT id FROM gruposbarrios WHERE id = '" + this.id + "' AND idbarrio = '"+this.idbarrio+"' ";
+            sql = "SELECT id FROM gruposbarrios WHERE id = '" + this.id + "' AND idbarrio = '"+this.idbarrio+"' AND codestado = 1 ";
             try
             {
                 ds = con.query(sql);
@@ -332,9 +332,15 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
-        public void delete()
+        public void delete_idbarrio()
         {
             sql = "UPDATE gruposbarrios SET codestado = '0', envionube = '1' WHERE TRIM(nombre) LIKE TRIM('" + this.nombre.Trim() + "') ";
+            con.query(sql);
+        }
+
+        public void delete()
+        {
+            sql = "UPDATE gruposbarrios SET codestado = '0', envionube = '0' WHERE TRIM(nombre) LIKE TRIM('" + this.nombre.Trim() + "') ";
             con.query(sql);
         }
     }

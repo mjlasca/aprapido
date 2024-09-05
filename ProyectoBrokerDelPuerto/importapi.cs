@@ -490,6 +490,8 @@ namespace ProyectoBrokerDelPuerto
                                 this.tarea_perfiles(res);
                             if (this.para.solicitud == "solicitud_barrios" )
                                 this.tarea_barrios(res);
+                            if(this.para.solicitud == "solicitud_gruposbarrios")
+                                this.tarea_grupos_barrios(res);
                             if (this.para.solicitud == "solicitud_provincias")
                                 this.tarea_provincias(res);
 
@@ -1393,17 +1395,26 @@ namespace ProyectoBrokerDelPuerto
             JObject obj = JObject.Load(reader);
 
             List<string> listAux = new List<string>();
-            
+           
 
-                if (obj["gruposbarrios"] != null)
+            if (obj["gruposbarrios"] != null)
             {
+                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                      select new Cola()
+                                      {
+                                          id = val["id"] == null ? "" : val["id"],
+                                          entity = val["entity"] == null ? "" : val["entity"],
+                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                      }).ToList();
+
                 List<gruposbarrios> listobj = (from dynamic val in obj["gruposbarrios"].AsEnumerable().ToList()
                                                select new gruposbarrios()
                                                {
                                                    nombre = val["nombre"],
                                                    id = val["id"],
                                                    idbarrio = val["idbarrio"],
-                                                   nombrebarrio = val["nombrebarrio"]
+                                                   nombrebarrio = val["nombrebarrio"],
+                                                   envionube = "1"
 
                                                }).ToList();
 
@@ -1414,42 +1425,14 @@ namespace ProyectoBrokerDelPuerto
                 {
                     if (listAux.IndexOf(listobj[i].id + listobj[i].idbarrio) < 0)
                     {
-                        listobj[i].delete();
-                        listAux.Add(listobj[i].id + listobj[i].idbarrio);
-                        try
-                        {
-                            if (concat_.ToString() != "")
-                                concat_.AppendLine(", " + listobj[i].concat_sql());
-                            else
-                                concat_.AppendLine(listobj[i].concat_sql());
-                        }
-                        catch (Exception ex)
-                        {
-                            log.coderror = "I105";
-                            log.mensaje = "Error al guardar Grupo de Barrio" + ex.Message;
-                            log.save();
-                        }
+                        listobj[i].delete_idbarrio();
+                        listobj[i].envionube = "1";
+                        listobj[i].save();
                     }
-
-
                 }
 
-                if (concat_.ToString() != "")
-                {
-                    gruposbarrios gb = new gruposbarrios();
-                    gb.save_concat(concat_.ToString());
-                }
-                
+                Cola.setLastCola(liscola);
 
-                migraciones mig = new migraciones();
-                mig.tabla = "gruposbarrios";
-                mig.tipo = "IMPORTACION";
-                mig.numeracion = "";
-                mig.fecha = para.fecha_actualizacion_hasta;
-                mig.cantidad_registros = listobj.Count().ToString();
-                mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                mig.useredit = MDIParent1.sesionUser;
-                miGruposBarrios = mig;
             }
         }
 

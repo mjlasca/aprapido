@@ -137,25 +137,22 @@ namespace ProyectoBrokerDelPuerto
 
         private void button1_Click(object sender, EventArgs e)
         {
-            
-            if(configprosimport.get_prosimport() == "1")
-            {
-                MessageBox.Show("En éste momento se está actualizando la base de datos \nPor favor probar nuevamente en 1 minuto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            else
-            {
-                configprosimport.valor = "1";
-                configprosimport.save();
-            }
-
             if (fecha.Text != "")
             {
+                if (configprosimport.get_prosimport() == "1")
+                {
+                    MessageBox.Show("En éste momento se está actualizando la base de datos \nPor favor probar nuevamente en 1 minuto", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                    configprosimport.valor = "1";
+                    configprosimport.save();
+                }
+
                 usuarios user = new usuarios();
 
-                
-
-                if (DateTime.Compare(Convert.ToDateTime(fecha.Text), fechaultima) <= 0)
+                /*if (DateTime.Compare(Convert.ToDateTime(fecha.Text), fechaultima) <= 0)
                 {
                     user.loggin = MDIParent1.sesionUser;
                     DataSet dsUserr = user.get();
@@ -169,7 +166,10 @@ namespace ProyectoBrokerDelPuerto
                             return;
                         }
                     }
-                }
+                }*/
+
+                ApiReports apReports = new ApiReports();
+                apReports.Get(Convert.ToDateTime(fecha.Text).ToString("yyyy-MM-dd"));
 
                 propuestas pro = new propuestas();
                 DataSet dspro = pro.get_all_date_findia(Convert.ToDateTime(fecha.Text).ToString("yyyy-MM-dd"));

@@ -798,11 +798,14 @@ namespace ProyectoBrokerDelPuerto
             if (duplicado)
             {
                 pro.prefijo = MDIParent1.prefijo;
+                pro.formadepago = "";
+                pro.usuariopaga = "";
+                pro.envionube = "1";
                 lblPrefijo.Text = pro.prefijo;
             }
                 
 
-                if (!paga_ch.Checked)
+            if (!paga_ch.Checked)
             {
                 pro.paga = "0";
                 pro.formadepago = "CREDITO";
@@ -1847,7 +1850,7 @@ namespace ProyectoBrokerDelPuerto
             this.formpago_ = "CONTADO";
             paga_ch.Checked = true;
             this.guardarPropuesta();
-            this.ocultarBotonGuardar();
+            
 
         }
 
@@ -1875,11 +1878,13 @@ namespace ProyectoBrokerDelPuerto
                 if (MessageBox.Show("¿Está seguro(a) que desea alterar la propuesta ya grabada previamente?", "Guardar cambios", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     this.guardado();
+                    this.ocultarBotonGuardar();
                 }
             }
             else
             {
                 this.guardado();
+                this.ocultarBotonGuardar();
             }
 
         }
@@ -2398,7 +2403,7 @@ namespace ProyectoBrokerDelPuerto
             this.formpago_ = "CREDITO";
             paga_ch.Checked = false;
             this.guardarPropuesta();
-            this.ocultarBotonGuardar();
+            
         }
 
         private bool guardado(bool duplicar = false)

@@ -43,14 +43,14 @@ namespace ProyectoBrokerDelPuerto
         private async void button1_Click(object sender, EventArgs e)
         {
 
-            if (this.verificar())
+            /*if (this.verificar())
             {
                 this.migrardata();
             }
             else
             {
                 MessageBox.Show("Contraseña incorrecta", "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            }*/
 
         }
 
@@ -299,8 +299,6 @@ namespace ProyectoBrokerDelPuerto
         public async Task<bool> exportarPropuestas()
         {
             propuestas pro = new propuestas();
-            pro.enviohecho_date(DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd"));
-
             this.confprosimport.valor = "1";
             this.confprosimport.save();
             //MDIParent1.prosimport = true;
@@ -391,43 +389,51 @@ namespace ProyectoBrokerDelPuerto
         {
             this.confprosimport.valor = "1";
             this.confprosimport.save();
-            //MDIParent1.prosimport = true;
             this.datastar();
-
             migraciones mig = new migraciones();
             mig.tipo = "EXPORTACION";
             mig.tabla = "barrios";
             string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             this.migrarBarrios(fecha);
-            this.migrarGrupoBarrios(fecha);
-
             string jsonlistpropuestas = JsonConvert.SerializeObject(this.data);
             bool res = await this.enviar_json(jsonlistpropuestas);
             this.confprosimport.valor = "0";
             this.confprosimport.save();
-            //MDIParent1.prosimport = false;
             if (res)
             {
-                try
-                {
-                    barrios barr = new barrios();
-                    barr.envionube_();
-                    gruposbarrios gr = new gruposbarrios();
-                    gr.actualizar_envionube();
-                    this.miBarrios.save();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("hubo un error al guardar datos exportación barrios" + ex.Message);
-                    return false;
-                }
-
+                barrios barr = new barrios();
+                barr.envionube_();
+                this.miBarrios.save();
+                return true;
             }
 
             return false;
         }
 
+        public async Task<bool> exportarGruposBarrios()
+        {
+            this.confprosimport.valor = "1";
+            this.confprosimport.save();
+            this.datastar();
+            migraciones mig = new migraciones();
+            mig.tipo = "EXPORTACION";
+            mig.tabla = "barrios";
+            string fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+            this.migrarGrupoBarrios(fecha);
+            string jsonlistpropuestas = JsonConvert.SerializeObject(this.data);
+            bool res = await this.enviar_json(jsonlistpropuestas);
+            this.confprosimport.valor = "0";
+            this.confprosimport.save();
+            if (res)
+            {
+                gruposbarrios gr = new gruposbarrios();
+                gr.actualizar_envionube();
+                this.miBarrios.save();
+                return true;
+            }
+
+            return false;
+        }
 
         public async Task<bool> exportarRendiciones()
         {

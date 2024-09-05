@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "9.8";
+        public static string versionsistema { get; set; } = "10.0";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -554,27 +554,13 @@ namespace ProyectoBrokerDelPuerto
 
         private void installTables()
         {
+            migraciones migra = new migraciones(true);
             Cola cola = new Cola(true);
             barrios bar = new barrios();
             configuraciones config = new configuraciones();
-            
-            if(config.get("fix22Ago").valor == "") {
-                try
-                {
-                    conexion con = new conexion();
-                    string sql = "DELETE FROM colas WHERE ultmod > '2024-08-20 16:00:00'";
-                    con.query(sql);
-                    config.dato = "fix22Ago";
-                    config.valor = "success";
-                    config.detail = "envío nube a 0 " + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") ;
-                    config.save();
-                }
-                catch (Exception ex){
-                    logs log = new logs();
-                    log.newError("FIX21AGO", ex.Message);
-                } 
-            }
-            
+            propuestas pro = new propuestas();
+            pro.enviohecho_date(DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd"));
+
         }
 
 
@@ -1034,11 +1020,10 @@ namespace ProyectoBrokerDelPuerto
 
         private async void timer1_Tick(object sender, EventArgs e)
         {
-
-            Console.WriteLine("Entra al timer "+DateTime.Now.ToString("HH:mm:ss"));
-            
-
-            if ( confiprosimport.get_prosimport() == "0" && installing == false )
+            TimeSpan startTime = new TimeSpan(5, 0, 0);  
+            TimeSpan endTime = new TimeSpan(23, 0, 0);   
+            TimeSpan currentTime = DateTime.Now.TimeOfDay;
+            if ( confiprosimport.get_prosimport() == "0" && installing == false && (currentTime >= startTime && currentTime <= endTime))
             {
                 migraciones migp = new migraciones();
                 migp.tabla = "propuestas";
@@ -1080,6 +1065,11 @@ namespace ProyectoBrokerDelPuerto
                     frmmig = new frmMigraciones();
                     s = new solicitudes();
                     s.solicitud_barrios = true;
+                    await Task.Delay(waitTime);
+                
+                    frmmig = new frmMigraciones();
+                    s = new solicitudes();
+                    s.solicitud_gruposbarrios = true;
 
                     Task.Run(async () => {
                         return frmmig.importarData(s, solop);
@@ -1095,7 +1085,7 @@ namespace ProyectoBrokerDelPuerto
 
             }
         
-            if (DateTime.Now.Subtract(flagtimer).TotalMinutes > 60 && prosMigracion == false)
+            if (DateTime.Now.Subtract(flagtimer).TotalMinutes > 30 && prosMigracion == false)
             {
                 confiprosimport.valor = "0";
                 confiprosimport.save();
@@ -1130,15 +1120,20 @@ namespace ProyectoBrokerDelPuerto
                         return frmmig.exportarPropuestas();
                     });
                 }
+                await Task.Delay(60000);
                 Task.Run(async () => {
                     return frmmig.exportarClientes_2();
                 });
                 Task.Run(async () => {
                     return frmmig.exportarBarrios();
                 });
+                await Task.Delay(30000);
+                Task.Run(async () => {
+                    return frmmig.exportarGruposBarrios();
+                });
 
-                
-                
+
+
 
             }
             catch (Exception ex)

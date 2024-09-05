@@ -16,9 +16,10 @@ namespace ProyectoBrokerDelPuerto
         public string  ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         conexion con = new conexion();
 
-        public migraciones()
+        public migraciones(bool process = false)
         {
-            this.install();
+            if(process)
+                this.install();
         }
 
 
