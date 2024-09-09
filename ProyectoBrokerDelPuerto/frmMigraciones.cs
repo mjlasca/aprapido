@@ -476,7 +476,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 try
                 {
-                    this.miArqueo.save();
+                    arqueos.envionubeF();
                     this.miRendicion.save();
                     this.miLineaRendicion.save();
                     return true;

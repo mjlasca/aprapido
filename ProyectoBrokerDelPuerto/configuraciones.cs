@@ -67,7 +67,7 @@ namespace ProyectoBrokerDelPuerto
         public string get_prosimport()
         {
             sql = "SELECT * FROM configuraciones WHERE dato = 'prosimport' ";
-            if (con.query(sql).Tables[0].Rows.Count > 0)
+            if (con.query(sql).Tables.Count > 0 && con.query(sql).Tables[0].Rows.Count > 0)
             {
                 if(con.query(sql).Tables[0].Rows[0]["valor"].ToString() == "1")
                 {

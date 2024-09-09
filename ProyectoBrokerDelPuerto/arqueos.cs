@@ -15,7 +15,7 @@ namespace ProyectoBrokerDelPuerto
         string sql = "";
 
         string columns = " usuario, nombre, fechadia, valorinicial,dinerorealcaja,valormanual, cuadredescuadre, supervisor, nombresupervisor, observaciones, ultmod,user_edit,codestado,rendicion,cantpolizas,codempresa,envionube";
-        public string  id, usuario, nombre, fechadia, valorinicial, dinerorealcaja, valormanual, cuadredescuadre, supervisor, nombresupervisor, observaciones, ultmod, user_edit, codestado, rendicion, codempresa, envionube = "";
+        public string  id, usuario, nombre, fechadia, valorinicial, dinerorealcaja, valormanual, cuadredescuadre, supervisor, nombresupervisor, observaciones, ultmod, user_edit, codestado, rendicion, codempresa, envionube = "0";
         public int cantpolizas = 0;
         conexion con = new conexion();
 
@@ -103,14 +103,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM arqueos  WHERE ultmod >= '" + fecha + "' AND user_edit = '" + MDIParent1.sesionUser + "' AND ultmod <= '"
-                + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' AND supervisor != '' ORDER BY id ASC ";
-            if(DateTime.Now.ToString("yyyy-MM-dd") == Convert.ToDateTime(fecha).ToString("yyyy-MM-dd") )
-            {
-                sql = "SELECT * FROM arqueos  WHERE ultmod >= '" + Convert.ToDateTime(fecha).ToString("yyyy-MM-dd 06:00:00") + "' AND user_edit = '" + MDIParent1.sesionUser + "' AND ultmod <= '"
-                + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + "' AND supervisor != '' ORDER BY id ASC ";
-            }
-
+            sql = "SELECT * FROM arqueos  WHERE user_edit = '" + MDIParent1.sesionUser + "' AND envionube = '0' AND ultmod > '2024-08-30'";
             try
             {
                 ds = con.query(sql);
@@ -647,9 +640,11 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
-
-
-
+        public static void envionubeF()
+        {
+            conexion con = new conexion();
+            con.query("UPDATE arueos SET envionube = 1 WHERE envionube = 0 ");
+        }
 
     }
 }

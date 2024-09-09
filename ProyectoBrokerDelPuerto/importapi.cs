@@ -76,8 +76,8 @@ namespace ProyectoBrokerDelPuerto
 
             if (s.solicitud_propuestas)
             {
-                try
-                {
+                /*try
+                {*/
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_propuestas";
                     this.para.cola = Cola.getLastCola("propuestas");
@@ -86,18 +86,18 @@ namespace ProyectoBrokerDelPuerto
                     if (res)
                     {
                         
-                        miPropuestas.fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                        miPropuestas.save();
+                        //miPropuestas.fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                        //miPropuestas.save();
                     }
                     else
                     {
                         errores += "No se puedo importar los datos de propuestas";
                     }
-                }
+                /*}
                 catch(Exception ex)
                 {
                     Console.WriteLine($"Excepción {this.para.solicitud}"+ex.Message);
-                }
+                }*/
                 
                     
                 
@@ -174,6 +174,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_perfiles";
+                    this.para.cola = Cola.getLastCola("perfiles");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -258,6 +259,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_actividades";
+                    this.para.cola = Cola.getLastCola("actividades");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -279,6 +281,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_coberturas";
+                    this.para.cola = Cola.getLastCola("coberturas");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -300,6 +303,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clasificaciones";
+                    this.para.cola = Cola.getLastCola("clasificaciones");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -342,6 +346,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_gruposbarrios";
+                    this.para.cola = Cola.getLastCola("gruposbarrios");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -363,6 +368,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_provincias";
+                    this.para.cola = Cola.getLastCola("provincias");
                     jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
                     res = await this.enviardatos(jsonlistpropuestas);
                     if (!res)
@@ -443,7 +449,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 string url = MDIParent1.apiuri + "/api/parametros";
-                Console.WriteLine("URL IMP \n"+url);
+                Console.WriteLine("URL IMP \n"+url + " "+ this.para.solicitud);
                 WebRequest _request = WebRequest.Create(url);
                 
                 _request.Method = "POST";
@@ -508,10 +514,9 @@ namespace ProyectoBrokerDelPuerto
                 log.mensaje = "Error al importar datos " +  ex.Message;
                 log.save();
                 MDIParent1.server500 = ex.Message;
-                return false;
             }
 
-
+            return false;
             
         }
 
@@ -1414,6 +1419,7 @@ namespace ProyectoBrokerDelPuerto
                                                    id = val["id"],
                                                    idbarrio = val["idbarrio"],
                                                    nombrebarrio = val["nombrebarrio"],
+                                                   codestado = val["codestado"],
                                                    envionube = "1"
 
                                                }).ToList();
@@ -1425,7 +1431,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     if (listAux.IndexOf(listobj[i].id + listobj[i].idbarrio) < 0)
                     {
-                        listobj[i].delete_idbarrio();
+                        listobj[i].delete_();
                         listobj[i].envionube = "1";
                         listobj[i].save();
                     }

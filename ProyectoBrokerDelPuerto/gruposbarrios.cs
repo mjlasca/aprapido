@@ -277,39 +277,18 @@ namespace ProyectoBrokerDelPuerto
             if (ls.Count > 0)
             {
                 configuraciones config_grb = new configuraciones();
-                config_grb = config_grb.get("grupos_iguales");
-                
-                if (config_grb.id == null || config_grb.id == "") {
-                    //delete all groups
-                    gruposbarrios gb = new gruposbarrios();
-                    gb.delete_all_f();
+                config_grb = config_grb.get("grupos_reset");
+                this.delete_all();
+                config_grb = new configuraciones();
+                config_grb.dato = "grupos_reset";
+                config_grb.valor = "1";
+                config_grb.save();
 
-                    config_grb = new configuraciones();
-                    config_grb.dato = "grupos_iguales";
-                    config_grb.valor = "1";
-                    config_grb.save();
-                }
-                var concat_ = new System.Text.StringBuilder();
                 foreach (gruposbarrios obj in ls)
                 {
-                    if(obj.get_id_idbarrio() == false)
-                    {
-                        //obj.save();
-                        if (concat_.ToString() != "")
-                            concat_.AppendLine(", " + obj.concat_sql());
-                        else
-                            concat_.AppendLine(obj.concat_sql());
-                    }
+                    obj.envionube = "1";
+                    obj.save();
                 }
-
-                if(concat_.ToString() != "")
-                {
-                    gruposbarrios gb = new gruposbarrios();
-                    gb = new gruposbarrios();
-                    gb.save_concat(concat_.ToString());
-                }
-
-                
             }
 
 
@@ -328,7 +307,13 @@ namespace ProyectoBrokerDelPuerto
         }
         public void delete_all()
         {
-            sql = "DELETE FROM gruposbarrios WHERE id > 0 AND envionube < 1 ";
+            sql = "DELETE FROM gruposbarrios WHERE id > 0";
+            con.query(sql);
+        }
+
+        public void delete_()
+        {
+            sql = "DELETE FROM gruposbarrios WHERE id = '"+this.id+"' AND   idbarrio = '"+this.idbarrio+"' ";
             con.query(sql);
         }
 

@@ -90,7 +90,7 @@ namespace ProyectoBrokerDelPuerto
                 DateTime dt = DateTime.Now;
                 ba.ultmod = dt.ToString("yyyy-MM-dd HH:mm:ss");
                 ba.user_edit = MDIParent1.sesionUser;
-                ba.envionube = 1;
+                ba.envionube = 0;
                 if (ba.save())
                 {
                     frmMigraciones frmmig = new frmMigraciones();

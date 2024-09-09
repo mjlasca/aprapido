@@ -147,7 +147,7 @@ namespace ProyectoBrokerDelPuerto
                 masdatos += ", exige = '" + this.exige + "' ";
             }
 
-            sql = "UPDATE barrios SET email = '"+this.email+"'  "+masdatos+", envionube = '1'  WHERE id = '" + this.id + "' ";
+            sql = "UPDATE barrios SET email = '"+this.email+"'  "+masdatos+", envionube = '0'  WHERE id = '" + this.id + "' ";
             try
             {
                 ds = con.query(sql);
@@ -417,7 +417,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void delete()
         {
-            sql = "UPDATE barrios SET codestado = 0, envionube = '1', ultmod = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"' WHERE reg = '" + this.reg + "' ";
+            sql = "UPDATE barrios SET codestado = 0, envionube = '0', ultmod = '" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") +"' WHERE reg = '" + this.reg + "' ";
             con.query(sql);
         }
 

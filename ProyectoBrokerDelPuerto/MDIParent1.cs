@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "10.0";
+        public static string versionsistema { get; set; } = "10.2";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -634,8 +634,7 @@ namespace ProyectoBrokerDelPuerto
                     this.establecerPerfilUsuario(sesionUser);
             }
 
-            gruposbarrios gb = new gruposbarrios();
-            gb.importGetApi();
+            
             
 
 
@@ -691,22 +690,31 @@ namespace ProyectoBrokerDelPuerto
 
         private async void importCloudParametersLong(bool allImport = true)
         {
-            Task.Run( async () => { 
-                
+            Task.Run( async () => {
+                configuraciones config_grb = new configuraciones();
+                config_grb = config_grb.get("grupos_reset");
+                if (config_grb.id == null || config_grb.id == "")
+                {
+                    gruposbarrios gb = new gruposbarrios();
+                    gb.importGetApi();
+                }
+                await Task.Delay(60000);
                 usuarios usu = new usuarios();
                 usu.updateCreateVersion_import();
                 if (allImport)
                 {
                     coberturas cob = new coberturas();
                     cob.importGetApi();
+                    await Task.Delay(60000);
                     actividades act = new actividades();
                     act.importGetApi();
+                    await Task.Delay(60000);
                     clasificaciones cla = new clasificaciones();
                     cla.importGetApi();
                 }
                 
             });
-            await Task.Delay(60000);
+            
         }
         private async Task<bool> asignarrol()
         {
@@ -1021,7 +1029,7 @@ namespace ProyectoBrokerDelPuerto
         private async void timer1_Tick(object sender, EventArgs e)
         {
             TimeSpan startTime = new TimeSpan(5, 0, 0);  
-            TimeSpan endTime = new TimeSpan(23, 0, 0);   
+            TimeSpan endTime = new TimeSpan(22, 0, 0);   
             TimeSpan currentTime = DateTime.Now.TimeOfDay;
             if ( confiprosimport.get_prosimport() == "0" && installing == false && (currentTime >= startTime && currentTime <= endTime))
             {
@@ -1065,6 +1073,9 @@ namespace ProyectoBrokerDelPuerto
                     frmmig = new frmMigraciones();
                     s = new solicitudes();
                     s.solicitud_barrios = true;
+                    Task.Run(async () => {
+                        return frmmig.importarData(s, solop);
+                    });
                     await Task.Delay(waitTime);
                 
                     frmmig = new frmMigraciones();
