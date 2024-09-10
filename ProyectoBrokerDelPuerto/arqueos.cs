@@ -643,7 +643,7 @@ namespace ProyectoBrokerDelPuerto
         public static void envionubeF()
         {
             conexion con = new conexion();
-            con.query("UPDATE arueos SET envionube = 1 WHERE envionube = 0 ");
+            con.query("UPDATE arqueos SET envionube = 1 WHERE envionube = 0 ");
         }
 
     }

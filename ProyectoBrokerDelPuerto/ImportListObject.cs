@@ -12,7 +12,6 @@ namespace ProyectoBrokerDelPuerto
         {
             var concat_ = new System.Text.StringBuilder();
             List<string> listAux = new List<string>();
-            string concat_1 = "";
             int aux = 0;
             try
             {
@@ -21,7 +20,6 @@ namespace ProyectoBrokerDelPuerto
                     listobj[i].denube = true;
                     listobj[i].envionube = "1";
                     listobj[i].save_import();
-                    concat_1 += listobj[i].prefijo + listobj[i].idpropuesta + ",";
                 }
                 return true;
             }
@@ -53,37 +51,27 @@ namespace ProyectoBrokerDelPuerto
 
         public bool lineas_propuestas(List<lineas_propuestas> listobj)
         {
-            try
-            {
-                var concat_ = new System.Text.StringBuilder();
+            /*try
+            {*/
                 List<string> listAux = new List<string>();
                 for (int i = 0; i < listobj.Count; i++)
                 {
                     if (listAux.IndexOf(listobj[i].prefijo + listobj[i].id_propuesta) < 0)
                     {
-                        if ((listobj[i].prefijo + listobj[i].id_propuesta) != "")
-                        {
-                            listAux.Add(listobj[i].prefijo + listobj[i].id_propuesta);
-                            listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
-                        }
+                        listAux.Add(listobj[i].prefijo + listobj[i].id_propuesta);
+                        listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
                     }
-                    if (concat_.ToString() != "")
-                        concat_.AppendLine(", " + listobj[i].concat_sql());
-                    else
-                        concat_.AppendLine(listobj[i].concat_sql());
-                }
-                if (concat_.ToString() != "")
-                {
-                    lineas_propuestas li = new lineas_propuestas();
-                    li.save_concat(concat_.ToString());
+                    if (listobj[i].id_propuesta == "63666")
+                        Console.WriteLine("dfd");
+                    listobj[i].save();
                 }
                 return true;
-            }
+            /*}
             catch (Exception ex)
             {
                 logs.setError("IMPLINEASPRO","Error al guardar Líneas Propuestas " + ex.Message);
                 return false;
-            }
+            }*/
         }
     }
 }

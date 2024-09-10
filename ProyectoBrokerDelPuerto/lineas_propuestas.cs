@@ -118,10 +118,8 @@ namespace ProyectoBrokerDelPuerto
             lineas_propuestas lin = new lineas_propuestas();
             sql = "SELECT *,(SELECT cod  FROM actividades t1 WHERE t1.id = t2.id_actividad) as cod_actividad, (SELECT cod  FROM clasificaciones t1 WHERE t1.id = t2.id_clasificacion) as cod_clasificacion, (SELECT SUM(t1.prima)  FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as prima, " +
                 " (SELECT SUM(t1.referencia) FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as referencia," +
-                " (SELECT SUM(t1.nota) FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as nota FROM lineas_propuestas t2 WHERE t2.idprefijo = '" +
+                " (SELECT SUM(t1.nota) FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as nota FROM lineas_propuestas t2 WHERE t2.id_propuesta  = '" +
                 idpropuesta_ + "' AND t2.prefijo = '"+prefijo_+"' GROUP BY t2.documento ";
-
-            Console.WriteLine("\n\n\n----> " + sql);
 
             try
             {
@@ -572,7 +570,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void delete_idpropuesta(string idprefijo_, string prefijo_)
         {
-            sql = "DELETE FROM lineas_propuestas WHERE idprefijo = '" + idprefijo_ + "' AND prefijo = '"+prefijo_+"' ";
+            sql = "DELETE FROM lineas_propuestas WHERE id_propuesta = '" + idprefijo_ + "' AND prefijo = '"+prefijo_+"' ";
             con.query(sql);
         }
 
