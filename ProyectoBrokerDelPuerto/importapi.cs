@@ -685,25 +685,10 @@ namespace ProyectoBrokerDelPuerto
                     int aux = 0;
                     try
                     {
-                        for (int i = aux; i < listobj.Count; i++)
+                        foreach(propuestas pros in listobj)
                         {
-                            listobj[i].save_import();
-                            concat_1 += listobj[i].prefijo + listobj[i].idpropuesta + ",";
+                            pros.save_import();
                         }
-                        if (concat_1 != "")
-                        {
-                                this.concattextbox += Environment.NewLine + Environment.NewLine;
-                                migraciones mig = new migraciones();
-                                mig.tabla = "propuestas";
-                                mig.tipo = "IMPORTACION";
-                                mig.numeracion = concat_1;
-                                mig.fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                mig.cantidad_registros = obj["propuestas"].Count().ToString();
-                                mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                                mig.useredit = MDIParent1.sesionUser;
-                                miPropuestas = mig;
-                        }
-
                         Cola.setLastCola(liscola);
 
                     }
@@ -763,34 +748,14 @@ namespace ProyectoBrokerDelPuerto
                 
                 try
                 {
-
-
                     for (int i = 0; i < listobj.Count; i++)
                     {
-
-                        if (listAux.IndexOf(listobj[i].prefijo + listobj[i].id_propuesta ) < 0)
-                        {
-                            if( (listobj[i].prefijo + listobj[i].id_propuesta) != "")
-                            {
-                                listAux.Add(listobj[i].prefijo + listobj[i].id_propuesta);
-                                listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
-                            }
-                        }
-
-                        if(concat_.ToString() != "")
-                            concat_.AppendLine(", "+listobj[i].concat_sql());
-                        else
-                            concat_.AppendLine(listobj[i].concat_sql());
+                        listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
                     }
-
-                    
-
-
-                    if (concat_.ToString() != "")
+                    for (int i = 0; i < listobj.Count; i++)
                     {
-                        lineas_propuestas li = new lineas_propuestas();
-                        li.save_concat(concat_.ToString());
-                        System.IO.File.WriteAllText("lineaspropuestassql.txt", concat_.ToString());
+                        listobj[i].delete_idpropuesta_doc(listobj[i].id_propuesta, listobj[i].prefijo, listobj[i].documento);
+                        listobj[i].save();
                     }
 
                 }
@@ -963,7 +928,13 @@ namespace ProyectoBrokerDelPuerto
             {
                 Console.WriteLine("Importando Arqueos (" + obj["arqueos"].Count() + ") " + DateTime.Now);
                 this.concattextbox += "IMPORTAR Arqueos / " + obj["arqueos"].Count() + " Registros " + Environment.NewLine;
-
+                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                      select new Cola()
+                                      {
+                                          id = val["id"] == null ? "" : val["id"],
+                                          entity = val["entity"] == null ? "" : val["entity"],
+                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                      }).ToList();
                 List<arqueos> listobj = (from dynamic val in obj["arqueos"].AsEnumerable().ToList()
                                          select new arqueos()
                                          {
@@ -1005,6 +976,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         arqueos ar = new arqueos();
                         ar.save_concat(concat_.ToString());
+                        Cola.setLastCola(liscola);
                     }
 
                 }

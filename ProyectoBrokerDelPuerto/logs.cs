@@ -15,9 +15,10 @@ namespace ProyectoBrokerDelPuerto
         public string id, coderror = "", mensaje = "", ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codempresa = MDIParent1.codempresa;
         conexion con = new conexion();
 
-        public logs()
+        public logs(bool inst = false)
         {
-            this.install();
+            if(inst)
+                this.install();
         }
 
 

@@ -135,7 +135,7 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private async void button1_Click(object sender, EventArgs e)
         {
             if (fecha.Text != "")
             {
@@ -168,10 +168,25 @@ namespace ProyectoBrokerDelPuerto
                     }
                 }*/
 
-                ApiReports apReports = new ApiReports();
-                apReports.Get(Convert.ToDateTime(fecha.Text).ToString("yyyy-MM-dd"));
+                
 
+                ApiReports apReports = new ApiReports();
+                int res = await apReports.Get(Convert.ToDateTime(fecha.Text).ToString("yyyy-MM-dd"));
                 propuestas pro = new propuestas();
+                List<string> valli = pro.validateLineasPro(fecha.Text);
+                if (valli.Count > 0)
+                {
+                    string concat = "";
+                    foreach (string data in valli)
+                    {
+                        concat += "\n" + data;
+                    }
+                    MessageBox.Show("Por favor revise esta información");
+                    MessageBox.Show("Las siguientes propuestas no son iguales en premio o cantidad de asegurados " + concat);
+                    configprosimport.valor = "0";
+                    configprosimport.save();
+                    return;
+                }
                 DataSet dspro = pro.get_all_date_findia(Convert.ToDateTime(fecha.Text).ToString("yyyy-MM-dd"));
 
                 if (dspro.Tables[0].Rows.Count > 0)

@@ -236,6 +236,9 @@ namespace ProyectoBrokerDelPuerto
                     frm0.exportarRendiciones();
                 });
 
+                propuestas pro = new propuestas();
+                pro.fixlineaspro(dataGridView1.CurrentRow.Cells["fecha"].Value.ToString());
+
             }
         }
 

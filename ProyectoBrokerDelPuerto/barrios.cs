@@ -125,7 +125,7 @@ namespace ProyectoBrokerDelPuerto
         }
 
 
-        public bool update_nuevapropuesta()
+        public bool update_nuevapropuesta(string envio_ = "")
         {
             
             DataSet ds = new DataSet();
@@ -147,7 +147,7 @@ namespace ProyectoBrokerDelPuerto
                 masdatos += ", exige = '" + this.exige + "' ";
             }
 
-            sql = "UPDATE barrios SET email = '"+this.email+"'  "+masdatos+", envionube = '0'  WHERE id = '" + this.id + "' ";
+            sql = "UPDATE barrios SET email = '"+this.email+"'  "+masdatos+envio_+"  WHERE id = '" + this.id + "' ";
             try
             {
                 ds = con.query(sql);

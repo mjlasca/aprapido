@@ -30,7 +30,7 @@ namespace ProyectoBrokerDelPuerto
 
         public bool specailCharacters(string text)
         {
-            Regex regex = new Regex(@"[^a-zA-Z0-9]");
+            Regex regex = new Regex(@"[^0-9]");
             return regex.IsMatch(text);
         }
 

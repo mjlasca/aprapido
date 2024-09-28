@@ -295,7 +295,7 @@ namespace ProyectoBrokerDelPuerto
                         barrios br = new barrios();
                         br.id = dataGridView1.Rows[i].Cells["id"].Value.ToString();
                         br.email = dataGridView1.Rows[i].Cells["email"].Value.ToString();
-                        br.update_nuevapropuesta();
+                        //br.update_nuevapropuesta();
                     }
                 }
                 

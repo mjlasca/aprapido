@@ -32,8 +32,9 @@ namespace ProyectoBrokerDelPuerto
         }
 
 
-        public async void Get(string date)
+        public async Task<int> Get(string date)
         {
+            int rest = 0;
             List<coberturas> ls = new List<coberturas>();
 
             var client = new HttpClient();
@@ -62,6 +63,7 @@ namespace ProyectoBrokerDelPuerto
                         imp.propuestas(propuestas);
                         imp.lineas_propuestas(lineas);
                         imp.clientes(clientes);
+                        rest = 1;
                     }
                 }
                 else
@@ -74,7 +76,7 @@ namespace ProyectoBrokerDelPuerto
                 logs.setError("REPORT", "Ha ocurrido un error al obtener los datos " + ex.Message);
             }
 
-
+            return rest;
         }
 
     }

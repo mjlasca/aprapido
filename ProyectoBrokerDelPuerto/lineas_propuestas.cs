@@ -574,6 +574,12 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
+        public void delete_idpropuesta_doc(string idprefijo_, string prefijo_, string documento_)
+        {
+            sql = "DELETE FROM lineas_propuestas WHERE id_propuesta = '" + idprefijo_ + "' AND prefijo = '" + prefijo_ + "' AND documento = '" + documento_ + "' ";
+            con.query(sql);
+        }
+
         public void delete_concat(string sqlconcat)
         {
             sql = "DELETE FROM lineas_propuestas WHERE "+ sqlconcat;

@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "10.3";
+        public static string versionsistema { get; set; } = "11.2";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -560,10 +560,41 @@ namespace ProyectoBrokerDelPuerto
             configuraciones config = new configuraciones();
             propuestas pro = new propuestas();
             pro.enviohecho_date(DateTime.Now.AddDays(-3).ToString("yyyy-MM-dd"));
-
+            
         }
 
+        private void fixlineas()
+        {
+            DayOfWeek diaActual = DateTime.Now.DayOfWeek;
+            informes info = new informes();
+            string date1 = info.get_ultdia().AddDays(1).ToString("yyyy-MM-dd");
+            string date2 = DateTime.Now.ToString("yyyy-MM-dd");
+            string sql = "SELECT t1.id,t1.idpropuesta, t1.prefijo, t1.ultmod, t1.id_cobertura, t1.premio,t1.premio_total, "
+                + "(SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) AS premioli "
+                + "FROM propuestas t1 WHERE  (SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) != t1.premio_total "
+                +" AND t1.prefijo = '" + prefijo + "' AND t1.fecha_paga > '" + date1+ " 00:00:00' AND t1.fecha_paga < '" + date2+" 23:59:59' ;";
+            conexion conex = new conexion();
+            DataSet dsCon = conex.query(sql);
+            if (dsCon.Tables.Count > 0 && dsCon.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dsCon.Tables[0].Rows.Count; i++)
+                {
+                    sql = "DELETE FROM lineas_propuestas WHERE id_propuesta = '" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString() + "' AND prefijo = '" + dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "' ";
+                    conex.query(sql);
+                    sql = "INSERT INTO lineas_propuestas(id_propuesta, documento, tipo_documento, apellidos, nombres, fecha_nacimiento, id_actividad, id_clasificacion, premio, ultmod, user_edit, codestado, prefijo, actividad, clasificacion, fechaDesde, fechaHasta, idprefijo, codempresa) "
+                        + "SELECT id_propuesta, documento, tipo_documento, apellidos, nombres, fecha_nacimiento, id_actividad, id_clasificacion, premio, ultmod, user_edit, codestado, prefijo, actividad, clasificacion, fechaDesde, fechaHasta, idprefijo, codempresa FROM lineas_propuestas_aux "
+                        + "WHERE id_propuesta = '" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString() + "' AND prefijo = '" + dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "' ";
+                    conex.query(sql);
+                    sql = "UPDATE propuestas SET envionube = 0 WHERE id = '" + dsCon.Tables[0].Rows[i]["id"].ToString() + "' ";
+                    conex.query(sql);
+                }
 
+                frmMigraciones frmmig = new frmMigraciones();
+                Task.Run(async () => {
+                    frmmig.exportarPropuestas();
+                });
+            }
+        }
 
         private async void MDIParent1_Load(object sender, EventArgs e)
         {
@@ -582,20 +613,12 @@ namespace ProyectoBrokerDelPuerto
             this.fase3a();
             this.faseCobranzas();
             this.installTables();
-            
+
 
             Properties.Settings.Default["avisoOtroDia"] = false;
             Properties.Settings.Default["avisoCierre"] = false;
 
             bool resultad = await this.asignarrol();
-            if ( !resultad )
-            {
-                this.Close();
-                return;
-            }
-
-
-            
 
             frmVersion frmver = new frmVersion();
             if( await frmver.validar_version())
@@ -619,7 +642,7 @@ namespace ProyectoBrokerDelPuerto
                 toolStripStatusLabel.BackColor = Color.LightCoral;
             }
 
-
+            this.fixlineas();
             //this.importCloudParameters();
             this.importCloudParametersLong();
             
@@ -634,12 +657,9 @@ namespace ProyectoBrokerDelPuerto
                     this.establecerPerfilUsuario(sesionUser);
             }
 
-            
-            
-
-
             /*Automatization of migration */
             this.automatizationMigrate();
+            
 
             frm.StartPosition = FormStartPosition.CenterScreen;
 
@@ -679,6 +699,13 @@ namespace ProyectoBrokerDelPuerto
                     });
                 }*/
 
+                frmMigraciones frmmig = new frmMigraciones();
+                solicitudes s = new solicitudes();
+                s.solicitud_arqueos = true;
+                Task.Run(() => {
+                    return frmmig.importarData(s, true);
+                });
+
                 timer1.Start();
                 timer_parameters.Start();
 
@@ -692,8 +719,8 @@ namespace ProyectoBrokerDelPuerto
         {
             Task.Run( async () => {
                 configuraciones config_grb = new configuraciones();
-                config_grb = config_grb.get("grupos_reset");
-                if (config_grb.id == null || config_grb.id == "")
+                config_grb = config_grb.get("grupos_resetQ");
+                if ( (config_grb.id == null || config_grb.id == "") && MDIParent1.prefijo == "Q")
                 {
                     gruposbarrios gb = new gruposbarrios();
                     gb.importGetApi();

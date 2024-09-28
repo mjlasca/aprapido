@@ -385,18 +385,21 @@ namespace ProyectoBrokerDelPuerto
 
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
-            textBox1.Text = textBox1.Text.Trim();
+            this.getClient();
+        }
 
+        private void getClient()
+        {
+            textBox1.Text = textBox1.Text.Trim();
+            this.borrar_campos();
             if (textBox1.Text.Trim() != "")
             {
-
                 clientes cl = new clientes();
                 DataSet ds = cl.get(textBox1.Text.Trim());
                 if (ds.Tables.Count > 0)
                 {
-
-                    if (ds.Tables[0].Rows.Count > 0) {
-                        this.borrar_campos();
+                    if (ds.Tables[0].Rows.Count > 0)
+                    {
                         txtTipoid.Text = ds.Tables[0].Rows[0]["tipo_id"].ToString();
                         txtApellidos.Text = ds.Tables[0].Rows[0]["apellidos"].ToString();
                         txtNombres.Text = ds.Tables[0].Rows[0]["nombres"].ToString();
@@ -729,6 +732,7 @@ namespace ProyectoBrokerDelPuerto
 
         private bool guardar_propuesta(bool duplicado)
         {
+            this.suma_premio();
             bool res = false;
 
             propuestas pro = new propuestas();
@@ -882,107 +886,109 @@ namespace ProyectoBrokerDelPuerto
                 li_aux.id_propuesta = pro.idpropuesta;
                 li_aux.idprefijo = pro.idpropuesta;
                 li_aux.prefijo = pro.prefijo;
-
-                try {
-
-                    for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
-                    {
-                        actividades ac = new actividades();
-                        clasificaciones cla = new clasificaciones();
-                        li.documento = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
-                        li.tipo_documento = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
-                        li.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
-                        li.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
-                        li.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
-                        li.id_actividad = ac.get_id(dataGridView1.Rows[i].Cells["actividad"].Value.ToString());
-                        li.premio = premioSINviejito.ToString();
-                        if (this.edadVieja(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()) > 0)
-                            li.premio = (premioSINviejito * 2).ToString();
-                        li.id_clasificacion = cla.get_id(dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString());
-                        li.actividad = dataGridView1.Rows[i].Cells["actividad"].Value.ToString();
-                        li.clasificacion = dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString();
-                        li.ultmod = pro.ultmod;
-                        li.codestado = "1";
-                        li.user_edit = MDIParent1.sesionUser;
-                        li.fechaDesde = pro.fechaDesde;
-                        li.fechaHasta = pro.fechaHasta;
-
-                        if (!li.save())
-                        {
-                            return false;
-                        }
-
-                        li_aux.documento = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
-                        li_aux.tipo_documento = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
-                        li_aux.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
-                        li_aux.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
-                        li_aux.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
-                        li_aux.id_actividad = ac.get_id(dataGridView1.Rows[i].Cells["actividad"].Value.ToString());
-                        li_aux.premio = premioSINviejito.ToString();
-                        if (this.edadVieja(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()) > 0)
-                            li_aux.premio = (premioSINviejito * 2).ToString();
-                        li_aux.id_clasificacion = cla.get_id(dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString());
-                        li_aux.actividad = dataGridView1.Rows[i].Cells["actividad"].Value.ToString();
-                        li_aux.clasificacion = dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString();
-                        li_aux.ultmod = pro.ultmod;
-                        li_aux.codestado = "1";
-                        li_aux.user_edit = MDIParent1.sesionUser;
-                        li_aux.fechaDesde = pro.fechaDesde;
-                        li_aux.fechaHasta = pro.fechaHasta;
-                        li_aux.save();
-
-                    }
-                }
-                catch (Exception ex)
+                if (!duplicado)
                 {
-
-                    MessageBox.Show("Hay un error en uno de los registros de póliza \n" + ex.Message);
-                    return false;
-
-                }
-
-
-                if(json_barrios_propuesta.Count() < 1)
-                {
-                    barrios_propuesta bar = new barrios_propuesta();
-                    bar.delete_idpropuesta(lblidpropuesta.Text, pro.prefijo);
-                    bar.id_propuesta = pro.idpropuesta;
-                    bar.idprefijo = pro.idpropuesta;
-                    bar.prefijo = pro.prefijo;
-
-                    foreach (var item in listBox1.Items)
+                    try
                     {
-                        barrios barrio = new barrios();
-                        bar.id_barrio = barrio.get_id(item.ToString());
-                        bar.nombre = item.ToString();
-                        bar.user_edit = MDIParent1.sesionUser;
-                        bar.ultmod = pro.ultmod;
 
-                        bar.codestado = "1";
-                        if (!bar.save())
+                        for (int i = 0; i < dataGridView1.Rows.Count - 1; i++)
                         {
-                            return false;
+                            actividades ac = new actividades();
+                            clasificaciones cla = new clasificaciones();
+                            li.documento = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
+                            li.tipo_documento = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
+                            li.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
+                            li.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
+                            li.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
+                            li.id_actividad = ac.get_id(dataGridView1.Rows[i].Cells["actividad"].Value.ToString());
+                            li.premio = premioSINviejito.ToString();
+                            if (this.edadVieja(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()) > 0)
+                                li.premio = (premioSINviejito * 2).ToString();
+                            li.id_clasificacion = cla.get_id(dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString());
+                            li.actividad = dataGridView1.Rows[i].Cells["actividad"].Value.ToString();
+                            li.clasificacion = dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString();
+                            li.ultmod = pro.ultmod;
+                            li.codestado = "1";
+                            li.user_edit = MDIParent1.sesionUser;
+                            li.fechaDesde = pro.fechaDesde;
+                            li.fechaHasta = pro.fechaHasta;
+
+                            if (!li.save())
+                            {
+                                return false;
+                            }
+
+                            li_aux.documento = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
+                            li_aux.tipo_documento = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
+                            li_aux.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
+                            li_aux.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
+                            li_aux.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
+                            li_aux.id_actividad = ac.get_id(dataGridView1.Rows[i].Cells["actividad"].Value.ToString());
+                            li_aux.premio = premioSINviejito.ToString();
+                            if (this.edadVieja(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()) > 0)
+                                li_aux.premio = (premioSINviejito * 2).ToString();
+                            li_aux.id_clasificacion = cla.get_id(dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString());
+                            li_aux.actividad = dataGridView1.Rows[i].Cells["actividad"].Value.ToString();
+                            li_aux.clasificacion = dataGridView1.Rows[i].Cells["clasificacion"].Value.ToString();
+                            li_aux.ultmod = pro.ultmod;
+                            li_aux.codestado = "1";
+                            li_aux.user_edit = MDIParent1.sesionUser;
+                            li_aux.fechaDesde = pro.fechaDesde;
+                            li_aux.fechaHasta = pro.fechaHasta;
+                            li_aux.save();
+
                         }
                     }
-
-                }
-
-
-                if (dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString() != "" && dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString() != "")
-                {
-                    if (dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString() != "0" || dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString() != "0")
+                    catch (Exception ex)
                     {
-                        comisiones com = new comisiones();
-                        com.porc_compremio = dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString().Replace(",", ".");
-                        com.porc_comprima = dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString().Replace(",", ".");
-                        com.idpropuesta = pro.idpropuesta;
-                        com.prefijo = pro.prefijo;
-                        com.user = us.loggin;
-                        com.fechacomision = pro.ultmod;
-                        com.ultmod = pro.ultmod;
-                        com.save();
+
+                        MessageBox.Show("Hay un error en uno de los registros de póliza \n" + ex.Message);
+                        return false;
+
+                    }
+                    if (json_barrios_propuesta.Count() < 1)
+                    {
+                        barrios_propuesta bar = new barrios_propuesta();
+                        bar.delete_idpropuesta(lblidpropuesta.Text, pro.prefijo);
+                        bar.id_propuesta = pro.idpropuesta;
+                        bar.idprefijo = pro.idpropuesta;
+                        bar.prefijo = pro.prefijo;
+
+                        foreach (var item in listBox1.Items)
+                        {
+                            barrios barrio = new barrios();
+                            bar.id_barrio = barrio.get_id(item.ToString());
+                            bar.nombre = item.ToString();
+                            bar.user_edit = MDIParent1.sesionUser;
+                            bar.ultmod = pro.ultmod;
+
+                            bar.codestado = "1";
+                            if (!bar.save())
+                            {
+                                return false;
+                            }
+                        }
+
+                    }
+
+
+                    if (dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString() != "" && dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString() != "")
+                    {
+                        if (dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString() != "0" || dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString() != "0")
+                        {
+                            comisiones com = new comisiones();
+                            com.porc_compremio = dsUserCom.Tables[0].Rows[0]["comisionpremio"].ToString().Replace(",", ".");
+                            com.porc_comprima = dsUserCom.Tables[0].Rows[0]["comisionprima"].ToString().Replace(",", ".");
+                            com.idpropuesta = pro.idpropuesta;
+                            com.prefijo = pro.prefijo;
+                            com.user = us.loggin;
+                            com.fechacomision = pro.ultmod;
+                            com.ultmod = pro.ultmod;
+                            com.save();
+                        }
                     }
                 }
+                
 
                 if (duplicado == false)
                 {

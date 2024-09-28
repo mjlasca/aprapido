@@ -133,10 +133,10 @@ namespace ProyectoBrokerDelPuerto
             br.suma_rc = txtSumaRc.Text;
             br.exige = txtExige.Text;
 
-            if (br.update_nuevapropuesta())
+            if (br.update_nuevapropuesta(", envionube = '0' "))
             {
                 label7.BackColor = Color.GreenYellow;
-                label7.Text = "Se ha modificado el Email correctamente";
+                label7.Text = "Se ha modificado correctamente";
             }
         }
     }

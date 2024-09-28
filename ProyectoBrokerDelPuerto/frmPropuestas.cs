@@ -717,9 +717,17 @@ namespace ProyectoBrokerDelPuerto
 
         private async void btnPagar_Click(object sender, EventArgs e)
         {
-
-            bool res = await this.pagopropuesta_(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(),dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString());
-            dataGridView1.CurrentRow.Cells["paga"].Value = "PAGADO";
+            try
+            {
+                bool res = await this.pagopropuesta_(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString());
+                dataGridView1.CurrentRow.Cells["paga"].Value = "PAGADO";
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("No se ha podido pagar la propuesta", "Error al pagar propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                logs.setError("PAGO404", ex.Message);
+            }
+            
         }
 
         public async Task<bool> pagopropuesta_(string prefijo_ , string idpropuesta_)

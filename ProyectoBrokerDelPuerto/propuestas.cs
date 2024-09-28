@@ -1163,7 +1163,7 @@ namespace ProyectoBrokerDelPuerto
                 }
 
                 this.data_barrios = this.data_barrios == "" ? "{\"barrios\":[]}" : this.data_barrios;
-
+                
 
                 if (this.exist())
                 {
@@ -2393,6 +2393,58 @@ namespace ProyectoBrokerDelPuerto
                 
 
             return "";
+        }
+
+        public List<string> validateLineasPro(string date_)
+        {
+            List<string> proval = new List<string>();
+            date_ = Convert.ToDateTime(date_).ToString("yyyy-MM-dd");
+            sql = "SELECT t1.id,t1.idpropuesta, t1.prefijo, t1.ultmod, t1.id_cobertura, t1.premio,t1.premio_total, "
+               + "(SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) AS premioli "
+               + "FROM propuestas t1 WHERE  (SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) != t1.premio_total "
+               +" AND t1.fecha_paga > '" + date_ + " 00:00:00' AND t1.fecha_paga < '" + date_ + " 23:59:59' "+
+               " AND codestado > 0 AND t1.fecha_paga > '2024-09-08' ;";
+            conexion conex = new conexion();
+            DataSet dsCon = conex.query(sql);
+            if (dsCon.Tables.Count > 0 && dsCon.Tables[0].Rows.Count > 0)
+            {
+                
+                for (int i = 0; i < dsCon.Tables[0].Rows.Count; i++)
+                {
+                    proval.Add(dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "-" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString());
+                }
+            }
+            return proval;
+        }
+
+        public void fixlineaspro(string date_)
+        {
+            date_ = Convert.ToDateTime(date_).ToString("yyyy-MM-dd");
+            sql = "SELECT t1.id,t1.idpropuesta, t1.prefijo, t1.ultmod, t1.id_cobertura, t1.premio,t1.premio_total, "
+               + "(SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) AS premioli "
+               + "FROM propuestas t1 WHERE  (SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) != t1.premio_total "
+               +" AND t1.prefijo = '" + MDIParent1.prefijo + "' AND t1.fecha_paga > '" + date_ + " 00:00:00' AND t1.fecha_paga < '" + date_ + " 23:59:59' ;";
+            conexion conex = new conexion();
+            DataSet dsCon = conex.query(sql);
+            if (dsCon.Tables.Count > 0 && dsCon.Tables[0].Rows.Count > 0)
+            {
+                for (int i = 0; i < dsCon.Tables[0].Rows.Count; i++)
+                {
+                    sql = "DELETE FROM lineas_propuestas WHERE id_propuesta = '" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString() + "' AND prefijo = '" + dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "' ";
+                    conex.query(sql);
+                    sql = "INSERT INTO lineas_propuestas(id_propuesta, documento, tipo_documento, apellidos, nombres, fecha_nacimiento, id_actividad, id_clasificacion, premio, ultmod, user_edit, codestado, prefijo, actividad, clasificacion, fechaDesde, fechaHasta, idprefijo, codempresa) "
+                        + "SELECT id_propuesta, documento, tipo_documento, apellidos, nombres, fecha_nacimiento, id_actividad, id_clasificacion, premio, ultmod, user_edit, codestado, prefijo, actividad, clasificacion, fechaDesde, fechaHasta, idprefijo, codempresa FROM lineas_propuestas_aux "
+                        + "WHERE id_propuesta = '" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString() + "' AND prefijo = '" + dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "' ";
+                    conex.query(sql);
+                    sql = "UPDATE propuestas SET envionube = 0 WHERE id = '" + dsCon.Tables[0].Rows[i]["id"].ToString() + "' ";
+                    conex.query(sql);
+                }
+
+                frmMigraciones frmmig = new frmMigraciones();
+                Task.Run(async () => {
+                    frmmig.exportarPropuestas();
+                });
+            }
         }
         
     }

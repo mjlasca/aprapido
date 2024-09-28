@@ -19,6 +19,7 @@ namespace ProyectoBrokerDelPuerto
                 {
                     listobj[i].denube = true;
                     listobj[i].envionube = "1";
+                    
                     listobj[i].save_import();
                 }
                 return true;
@@ -56,13 +57,12 @@ namespace ProyectoBrokerDelPuerto
                 List<string> listAux = new List<string>();
                 for (int i = 0; i < listobj.Count; i++)
                 {
-                    if (listAux.IndexOf(listobj[i].prefijo + listobj[i].id_propuesta) < 0)
-                    {
-                        listAux.Add(listobj[i].prefijo + listobj[i].id_propuesta);
-                        listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
-                    }
-                    if (listobj[i].id_propuesta == "63666")
-                        Console.WriteLine("dfd");
+                    listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
+                }
+
+                for (int i = 0; i < listobj.Count; i++)
+                {
+                    listobj[i].delete_idpropuesta_doc(listobj[i].id_propuesta, listobj[i].prefijo,listobj[i].documento);
                     listobj[i].save();
                 }
                 return true;
