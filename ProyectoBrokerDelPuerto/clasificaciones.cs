@@ -420,15 +420,10 @@ namespace ProyectoBrokerDelPuerto
         {
             ApiClasificaciones apcla = new ApiClasificaciones();
             List<clasificaciones> lscla = await apcla.Get();
-            validaciones val = new validaciones();
-            if (val.dataComparacion("api_clasificaciones", lscla))
+            foreach (clasificaciones c in lscla)
             {
-                foreach (clasificaciones c in lscla)
-                {
-                    if (versionUpdate(c.cod, c.version))
-                        c.save(true);
-                }
-                val.createData0("api_clasificaciones");
+                if (versionUpdate(c.cod, c.version))
+                    c.save(true);
             }
         }
 

@@ -277,10 +277,10 @@ namespace ProyectoBrokerDelPuerto
             if (ls.Count > 0)
             {
                 configuraciones config_grb = new configuraciones();
-                config_grb = config_grb.get("grupos_resetQ");
+                config_grb = config_grb.get("grupos_reset");
                 this.delete_all();
                 config_grb = new configuraciones();
-                config_grb.dato = "grupos_resetQ";
+                config_grb.dato = "grupos_reset";
                 config_grb.valor = "1";
                 config_grb.save();
 

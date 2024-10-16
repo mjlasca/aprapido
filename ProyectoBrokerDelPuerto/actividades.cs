@@ -376,16 +376,12 @@ namespace ProyectoBrokerDelPuerto
         {
             ApiActividades apact = new ApiActividades();
             List<actividades> lsact = await apact.Get();
-            validaciones val = new validaciones();
-            if (val.dataComparacion("api_actividades", lsact))
+            foreach (actividades c in lsact)
             {
-                foreach (actividades c in lsact)
-                {
-                    if (versionUpdate(c.id, c.version))
-                        c.save(true);
-                }
-                val.createData0("api_actividades");
+                if (versionUpdate(c.id, c.version))
+                    c.save(true);
             }
+            
         }
 
         public bool getObject()

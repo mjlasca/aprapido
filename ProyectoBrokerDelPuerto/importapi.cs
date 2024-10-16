@@ -490,8 +490,14 @@ namespace ProyectoBrokerDelPuerto
                                 this.tarea_rendiciones(res);
                             if (this.para.solicitud == "solicitud_lineas_rendiciones")
                                 this.tarea_lineas_rendiciones(res);
-                            /*if (this.para.solicitud == "solicitud_usuarios")
-                                this.tarea_usuarios(res);*/
+                            if (this.para.solicitud == "solicitud_usuarios")
+                                this.tarea_usuarios(res);
+                            if (this.para.solicitud == "solicitud_coberturas")
+                                this.tarea_coberturas(res);
+                            if (this.para.solicitud == "solicitud_actividades")
+                                this.tarea_actividades(res);
+                            if (this.para.solicitud == "solicitud_clasificaciones")
+                                this.tarea_clasificaciones(res);
                             if (this.para.solicitud == "solicitud_perfiles")
                                 this.tarea_perfiles(res);
                             if (this.para.solicitud == "solicitud_barrios" )
@@ -624,14 +630,6 @@ namespace ProyectoBrokerDelPuerto
 
                     this.concattextbox += "IMPORTACIÓN PROPUESTAS / " + obj["propuestas"].Count() + " Registros " + Environment.NewLine;
 
-                    List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
-                                          select new Cola()
-                                          {
-                                              id = val["id"] == null ? "" : val["id"],
-                                              entity = val["entity"] == null ? "" : val["entity"],
-                                              entity_id = val["entity_id"] == null ? "" : val["entity_id"],
-                                          }).ToList();
-
                     List<propuestas> listobj = (from dynamic val in obj["propuestas"].AsEnumerable().ToList()
                                                 select new propuestas()
                                                 {
@@ -689,7 +687,7 @@ namespace ProyectoBrokerDelPuerto
                         {
                             pros.save_import();
                         }
-                        Cola.setLastCola(liscola);
+                        this.colas(json);
 
                     }
                     catch (Exception ex)
@@ -852,6 +850,23 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
+        private void colas(string json)
+        {
+            JsonTextReader reader = new JsonTextReader(new StringReader(@json));
+            JObject obj = JObject.Load(reader);
+
+            if (obj["colas"] != null)
+            {
+                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
+                                      select new Cola()
+                                      {
+                                          id = val["id"] == null ? "" : val["id"],
+                                          entity = val["entity"] == null ? "" : val["entity"],
+                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
+                                      }).ToList();
+                Cola.setLastCola(liscola);
+            }
+        }
 
         private void tarea_clientes(string json)
         {
@@ -862,14 +877,6 @@ namespace ProyectoBrokerDelPuerto
             {
                 Console.WriteLine("Importando CLIENTES (" + obj["clientes"].Count() + ") " + DateTime.Now);
                 this.concattextbox += "IMPORTAR CLIENTES / " + obj["clientes"].Count() + " Registros " + Environment.NewLine;
-
-                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
-                                      select new Cola()
-                                      {
-                                          id = val["id"] == null ? "" : val["id"],
-                                          entity = val["entity"] == null ? "" : val["entity"],
-                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
-                                      }).ToList();
 
                 List<clientes> listobj = (from dynamic val in obj["clientes"].AsEnumerable().ToList()
                                           select new clientes()
@@ -904,7 +911,7 @@ namespace ProyectoBrokerDelPuerto
                         cliente.save();
                     }
 
-                    Cola.setLastCola(liscola);
+                    this.colas(json);
 
                 }
                 catch (Exception ex)
@@ -928,13 +935,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 Console.WriteLine("Importando Arqueos (" + obj["arqueos"].Count() + ") " + DateTime.Now);
                 this.concattextbox += "IMPORTAR Arqueos / " + obj["arqueos"].Count() + " Registros " + Environment.NewLine;
-                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
-                                      select new Cola()
-                                      {
-                                          id = val["id"] == null ? "" : val["id"],
-                                          entity = val["entity"] == null ? "" : val["entity"],
-                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
-                                      }).ToList();
+                
                 List<arqueos> listobj = (from dynamic val in obj["arqueos"].AsEnumerable().ToList()
                                          select new arqueos()
                                          {
@@ -976,7 +977,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         arqueos ar = new arqueos();
                         ar.save_concat(concat_.ToString());
-                        Cola.setLastCola(liscola);
+                        this.colas(json);
                     }
 
                 }
@@ -1035,6 +1036,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         rendiciones ren = new rendiciones();
                         ren.save_concat(concat_.ToString());
+                        this.colas(json);
                     }
                 }
                 catch (Exception ex)
@@ -1110,7 +1112,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void tarea_actividades(string json)
         {
-            JsonTextReader reader = new JsonTextReader(new StringReader(json));
+            /*JsonTextReader reader = new JsonTextReader(new StringReader(json));
             JObject obj = JObject.Load(reader);
 
 
@@ -1167,12 +1169,13 @@ namespace ProyectoBrokerDelPuerto
                 mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 mig.useredit = MDIParent1.sesionUser;
                 miActividades = mig;
-            }
+            }*/
+            this.colas(json);
         }
 
         private void tarea_clasificaciones(string json)
         {
-            JsonTextReader reader = new JsonTextReader(new StringReader(json));
+            /*JsonTextReader reader = new JsonTextReader(new StringReader(json));
             JObject obj = JObject.Load(reader);
 
             if (obj["clasificaciones"] != null)
@@ -1227,12 +1230,13 @@ namespace ProyectoBrokerDelPuerto
                 mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 mig.useredit = MDIParent1.sesionUser;
                 miClasificacion = mig;
-            }
+            }*/
+            this.colas(json);
         }
 
         private void tarea_coberturas(string json)
         {
-            JsonTextReader reader = new JsonTextReader(new StringReader(json));
+            /*JsonTextReader reader = new JsonTextReader(new StringReader(json));
             JObject obj = JObject.Load(reader);
             if (obj["coberturas"] != null)
             {
@@ -1292,7 +1296,8 @@ namespace ProyectoBrokerDelPuerto
                 mig.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 mig.useredit = MDIParent1.sesionUser;
                 miCoberturas = mig;
-            }
+            }*/
+            this.colas(json);
         }
 
         private void tarea_barrios(string json)
@@ -1305,15 +1310,7 @@ namespace ProyectoBrokerDelPuerto
 
                 Console.WriteLine( "IMPORTACIÓN Barrios / " + obj["barrios"].Count() + " Registros " + Environment.NewLine);
                 this.concattextbox += "IMPORTACIÓN Barrios / " + obj["barrios"].Count() + " Registros " + Environment.NewLine;
-
-                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
-                                      select new Cola()
-                                      {
-                                          id = val["id"] == null ? "" : val["id"],
-                                          entity = val["entity"] == null ? "" : val["entity"],
-                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
-                                      }).ToList();
-
+                
                 List<barrios> listobj = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
                                          select new barrios()
                                          {
@@ -1343,7 +1340,7 @@ namespace ProyectoBrokerDelPuerto
                         barrio.save();
                     }
 
-                    Cola.setLastCola(liscola);
+                    this.colas(json);
                 }
                 catch(Exception ex)
                 {
@@ -1376,14 +1373,7 @@ namespace ProyectoBrokerDelPuerto
 
             if (obj["gruposbarrios"] != null)
             {
-                List<Cola> liscola = (from dynamic val in obj["colas"].AsEnumerable().ToList()
-                                      select new Cola()
-                                      {
-                                          id = val["id"] == null ? "" : val["id"],
-                                          entity = val["entity"] == null ? "" : val["entity"],
-                                          entity_id = val["entity_id"] == null ? "" : val["entity_id"],
-                                      }).ToList();
-
+               
                 List<gruposbarrios> listobj = (from dynamic val in obj["gruposbarrios"].AsEnumerable().ToList()
                                                select new gruposbarrios()
                                                {
@@ -1409,7 +1399,7 @@ namespace ProyectoBrokerDelPuerto
                     }
                 }
 
-                Cola.setLastCola(liscola);
+                this.colas(json);
 
             }
         }
@@ -1466,7 +1456,7 @@ namespace ProyectoBrokerDelPuerto
                     prov.save_concat(concat_.ToString());
                 }
 
-
+                this.colas(json);
             }
 
 
@@ -1520,6 +1510,7 @@ namespace ProyectoBrokerDelPuerto
                 usuarios u = new usuarios();
                 u.save_sql(concat_);
             }
+            this.colas(json);
         }
 
         private void tarea_perfiles(string json)
@@ -1583,6 +1574,7 @@ namespace ProyectoBrokerDelPuerto
                     pe.save_concat_sql(concat_);
                 }
                 Console.WriteLine("\n\n" + "TERMINA perfiles " + DateTime.Now);
+                this.colas(json);
             }
         }
 

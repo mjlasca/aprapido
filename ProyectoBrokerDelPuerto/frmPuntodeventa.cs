@@ -151,32 +151,59 @@ namespace ProyectoBrokerDelPuerto
             frmMigraciones frmMig = new frmMigraciones();
             frmMig.flaginstalacion = true;
             frmMig.cbReset.Checked = true;
+            bool ps = false;
             solicitudes s = new solicitudes();
-            s.solicitud_propuestas = true;
-            s.solicitud_lineas_propuestas = true;
-            s.solicitud_clientes = true;
-            //s.solicitud_usuarios = true;
-            s.solicitud_perfiles = true;
-            //s.solicitud_arqueos = true;
-            //s.solicitud_rendiciones = true;
-            //s.solicitud_lineas_rendiciones = true;
-            //s.solicitud_actividades = true;
-            //s.solicitud_coberturas = true;
-            //s.solicitud_clasificaciones = true;
-            s.solicitud_barrios = true;
-            //s.solicitud_gruposbarrios = true;
-            s.solicitud_provincias = true;
-            //s.solicitud_barrios_propuestas = true;
-
-            bool ps = await frmMig.importarData(s,false,true);
 
             s = new solicitudes();
             s.solicitud_propuestas = true;
-            s.solicitud_lineas_propuestas = true;
-            //s.solicitud_barrios_propuestas = true;
+            ps = await frmMig.importarData(s, false, true);
 
-            bool ps0 = await frmMig.importarData(s);
+            s = new solicitudes();
+            s.solicitud_usuarios = true;
+            ps = await frmMig.importarData(s, false, true);
 
+            s = new solicitudes();
+            s.solicitud_clientes = true;
+            ps = await frmMig.importarData(s, false, true);
+
+            s = new solicitudes();
+            s.solicitud_perfiles = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_arqueos = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_rendiciones = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_actividades = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_coberturas = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_clasificaciones = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_barrios = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_gruposbarrios = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_provincias = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            
+            
             /*if (ps)
             {*/
             this.Height = 312;

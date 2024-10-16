@@ -52,8 +52,8 @@ namespace ProyectoBrokerDelPuerto
 
         public bool lineas_propuestas(List<lineas_propuestas> listobj)
         {
-            /*try
-            {*/
+            try
+            {
                 List<string> listAux = new List<string>();
                 for (int i = 0; i < listobj.Count; i++)
                 {
@@ -66,12 +66,12 @@ namespace ProyectoBrokerDelPuerto
                     listobj[i].save();
                 }
                 return true;
-            /*}
+            }
             catch (Exception ex)
             {
                 logs.setError("IMPLINEASPRO","Error al guardar Líneas Propuestas " + ex.Message);
                 return false;
-            }*/
+            }
         }
     }
 }

@@ -372,7 +372,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 if (this.id != "")
                     this.id = validaciones.RemoveSpecialCharacters(this.id);
-                if (this.exist())
+                if (this.exist() && this.codpostal != "")
                 {
                     sql = "UPDATE clientes SET " +
                         "nombres = '" + this.nombres + "'," +

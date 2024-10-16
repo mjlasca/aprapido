@@ -420,15 +420,10 @@ namespace ProyectoBrokerDelPuerto
         {
             ApiCoberturas apcob = new ApiCoberturas();
             List<coberturas> lscob = await apcob.Get();
-            validaciones val = new validaciones();
-            if (val.dataComparacion("api_coberturas", lscob))
+            foreach (coberturas c in lscob)
             {
-                foreach (coberturas c in lscob)
-                {
-                    if (versionUpdate(c.nombre, c.version))
-                        c.save(true);
-                }
-                val.createData0("api_coberturas");
+                if (versionUpdate(c.nombre, c.version))
+                    c.save(true);
             }
         }
 

@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "11.2";
+        public static string versionsistema { get; set; } = "11.4";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -719,8 +719,8 @@ namespace ProyectoBrokerDelPuerto
         {
             Task.Run( async () => {
                 configuraciones config_grb = new configuraciones();
-                config_grb = config_grb.get("grupos_resetQ");
-                if ( (config_grb.id == null || config_grb.id == "") && MDIParent1.prefijo == "Q")
+                config_grb = config_grb.get("grupos_reset");
+                if ( (config_grb.id == null || config_grb.id == "") )
                 {
                     gruposbarrios gb = new gruposbarrios();
                     gb.importGetApi();
