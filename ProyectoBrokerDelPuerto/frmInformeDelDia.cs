@@ -127,8 +127,6 @@ namespace ProyectoBrokerDelPuerto
             /*}
             catch (Exception ex)
             {
-                configprosimport.valor = "0";
-                configprosimport.save();
                 MessageBox.Show("No se ha podido generar el informe de fin del día " + ex.Message, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }*/
 
@@ -548,180 +546,188 @@ namespace ProyectoBrokerDelPuerto
             {
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
-                    if (ds.Tables[0].Rows[i]["codestado"].ToString() != "0")
+                    try
                     {
-                        string clausulaNoRepeticion = "N";
-                        if (ds.Tables[0].Rows[i]["clausula"].ToString() == "1")
+                        if (ds.Tables[0].Rows[i]["codestado"].ToString() != "0")
                         {
-                            clausulaNoRepeticion = "S";
-                        }
-
-
-
-
-                        if (ds.Tables[0].Rows[i]["nueva_poliza"].ToString() == tipo)
-                        {
-                            lineas_propuestas li = new lineas_propuestas();
-                            DataSet dd = li.get_idpropuesta(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
-                            clientes cl = new clientes();
-                            DataSet dcl = cl.get(ds.Tables[0].Rows[i]["documento"].ToString());
-
-                            /*coberturas cober = new coberturas();
-                            DataSet dsCobert = cober.get(ds.Tables[0].Rows[i]["id_cobertura"].ToString());*/
-
-                            for (int k = 0; k < dd.Tables[0].Rows.Count; k++)
+                            string clausulaNoRepeticion = "N";
+                            if (ds.Tables[0].Rows[i]["clausula"].ToString() == "1")
                             {
-                                /*actividades ac = new actividades();
-                                DataSet dsActividad = ac.get(dd.Tables[0].Rows[k]["id_actividad"].ToString());
-                                clasificaciones cla = new clasificaciones();
-                                DataSet dsClasificacion = cla.get(dd.Tables[0].Rows[k]["id_clasificacion"].ToString());*/
-
-
-                                bool promo = false;
+                                clausulaNoRepeticion = "S";
+                            }
 
 
 
-                                if (ds.Tables[0].Rows[i]["meses"].ToString() != "" && ds.Tables[0].Rows[i]["premio_total"].ToString() != "")
+
+                            if (ds.Tables[0].Rows[i]["nueva_poliza"].ToString() == tipo)
+                            {
+                                lineas_propuestas li = new lineas_propuestas();
+                                DataSet dd = li.get_idpropuesta(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
+                                clientes cl = new clientes();
+                                DataSet dcl = cl.get(ds.Tables[0].Rows[i]["documento"].ToString());
+
+                                /*coberturas cober = new coberturas();
+                                DataSet dsCobert = cober.get(ds.Tables[0].Rows[i]["id_cobertura"].ToString());*/
+
+                                for (int k = 0; k < dd.Tables[0].Rows.Count; k++)
                                 {
-                                    if (ds.Tables[0].Rows[i]["premio"].ToString() != "")
-                                    {
+                                    /*actividades ac = new actividades();
+                                    DataSet dsActividad = ac.get(dd.Tables[0].Rows[k]["id_actividad"].ToString());
+                                    clasificaciones cla = new clasificaciones();
+                                    DataSet dsClasificacion = cla.get(dd.Tables[0].Rows[k]["id_clasificacion"].ToString());*/
 
-                                        if ((Convert.ToDouble(ds.Tables[0].Rows[i]["meses"].ToString()) *
-                                            Convert.ToDouble(ds.Tables[0].Rows[i]["num_polizas"].ToString()) *
-                                            Convert.ToDouble(ds.Tables[0].Rows[i]["premio"].ToString()))
-                                            > Convert.ToDouble(ds.Tables[0].Rows[i]["premio_total"].ToString()))
+
+                                    bool promo = false;
+
+
+
+                                    if (ds.Tables[0].Rows[i]["meses"].ToString() != "" && ds.Tables[0].Rows[i]["premio_total"].ToString() != "")
+                                    {
+                                        if (ds.Tables[0].Rows[i]["premio"].ToString() != "")
                                         {
-                                            promo = true;
-                                        }
 
-                                    }
-                                }
-
-                                if (ds.Tables[0].Rows[i]["promocion"].ToString() != "" || promo)
-                                {
-                                    filapromo.Items.Add(aux);
-                                    //val = (Convert.ToDouble(val) * 2).ToString();
-                                }
-
-
-                                string nombreBarrios = "";
-                                string cuitBarrios = "";
-
-                                if (ds.Tables[0].Rows[i]["data_barrios"].ToString() != "")
-                                {
-                                    try
-                                    {
-                                        JsonTextReader reader = new JsonTextReader(new StringReader(ds.Tables[0].Rows[i]["data_barrios"].ToString()));
-                                        JObject obj = JObject.Load(reader);
-                                        if (obj["barrios"] != null)
-                                        {
-                                            List<barrios_propuesta> json_barrios_propuesta = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
-                                                                                              select new barrios_propuesta()
-                                                                                              {
-                                                                                                  id_barrio = val["id_barrio"],
-                                                                                                  nombre = val["nombre"],
-                                                                                              }).ToList();
-
-                                            foreach (barrios_propuesta bp in json_barrios_propuesta)
+                                            if ((Convert.ToDouble(ds.Tables[0].Rows[i]["meses"].ToString()) *
+                                                Convert.ToDouble(ds.Tables[0].Rows[i]["num_polizas"].ToString()) *
+                                                Convert.ToDouble(ds.Tables[0].Rows[i]["premio"].ToString()))
+                                                > Convert.ToDouble(ds.Tables[0].Rows[i]["premio_total"].ToString()))
                                             {
-                                                nombreBarrios += bp.nombre + ", ";
-                                                cuitBarrios += bp.id_barrio + ", ";
-                                            }
-                                        }
-                                    }catch(Exception ex)
-                                    {
-                                        logs log_ = new logs();
-                                        log_.newError("JSONINFORME",$"Error con los barrios en propuesta {ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString()}");
-                                    }
-                                    
-                                } else
-                                {
-                                    //En ésta sección de código se concatenan los barrios y los cuits de los barrios
-                                    barrios_propuesta barrrios = new barrios_propuesta();
-                                    DataSet bards = barrrios.get_idpropuesta(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
-
-                                    if (bards.Tables[0].Rows.Count > 0)
-                                    {
-                                        for (int b = 0; b < bards.Tables[0].Rows.Count; b++)
-                                        {
-                                            if (b == 0)
-                                            {
-                                                nombreBarrios += bards.Tables[0].Rows[b]["nombre"];
-                                                cuitBarrios += bards.Tables[0].Rows[b]["id_barrio"];
-                                            }
-
-                                            if (b > 0)
-                                            {
-                                                nombreBarrios += "," + bards.Tables[0].Rows[b]["nombre"];
-                                                cuitBarrios += "," + bards.Tables[0].Rows[b]["id_barrio"];
+                                                promo = true;
                                             }
 
                                         }
                                     }
+
+                                    if (ds.Tables[0].Rows[i]["promocion"].ToString() != "" || promo)
+                                    {
+                                        filapromo.Items.Add(aux);
+                                        //val = (Convert.ToDouble(val) * 2).ToString();
+                                    }
+
+
+                                    string nombreBarrios = "";
+                                    string cuitBarrios = "";
+
+                                    if (ds.Tables[0].Rows[i]["data_barrios"].ToString() != "")
+                                    {
+                                        try
+                                        {
+                                            JsonTextReader reader = new JsonTextReader(new StringReader(ds.Tables[0].Rows[i]["data_barrios"].ToString()));
+                                            JObject obj = JObject.Load(reader);
+                                            if (obj["barrios"] != null)
+                                            {
+                                                List<barrios_propuesta> json_barrios_propuesta = (from dynamic val in obj["barrios"].AsEnumerable().ToList()
+                                                                                                  select new barrios_propuesta()
+                                                                                                  {
+                                                                                                      id_barrio = val["id_barrio"],
+                                                                                                      nombre = val["nombre"],
+                                                                                                  }).ToList();
+
+                                                foreach (barrios_propuesta bp in json_barrios_propuesta)
+                                                {
+                                                    nombreBarrios += bp.nombre + ", ";
+                                                    cuitBarrios += bp.id_barrio + ", ";
+                                                }
+                                            }
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            logs log_ = new logs();
+                                            log_.newError("JSONINFORME", $"Error con los barrios en propuesta {ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString()}");
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        //En ésta sección de código se concatenan los barrios y los cuits de los barrios
+                                        barrios_propuesta barrrios = new barrios_propuesta();
+                                        DataSet bards = barrrios.get_idpropuesta(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
+
+                                        if (bards.Tables[0].Rows.Count > 0)
+                                        {
+                                            for (int b = 0; b < bards.Tables[0].Rows.Count; b++)
+                                            {
+                                                if (b == 0)
+                                                {
+                                                    nombreBarrios += bards.Tables[0].Rows[b]["nombre"];
+                                                    cuitBarrios += bards.Tables[0].Rows[b]["id_barrio"];
+                                                }
+
+                                                if (b > 0)
+                                                {
+                                                    nombreBarrios += "," + bards.Tables[0].Rows[b]["nombre"];
+                                                    cuitBarrios += "," + bards.Tables[0].Rows[b]["id_barrio"];
+                                                }
+
+                                            }
+                                        }
+                                    }
+
+
+
+                                    if (nombreBarrios == "")
+                                    {
+                                        clausulaNoRepeticion = "N";
+                                    }
+
+                                    /*
+                                    string edadCliente = "0";
+
+                                    if(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "")
+                                    {
+                                        edadCliente = this.edadCliente(Convert.ToDateTime(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString()));
+                                    }
+                                    */
+                                    //MessageBox.Show("ID y PREFIJO "+ ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString() + "DD "+ dd.Tables[0].Rows.Count + 
+                                    // " dsActividad "+ dsActividad.Tables[0].Rows.Count + " dsClasificacion " + dsClasificacion.Tables[0].Rows.Count + " dcl " + dcl.Tables[0].Rows.Count);
+                                    //dt.Rows.Add(ds.Tables[0].Rows[i]["id"].ToString(), (k + 1), dd.Tables[0].Rows[k]["tipo_documento"].ToString(), dd.Tables[0].Rows[k]["documento"].ToString(), dd.Tables[0].Rows[k]["apellidos_nombres"].ToString(), Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy HH:mm:ss"), Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("dd/MM/yyyy HH:mm:ss"), ds.Tables[0].Rows[i]["meses"].ToString(), ds.Tables[0].Rows[i]["premio"].ToString(), ds.Tables[0].Rows[i]["premio_total"].ToString(), dcl.Tables[0].Rows[0]["apellidos"].ToString() + " " + dcl.Tables[0].Rows[0]["nombres"].ToString(), dcl.Tables[0].Rows[0]["tipo_id"].ToString(), dcl.Tables[0].Rows[0]["id"].ToString(), dcl.Tables[0].Rows[0]["direccion"].ToString(), dcl.Tables[0].Rows[0]["codpostal"].ToString(), dcl.Tables[0].Rows[0]["localidad"].ToString());
+                                    dt.Rows.Add(
+                                        (k + 1),
+                                        dd.Tables[0].Rows[k]["tipo_documento"].ToString(),
+                                        dd.Tables[0].Rows[k]["documento"].ToString(),
+                                        dd.Tables[0].Rows[k]["apellidos"].ToString() + " " + dd.Tables[0].Rows[k]["nombres"].ToString(),
+                                        dcl.Tables[0].Rows[0]["sexo"].ToString(),
+                                        Convert.ToDateTime(dd.Tables[0].Rows[k]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy"),
+                                        ds.Tables[0].Rows[i]["cobertura_suma"].ToString(),
+                                        ds.Tables[0].Rows[i]["cobertura_gastos"].ToString(),
+                                        "0",
+                                        "0",
+                                        Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy"),
+                                        dd.Tables[0].Rows[k]["actividad"].ToString().IndexOf("-") > 0 ? dd.Tables[0].Rows[k]["actividad"].ToString().Substring(0, dd.Tables[0].Rows[k]["actividad"].ToString().IndexOf("-")).Trim() : dd.Tables[0].Rows[k]["cod_actividad"].ToString(),
+                                        dd.Tables[0].Rows[k]["clasificacion"].ToString().IndexOf("-") > 0 ? dd.Tables[0].Rows[k]["clasificacion"].ToString().Substring(0, dd.Tables[0].Rows[k]["clasificacion"].ToString().IndexOf("-")).Trim() : dd.Tables[0].Rows[k]["cod_clasificacion"].ToString(),
+                                        "14",
+                                        "Herederos Legales",
+                                        "", "", "", "", "", "", "", "", "0", "0", "0",
+                                        ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString(),
+                                        Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy"),
+                                        Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("dd/MM/yyyy"),
+                                        "0",
+                                        this.edadCliente(Convert.ToDateTime(dd.Tables[0].Rows[0]["fecha_nacimiento"].ToString())),
+                                        clausulaNoRepeticion,
+                                        nombreBarrios,
+                                        cuitBarrios,
+                                        "N", ds.Tables[0].Rows[i]["premio"].ToString(),
+                                        "Opcion " + ds.Tables[0].Rows[i]["id_cobertura"].ToString(),
+                                        "484",
+                                        dcl.Tables[0].Rows[0]["apellidos"].ToString() + " " + dcl.Tables[0].Rows[0]["nombres"].ToString(),
+                                        dcl.Tables[0].Rows[0]["tipo_id"].ToString(),
+                                        dcl.Tables[0].Rows[0]["id"].ToString(),
+                                        Convert.ToDateTime(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy"),
+                                        dcl.Tables[0].Rows[0]["direccion"].ToString(),
+                                        dcl.Tables[0].Rows[0]["codpostal"].ToString(),
+                                        dcl.Tables[0].Rows[0]["localidad"].ToString(),
+                                        ds.Tables[0].Rows[i]["master"].ToString(),
+                                        ds.Tables[0].Rows[i]["organizador"].ToString(),
+                                        ds.Tables[0].Rows[i]["productor"].ToString()
+
+                                    );
+
+                                    aux++;
                                 }
-
-
-
-                                if (nombreBarrios == "")
-                                {
-                                    clausulaNoRepeticion = "N";
-                                }
-
-                                /*
-                                string edadCliente = "0";
-
-                                if(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "")
-                                {
-                                    edadCliente = this.edadCliente(Convert.ToDateTime(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString()));
-                                }
-                                */
-                                //MessageBox.Show("ID y PREFIJO "+ ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString() + "DD "+ dd.Tables[0].Rows.Count + 
-                                // " dsActividad "+ dsActividad.Tables[0].Rows.Count + " dsClasificacion " + dsClasificacion.Tables[0].Rows.Count + " dcl " + dcl.Tables[0].Rows.Count);
-                                //dt.Rows.Add(ds.Tables[0].Rows[i]["id"].ToString(), (k + 1), dd.Tables[0].Rows[k]["tipo_documento"].ToString(), dd.Tables[0].Rows[k]["documento"].ToString(), dd.Tables[0].Rows[k]["apellidos_nombres"].ToString(), Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy HH:mm:ss"), Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("dd/MM/yyyy HH:mm:ss"), ds.Tables[0].Rows[i]["meses"].ToString(), ds.Tables[0].Rows[i]["premio"].ToString(), ds.Tables[0].Rows[i]["premio_total"].ToString(), dcl.Tables[0].Rows[0]["apellidos"].ToString() + " " + dcl.Tables[0].Rows[0]["nombres"].ToString(), dcl.Tables[0].Rows[0]["tipo_id"].ToString(), dcl.Tables[0].Rows[0]["id"].ToString(), dcl.Tables[0].Rows[0]["direccion"].ToString(), dcl.Tables[0].Rows[0]["codpostal"].ToString(), dcl.Tables[0].Rows[0]["localidad"].ToString());
-                                dt.Rows.Add(
-                                    (k + 1),
-                                    dd.Tables[0].Rows[k]["tipo_documento"].ToString(),
-                                    dd.Tables[0].Rows[k]["documento"].ToString(),
-                                    dd.Tables[0].Rows[k]["apellidos"].ToString() + " " + dd.Tables[0].Rows[k]["nombres"].ToString(),
-                                    dcl.Tables[0].Rows[0]["sexo"].ToString(),
-                                    Convert.ToDateTime(dd.Tables[0].Rows[k]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy"),
-                                    ds.Tables[0].Rows[i]["cobertura_suma"].ToString(),
-                                    ds.Tables[0].Rows[i]["cobertura_gastos"].ToString(),
-                                    "0",
-                                    "0",
-                                    Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy"),
-                                    dd.Tables[0].Rows[k]["actividad"].ToString().IndexOf("-") > 0 ? dd.Tables[0].Rows[k]["actividad"].ToString().Substring(0, dd.Tables[0].Rows[k]["actividad"].ToString().IndexOf("-")).Trim() : dd.Tables[0].Rows[k]["cod_actividad"].ToString(),
-                                    dd.Tables[0].Rows[k]["clasificacion"].ToString().IndexOf("-") > 0 ? dd.Tables[0].Rows[k]["clasificacion"].ToString().Substring(0, dd.Tables[0].Rows[k]["clasificacion"].ToString().IndexOf("-")).Trim() : dd.Tables[0].Rows[k]["cod_clasificacion"].ToString(),
-                                    "14",
-                                    "Herederos Legales",
-                                    "", "", "", "", "", "", "", "", "0", "0", "0",
-                                    ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString(),
-                                    Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("dd/MM/yyyy"),
-                                    Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("dd/MM/yyyy"),
-                                    "0",
-                                    this.edadCliente(Convert.ToDateTime(dd.Tables[0].Rows[0]["fecha_nacimiento"].ToString())),
-                                    clausulaNoRepeticion,
-                                    nombreBarrios,
-                                    cuitBarrios,
-                                    "N", ds.Tables[0].Rows[i]["premio"].ToString(),
-                                    "Opcion " + ds.Tables[0].Rows[i]["id_cobertura"].ToString(),
-                                    "484",
-                                    dcl.Tables[0].Rows[0]["apellidos"].ToString() + " " + dcl.Tables[0].Rows[0]["nombres"].ToString(),
-                                    dcl.Tables[0].Rows[0]["tipo_id"].ToString(),
-                                    dcl.Tables[0].Rows[0]["id"].ToString(),
-                                    Convert.ToDateTime(dcl.Tables[0].Rows[0]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy"),
-                                    dcl.Tables[0].Rows[0]["direccion"].ToString(),
-                                    dcl.Tables[0].Rows[0]["codpostal"].ToString(),
-                                    dcl.Tables[0].Rows[0]["localidad"].ToString(),
-                                    ds.Tables[0].Rows[i]["master"].ToString(),
-                                    ds.Tables[0].Rows[i]["organizador"].ToString(),
-                                    ds.Tables[0].Rows[i]["productor"].ToString()
-
-                                );
-
-                                aux++;
                             }
                         }
+                    }
+                    catch (Exception ex){
+                        MessageBox.Show("Error con propuesta " +ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString() + "\n"+ex.Message , "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
 
                 }

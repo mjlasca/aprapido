@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "11.4";
+        public static string versionsistema { get; set; } = "11.6";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
+        public static string apiuri { get; } = "http://127.0.0.1:8000"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -707,7 +707,7 @@ namespace ProyectoBrokerDelPuerto
                 });
 
                 timer1.Start();
-                timer_parameters.Start();
+//                timer_parameters.Start();
 
 
 
@@ -1064,57 +1064,41 @@ namespace ProyectoBrokerDelPuerto
                 migp.tabla = "propuestas";
                 migp.tipo = "IMPORTACION";
 
-                
-                /*if (DateTime.Now.Subtract(migp.get_ultimafecha()).TotalMinutes >= 10)
-                {*/
+                int waitTime = 60000;
 
-                    int waitTime = 60000;
-
-                    /*RegisterPending regpend = new RegisterPending();
-                    Task.Run(async () => {
-                        regpend.sendListPending();
-                    });
-
-                    await Task.Delay(waitTime);*/
-
+                Task.Run(async () =>
+                {
+                    // Primera petición
                     frmMigraciones frmmig = new frmMigraciones();
-                    solicitudes s = new solicitudes();
-                    s.solicitud_propuestas = true;
+                    solicitudes s = new solicitudes { solicitud_propuestas = true };
                     bool solop = true;
+                    frmmig.importarData(s, solop);
 
-                    Task.Run(async () => {
-                        return frmmig.importarData(s, solop);
-                    });
-
+                    // Espera antes de la siguiente petición
                     await Task.Delay(waitTime);
 
+                    // Segunda petición
                     frmmig = new frmMigraciones();
-                    s = new solicitudes();
-                    s.solicitud_clientes = true;
+                    s = new solicitudes { solicitud_clientes = true };
+                    frmmig.importarData(s, solop);
 
-                    Task.Run(async () => {
-                        return frmmig.importarData(s, solop);
-                    });
+                    // Espera antes de la siguiente petición
                     await Task.Delay(waitTime);
 
+                    // Tercera petición
                     frmmig = new frmMigraciones();
-                    s = new solicitudes();
-                    s.solicitud_barrios = true;
-                    Task.Run(async () => {
-                        return frmmig.importarData(s, solop);
-                    });
+                    s = new solicitudes { solicitud_barrios = true };
+                    frmmig.importarData(s, solop);
+
+                    // Espera antes de la última petición
                     await Task.Delay(waitTime);
-                
+
+                    // Cuarta petición
                     frmmig = new frmMigraciones();
-                    s = new solicitudes();
-                    s.solicitud_gruposbarrios = true;
-
-                    Task.Run(async () => {
-                        return frmmig.importarData(s, solop);
-                    });
-                    await Task.Delay(waitTime);
-
-                    this.enviarPropuestasNube();
+                    s = new solicitudes { solicitud_gruposbarrios = true };
+                    frmmig.importarData(s, solop);
+                });
+                this.enviarPropuestasNube();
                     this.textBoxImport();
 
                 //}
@@ -1158,21 +1142,13 @@ namespace ProyectoBrokerDelPuerto
                         return frmmig.exportarPropuestas();
                     });
                 }
-                await Task.Delay(60000);
                 Task.Run(async () => {
-                    return frmmig.exportarClientes_2();
+                    frmmig.exportarClientes_2();
+                    await Task.Delay(30000);
+                    frmmig.exportarBarrios();
+                    await Task.Delay(30000);
+                    frmmig.exportarGruposBarrios();
                 });
-                Task.Run(async () => {
-                    return frmmig.exportarBarrios();
-                });
-                await Task.Delay(30000);
-                Task.Run(async () => {
-                    return frmmig.exportarGruposBarrios();
-                });
-
-
-
-
             }
             catch (Exception ex)
             {
@@ -1191,8 +1167,8 @@ namespace ProyectoBrokerDelPuerto
         private void timer_parameters_Tick(object sender, EventArgs e)
         {
             //this.importCloudParameters();
-            this.importCloudParametersLong();
-            this.textBoxImport();
+            //this.importCloudParametersLong();
+            //this.textBoxImport();
         }
 
         private async void importCloudParameters()
@@ -1208,7 +1184,6 @@ namespace ProyectoBrokerDelPuerto
                     }
                     
                 });
-                await Task.Delay(60000);
             }
         }
 

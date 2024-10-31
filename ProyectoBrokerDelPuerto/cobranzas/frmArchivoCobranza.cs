@@ -998,15 +998,15 @@ namespace ProyectoBrokerDelPuerto.cobranzas
                         if (dataGridView2.Rows[i].Cells["Nombre"].Value.ToString() != "" && dataGridView2.Rows[i].Cells["Nombre"].Value.ToString() == cli)
                         {
 
-                            if (dsperfil.Tables[0].Rows[0]["dolartipodato"].ToString() == dataGridView2.Rows[i].Cells[12].Value.ToString())
-                            {
-                                montoExcel = "US$ " + montoExcel;
-                                total_monto_d += Convert.ToDouble(dataGridView2.Rows[i].Cells[13].Value.ToString().Replace(".", ","));
-                            }
-                            else
+                            if (dataGridView2.Rows[i].Cells[12].Value.ToString().ToLower() == "pesos" || dataGridView2.Rows[i].Cells[12].Value.ToString().ToLower() == "peso" || dataGridView2.Rows[i].Cells[12].Value.ToString().ToLower().IndexOf("peso") != -1 )
                             {
                                 montoExcel = "$ " + montoExcel;
                                 total_monto_p += Convert.ToDouble(dataGridView2.Rows[i].Cells[13].Value.ToString().Replace(".", ","));
+                            }
+                            else
+                            {
+                                montoExcel = "US$ " + montoExcel;
+                                total_monto_d += Convert.ToDouble(dataGridView2.Rows[i].Cells[13].Value.ToString().Replace(".", ","));
                             }
 
                             res += "<tr><td>" + dataGridView2.Rows[i].Cells[4].Value + "</td><td>" + dataGridView2.Rows[i].Cells[3].Value +
