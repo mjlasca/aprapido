@@ -129,9 +129,10 @@ namespace ProyectoBrokerDelPuerto
 
         public bool validar_id()
         {
-            sql = "SELECT id FROM clientes WHERE id = '" + this.id + "' AND codestado = '1'  ";
+            sql = "SELECT id,codpostal FROM clientes WHERE id = '" + this.id + "' AND codestado = '1'  ";
             if (con.query(sql).Tables[0].Rows.Count > 0)
             {
+                this.codpostal = con.query(sql).Tables[0].Rows[0]["codpostal"].ToString();
                 return true;
             }
 
@@ -301,6 +302,9 @@ namespace ProyectoBrokerDelPuerto
             {
                 if (this.exist())
                 {
+                    if (this.codpostal == "")
+                        return "";
+                    
                     sql = "UPDATE clientes SET " +
                         "nombres = '" + this.nombres + "'," +
                         "apellidos = '" + this.apellidos + "'," +
@@ -372,9 +376,12 @@ namespace ProyectoBrokerDelPuerto
             {
                 if (this.id != "")
                     this.id = validaciones.RemoveSpecialCharacters(this.id);
-                if (this.exist() && this.codpostal != "")
+                if (this.exist())
                 {
-                    sql = "UPDATE clientes SET " +
+                    if (this.codpostal == "")
+                        return true;
+
+                        sql = "UPDATE clientes SET " +
                         "nombres = '" + this.nombres + "'," +
                         "apellidos = '" + this.apellidos + "'," +
                         "tipo_id = '" + this.tipo_id + "'," +
@@ -436,12 +443,12 @@ namespace ProyectoBrokerDelPuerto
 
 
 
-        public void save_concat(string sql1)
+        public void save_concat_cliente(string sql1)
         {
             con.query("INSERT INTO clientes (" + this.columns + ") VALUES "+sql1);
         }
 
-        public string concat_sql()
+        public string concat_sql_cliente()
         {
             try
             {

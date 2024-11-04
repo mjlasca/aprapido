@@ -491,7 +491,6 @@ namespace ProyectoBrokerDelPuerto
 
                 if (!cli.validar_id())
                 {
-                    cli.codpostal = dataGridView1.Rows[i].Cells["codpostal"].Value.ToString();
                     cli.tipo_id = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
                     cli.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
                     cli.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();

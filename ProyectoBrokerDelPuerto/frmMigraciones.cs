@@ -1121,11 +1121,6 @@ namespace ProyectoBrokerDelPuerto
                 
 
             }
-            else
-            {
-                MessageBox.Show("La migración de perfiles del " + fecha + " ya se ha hecho");
-            }
-
 
         }
 
