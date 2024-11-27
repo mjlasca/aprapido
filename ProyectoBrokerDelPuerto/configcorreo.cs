@@ -14,9 +14,10 @@ namespace ProyectoBrokerDelPuerto
         public string id, servidor, email, pass, puerto, useredit, ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), usocorreo = "general";
         conexion con = new conexion();
 
-        public configcorreo()
+        public configcorreo(bool inst = false)
         {
-            this.install();
+            if(inst)
+                this.install();
         }
 
         private void install()

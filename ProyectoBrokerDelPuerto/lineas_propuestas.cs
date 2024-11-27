@@ -40,6 +40,7 @@ namespace ProyectoBrokerDelPuerto
 
             con.query(sql);
             this.addColumn();
+            this.addIndex();
 
             if (MDIParent1.baseDatos == "MySql")
             {
@@ -108,6 +109,50 @@ namespace ProyectoBrokerDelPuerto
                 con.query("ALTER TABLE lineas_propuestas ADD COLUMN fechaHasta DATETIME NULL;");
                 con.query("ALTER TABLE lineas_propuestas ADD COLUMN idprefijo DOUBLE  NULL;");
                 con.query("ALTER TABLE lineas_propuestas ADD COLUMN codempresa VARCHAR(150) NULL;");
+            }
+
+        }
+
+        private void addIndex()
+        {
+            if (MDIParent1.baseDatos == "MySql")
+            {
+                try
+                {
+
+                    string sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'lineas_propuestas'  AND INDEX_NAME = 'idx_ultmod_t1'; ";
+                    DataSet ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX idx_ultmod_t1 ON lineas_propuestas(ultmod);";
+                        con.query(sql1);
+                    }
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'lineas_propuestas'  AND INDEX_NAME = 'idx_prefijo_idpropuesta_t1'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX idx_prefijo_idpropuesta_t1 ON lineas_propuestas(prefijo, id_propuesta);";
+                        con.query(sql1);
+                    }
+
+
+                }
+                catch
+                {
+                    //
+                }
+            }
+            else
+            {
+                try
+                {
+                    con.query("CREATE INDEX idx_ultmod_t1 ON lineas_propuestas(ultmod);");
+                    con.query("CREATE INDEX idx_prefijo_idpropuesta_t1 ON lineas_propuestas(prefijo, id_propuesta);");
+                }
+                catch
+                {
+                    //
+                }
             }
 
         }
@@ -187,33 +232,110 @@ namespace ProyectoBrokerDelPuerto
                 refe = " AND t0.referencia = '" + refe + "' ";
             }
             DataSet ds = new DataSet();
-            if (MDIParent1.baseDatos == "SQlite")
+            if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "SELECT t0.organizador,t0.productor,t0.id,t0.idpropuesta,t0.prima,t0.prefijo,t0.referencia,t0.tipopago,t0.fecha_paga,t0.compformapago,t0.formadepago,t0.premio_total,t0.documento,t0.fechaDesde,t0.fechaHasta,t0.paga, DATE(t0.ultmod) as ultmod, t0.meses," +
-                         "t0.id_cobertura,t0.user_edit,t3.nombres,t3.apellidos,t0.nota," +
-                     " (SELECT (t1.nombres ||  ' ' || t1.apellidos) FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as nombre, " +
-                     " (SELECT t1.email FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as correo, " +
-                     " (SELECT t1.telefono FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as telefono, t0.codestado, t3.premio, " +
-                     " (SELECT t1.fecha_nacimiento FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as nacimientotomador, " +
-                     " t3.fecha_nacimiento, t3.actividad, t3.clasificacion " +
-                     " FROM propuestas t0 INNER JOIN  lineas_propuestas t3 ON " +
-                     " t0.prefijo = t3.prefijo AND t0.idpropuesta = t3.id_propuesta   WHERE   DATE(t0.ultmod) >= '" + fecha1 + "'  AND DATE(t0.ultmod) <= '" + fecha2 +
-                     "'  AND t0.codestado > 0  "+refe+"  AND t0.user_edit LIKE '%" + this.user_edit + "%' ";
+                sql = $@"
+                    SELECT 
+                        t0.organizador,
+                        t0.productor,
+                        t0.id,
+                        t0.idpropuesta,
+                        t0.prima,
+                        t0.prefijo,
+                        t0.referencia,
+                        t0.tipopago,
+                        t0.fecha_paga,
+                        t0.compformapago,
+                        t0.formadepago,
+                        t0.premio_total,
+                        t0.documento,
+                        t0.fechaDesde,
+                        t0.fechaHasta,
+                        t0.paga,
+                        DATE(t0.ultmod) AS ultmod,
+                        t0.meses,
+                        t0.id_cobertura,
+                        t0.user_edit,
+                        t3.nombres,
+                        t3.apellidos,
+                        t0.nota,
+                        CONCAT(c.nombres, ' ', c.apellidos) AS nombre,
+                        c.email AS correo,
+                        c.telefono,
+                        t0.codestado,
+                        t3.premio,
+                        c.fecha_nacimiento AS nacimientotomador,
+                        t3.fecha_nacimiento,
+                        t3.actividad,
+                        t3.clasificacion
+                    FROM 
+                        propuestas t0
+                    INNER JOIN 
+                        lineas_propuestas t3 
+                        ON t0.prefijo = t3.prefijo AND t0.idpropuesta = t3.id_propuesta
+                    LEFT JOIN 
+                        clientes c 
+                        ON c.id = t0.documento
+                    WHERE 
+                        t0.ultmod >= '{fecha1}' 
+                        AND t0.ultmod <= '{fecha2}'
+                        AND t0.codestado > 0 
+                         {refe} 
+                         AND t0.user_edit LIKE '%{this.user_edit}%'";
+
 
             }
             else
             {
-               
-                    sql = "SELECT t0.organizador,t0.productor,t0.id,t0.idpropuesta,t0.prima,t0.prefijo,t0.referencia,t0.tipopago,t0.fecha_paga,t0.compformapago,t0.formadepago,t0.premio_total,t0.documento,t0.fechaDesde,t0.fechaHasta,t0.paga, DATE(t0.ultmod) as ultmod, t0.meses," +
-                        "t0.id_cobertura,t0.user_edit,t3.nombres,t3.apellidos,t0.nota," +
-                    " (SELECT CONCAT(t1.nombres, ' ', t1.apellidos) FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as nombre, " +
-                     " (SELECT t1.email FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as correo, " +
-                     " (SELECT t1.telefono FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as telefono, t0.codestado, t3.premio, " +
-                     " (SELECT t1.fecha_nacimiento FROM clientes t1 WHERE t1.id = t0.documento LIMIT 1) as nacimientotomador, " +
-                    " t3.fecha_nacimiento, t3.actividad, t3.clasificacion " +
-                    " FROM propuestas t0 INNER JOIN  lineas_propuestas t3 ON " +
-                    " t0.prefijo = t3.prefijo AND t0.idpropuesta = t3.id_propuesta  WHERE   DATE(t0.ultmod) >= '" + fecha1 + "'  AND DATE(t0.ultmod) <= '" + fecha2 +
-                    "'  AND t0.codestado > 0  " + refe + " AND t0.user_edit LIKE '%" + this.user_edit + "%' ";
+
+                sql = $@"
+                    SELECT 
+                        t0.organizador,
+                        t0.productor,
+                        t0.id,
+                        t0.idpropuesta,
+                        t0.prima,
+                        t0.prefijo,
+                        t0.referencia,
+                        t0.tipopago,
+                        t0.fecha_paga,
+                        t0.compformapago,
+                        t0.formadepago,
+                        t0.premio_total,
+                        t0.documento,
+                        t0.fechaDesde,
+                        t0.fechaHasta,
+                        t0.paga,
+                        t0.ultmod AS ultmod,
+                        t0.meses,
+                        t0.id_cobertura,
+                        t0.user_edit,
+                        t3.nombres,
+                        t3.apellidos,
+                        t0.nota,
+                        c.nombres || ' ' || c.apellidos AS nombre,
+                        c.email AS correo,
+                        c.telefono,
+                        t0.codestado,
+                        t3.premio,
+                        c.fecha_nacimiento AS nacimientotomador,
+                        t3.fecha_nacimiento,
+                        t3.actividad,
+                        t3.clasificacion
+                    FROM 
+                        propuestas t0
+                    INNER JOIN 
+                        lineas_propuestas t3 
+                        ON t0.prefijo = t3.prefijo AND t0.idpropuesta = t3.id_propuesta
+                    LEFT JOIN 
+                        clientes c 
+                        ON c.id = t0.documento
+                    WHERE 
+                        t0.ultmod >= '{fecha1}' 
+                        AND t0.ultmod <= '{fecha2}'
+                        AND t0.codestado > 0 
+                        {refe}
+                         AND t0.user_edit LIKE '%{this.user_edit}%'";
 
             }
 
@@ -247,8 +369,7 @@ namespace ProyectoBrokerDelPuerto
                 " t2.premio_total, t2.referencia,t2.prima,t2.nota" +
                 " FROM lineas_propuestas t1 INNER JOIN propuestas t2 ON t1.prefijo = t2.prefijo AND t2.idpropuesta = t1.id_propuesta"+
                 " WHERE " +
-                " DATE(t1.ultmod) >= '" + fec1 + "'  AND DATE(t1.ultmod) <= '" + fec2 +
-                "'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" + this.user_edit + "%' " + referencia_ + "   ORDER BY t1.ultmod ASC ";
+                " t1.ultmod >= '" + fec1 + " 00:00:01'  AND t1.ultmod <= '" + fec2 + " 23:59:59'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" + this.user_edit + "%' " + referencia_ + "   ORDER BY t1.ultmod ASC ";
             }
             else
             {
@@ -256,8 +377,7 @@ namespace ProyectoBrokerDelPuerto
                 " t2.premio_total, t2.referencia,t2.prima,t2.nota" +
                 " FROM lineas_propuestas t1 INNER JOIN propuestas t2 ON t1.prefijo = t2.prefijo AND t2.idpropuesta = t1.id_propuesta" +
                 " WHERE " +
-                " DATE(t1.ultmod) >= '" + fec1 + "'  AND DATE(t1.ultmod) <= '" + fec2 +
-                "'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" + this.user_edit + "%'  " + referencia_ + "  ORDER BY t1.ultmod ASC ";
+                " t1.ultmod >= '" + fec1 + " 00:00:01'  AND t1.ultmod <= '" + fec2 + " 23:59:59'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" + this.user_edit + "%' " + referencia_ + "   ORDER BY t1.ultmod ASC ";
             }
 
             Console.WriteLine("---> "+sql);

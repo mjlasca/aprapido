@@ -754,14 +754,7 @@ namespace ProyectoBrokerDelPuerto
 
                 bool resimport = false;
                 Console.WriteLine("SE ESTÁ IMPORTANDO RESET ( "+cbReset.Checked+")" + DateTime.Now.ToString("HH:mm:ss"));
-
-                
-                if (fecha == "2021-01-01")
-                    resimport = await impo.parametroscolaborador("2020-01-01", sol, cbReset.Checked, solopropuestas, get_prefix_own);
-                else
-                    resimport = await impo.parametroscolaborador(fecha, sol, cbReset.Checked, solopropuestas, get_prefix_own);
-
-
+                resimport = await impo.parametroscolaborador(fecha, sol, cbReset.Checked, solopropuestas, get_prefix_own);
                 
                 textBox1.Text += "DATOS IMPORTADOS " + Environment.NewLine + Environment.NewLine;
                 textBox1.Text += impo.concattextbox;

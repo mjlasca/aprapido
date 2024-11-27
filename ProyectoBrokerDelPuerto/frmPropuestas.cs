@@ -255,14 +255,6 @@ namespace ProyectoBrokerDelPuerto
             btnPagar.Visible = Convert.ToBoolean(this.access[1]);
             btnAnular.Visible = Convert.ToBoolean(this.access[2]);
 
-            Task.Run(async () => {
-                ApiReports apReports = new ApiReports();
-                int res = await apReports.Get(DateTime.Now.ToString("yyyy-MM-dd"));
-                this.busqueda_grid();
-            });
-            
-
-
             usuarios usus = new usuarios();
             DataSet dsu = usus.get_all();
             empleado_txt.Items.Add("Todos");

@@ -276,22 +276,13 @@ namespace ProyectoBrokerDelPuerto
             validaciones val = new validaciones();
             if (ls.Count > 0)
             {
-                configuraciones config_grb = new configuraciones();
-                config_grb = config_grb.get("grupos_reset");
                 this.delete_all();
-                config_grb = new configuraciones();
-                config_grb.dato = "grupos_reset";
-                config_grb.valor = "1";
-                config_grb.save();
-
                 foreach (gruposbarrios obj in ls)
                 {
                     obj.envionube = "1";
                     obj.save();
                 }
             }
-
-
         }
 
         public void actualizar_envionube()
