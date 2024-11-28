@@ -53,7 +53,9 @@ namespace ProyectoBrokerDelPuerto
                 {
                     con.query("ALTER TABLE barrios MODIFY nombre VARCHAR(1500) NULL;");
                 }
-                if (con.query("SHOW COLUMNS FROM barrios WHERE Field = 'envionube' ").Tables[0].Rows.Count == 0)
+                DataSet dds = con.query("SHOW COLUMNS FROM barrios WHERE Field = 'envionube' ");
+
+                if (dds.Tables.Count == 0)
                     con.query("ALTER TABLE barrios ADD COLUMN envionube int(10) DEFAULT 0");
             }
             else

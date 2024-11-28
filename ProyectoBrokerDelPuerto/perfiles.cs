@@ -53,7 +53,7 @@ namespace ProyectoBrokerDelPuerto
         {
             sql = "SELECT COUNT(1) as cont FROM perfiles WHERE nombre = 'productorJunior' ";
             DataSet ds = con.query(sql);
-            if (ds.Tables[0].Rows[0]["cont"].ToString() == "0")
+            if (ds.Tables.Count > 0 &&  ds.Tables[0].Rows[0]["cont"].ToString() == "0")
             {
                 string nameprofile = "productorJunior";
                 //Profile productorJunior
@@ -131,7 +131,7 @@ namespace ProyectoBrokerDelPuerto
             sql = "SELECT COUNT(1) as cont FROM perfiles WHERE nombre = 'productorSenior' ";
             ds = con.query(sql);
 
-            if (ds.Tables[0].Rows[0]["cont"].ToString() == "0")
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows[0]["cont"].ToString() == "0")
             {
 
                 string nameprofile = "productorSenior";
@@ -317,7 +317,7 @@ namespace ProyectoBrokerDelPuerto
             sql = "SELECT COUNT(1) as cont FROM perfiles WHERE nombre = 'Master-Organizador-Productor' ";
             ds = con.query(sql);
 
-            if (ds.Tables[0].Rows[0]["cont"].ToString() == "0")
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows[0]["cont"].ToString() == "0")
             {
 
                 string nameprofile = "Master-Organizador-Productor";
@@ -506,7 +506,7 @@ namespace ProyectoBrokerDelPuerto
             sql = "SELECT COUNT(1) as cont FROM perfiles WHERE nombre = 'adminpunto' ";
             ds = con.query(sql);
 
-            if (ds.Tables[0].Rows[0]["cont"].ToString() == "0")
+            if (ds.Tables.Count > 0 && ds.Tables[0].Rows[0]["cont"].ToString() == "0")
             {
 
                 string nameprofile = "adminpunto";

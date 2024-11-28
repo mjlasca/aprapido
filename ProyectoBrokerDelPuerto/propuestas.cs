@@ -247,6 +247,14 @@ namespace ProyectoBrokerDelPuerto
                         con.query(sql1);
                     }
 
+                    sql1 = "SELECT COUNT(1) as cant FROM information_schema.statistics WHERE TABLE_SCHEMA = DATABASE()   AND TABLE_NAME = 'propuestas'  AND INDEX_NAME = 'idx.fechaHasta'; ";
+                    ds = con.query(sql1);
+                    if (ds.Tables[0].Rows[0]["cant"].ToString() != "1")
+                    {
+                        sql1 = "CREATE INDEX `idx.fechaHasta` ON `propuestas` (`fechaHasta`);";
+                        con.query(sql1);
+                    }
+
 
                 }
                 catch
@@ -273,6 +281,7 @@ namespace ProyectoBrokerDelPuerto
                     con.query("CREATE INDEX `idx.fecha_paga` ON `propuestas` (`fecha_paga`);");
                     con.query("CREATE INDEX `idx.formadepago` ON `propuestas` (`formadepago`);");
                     con.query("CREATE INDEX `idx.fecha_comprobante` ON `propuestas` (`fecha_comprobante`);");
+                    con.query("CREATE INDEX `idx.fechaHasta` ON `propuestas` (`fechaHasta`);");
                 }
                 catch
                 {
@@ -2254,9 +2263,9 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
-        public void no_vigente_all(string fecha_)
+        public void no_vigente_all(DateTime fecha_)
         {
-            sql = "UPDATE propuestas SET codestado = 2 WHERE fechaHasta <= '" + fecha_ + "' AND codestado = 1 ";
+            sql = "UPDATE propuestas SET codestado = 2 WHERE fechaHasta <= '" + fecha_.ToString("yyyy-MM-dd") + "' AND fechaHasta >= '" + fecha_.AddDays(-20).ToString("yyyy-MM-dd") + "' AND codestado = 1 ";
             con.query(sql);
         }
 

@@ -94,9 +94,8 @@ namespace ProyectoBrokerDelPuerto
 
 
             
-                conecction = new MySqlConnection("server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;");
+                conecction = new MySqlConnection("server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;SslMode=None;");
                 conecction.Open();
-            
             
         }
 
