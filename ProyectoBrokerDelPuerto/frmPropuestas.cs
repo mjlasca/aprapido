@@ -721,8 +721,8 @@ namespace ProyectoBrokerDelPuerto
             }
             catch(Exception ex)
             {
-                MessageBox.Show("No se ha podido pagar la propuesta", "Error al pagar propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                logs.setError("PAGO404", ex.Message);
+                MessageBox.Show("No se ha podido pagar la propuesta \n" + ex.Message, "Error al pagar propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //logs.setError("PAGO404", ex.Message);
             }
             
         }

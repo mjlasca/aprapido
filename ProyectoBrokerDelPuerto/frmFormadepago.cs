@@ -44,6 +44,18 @@ namespace ProyectoBrokerDelPuerto
 
         private void button1_Click(object sender, EventArgs e)
         {
+            try
+            {
+                string carpetaDestino = @textBox3.Text + @"\" + fecha_comprobante.Value.ToString("dd-MM-yyyy");
+                Directory.CreateDirectory(carpetaDestino);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("La ruta no se ha creado correctamente", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                button2.Text = "<";
+                this.Width = 550;
+                return;
+            }
             
                 string val = this.validation();
                 if (val == "valormayor")

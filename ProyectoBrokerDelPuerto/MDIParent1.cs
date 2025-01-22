@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "12.4";
+        public static string versionsistema { get; set; } = "12.5";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -600,6 +600,7 @@ namespace ProyectoBrokerDelPuerto
         private async void MDIParent1_Load(object sender, EventArgs e)
         {
             confiprosimport.dato = "prosimport";
+            confiprosimport.deleteProsImport();
 
             try
             {

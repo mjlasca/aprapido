@@ -107,6 +107,12 @@ namespace ProyectoBrokerDelPuerto
             return false;
         }
 
+        public void deleteProsImport()
+        {
+            sql = "DELETE FROM configuraciones  WHERE dato = 'prosimport' ";
+            con.query(sql);
+        }
+
 
         public bool save()
         {

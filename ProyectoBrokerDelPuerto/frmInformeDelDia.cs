@@ -201,8 +201,8 @@ namespace ProyectoBrokerDelPuerto
                         configprosimport.valor = "0";
                         configprosimport.save();
                         MessageBox.Show("Hay informes sin generar entre " + fechaultima.ToString("dd/MM/yyyy") + " y " + fecha.Text + "\nFechas:" + concat,
-                            "Error...", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return;
+                            "Advertencia...", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        //return;
                     }
 
                     propuestaencurso procurso = new propuestaencurso();
