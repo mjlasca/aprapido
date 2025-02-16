@@ -794,7 +794,7 @@ namespace ProyectoBrokerDelPuerto
         public DataSet get_all_comision()
         {
             DataSet ds = new DataSet();
-            sql = "SELECT * FROM usuarios t1 INNER JOIN commission_user t2 ON t1.loggin = t2.user_comm WHERE t2.comm_prima != '' OR t2.comm_premio != ''  ORDER BY t1.nombre DESC";
+            sql = "SELECT * FROM usuarios t1 INNER JOIN commission_user t2 ON t1.loggin = t2.user_comm WHERE t2.comm_prima != '' OR t2.comm_premio != '' AND t1.codestado > 0 group BY t1.loggin ORDER BY t1.nombre DESC";
             try
             {
                 ds = con.query(sql);
