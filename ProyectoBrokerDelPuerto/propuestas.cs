@@ -1177,11 +1177,11 @@ namespace ProyectoBrokerDelPuerto
                 if (this.exist())
                 {
 
-                    
-                        if (this.denube )
-                        {
 
-                            if( this.confirmVersion())
+                    if (this.denube)
+                    {
+
+                            if (this.confirmVersion())
                             {
                                 sql = "UPDATE propuestas SET " +
                                 "documento = '" + this.documento + "'," +
@@ -1225,7 +1225,7 @@ namespace ProyectoBrokerDelPuerto
                                 "idpropuesta = '" + this.idpropuesta + "'" +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
                             }
-                            else if( this.confirmPay() )
+                            else if (this.confirmPay())
                             {
                                 sql = "UPDATE propuestas SET " +
                                 "usuariopaga = '" + this.usuariopaga + "'," +
@@ -1238,12 +1238,19 @@ namespace ProyectoBrokerDelPuerto
                                 "referencia = '" + this.referencia + "'," +
                                 "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
                                 "formadepago = '" + this.formadepago + "'," +
+                                "user_edit = '" + this.user_edit + "'," +
                                 "tipopago = '" + this.tipopago + "'," +
                                 "compformapago = '" + this.compformapago + "'," +
                                 "nota = '" + this.nota + "'," +
                                 "data_barrios = '" + this.data_barrios + "'," +
                                 " version = '" + this.version + "' " +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
+                            }
+                            else
+                            {
+                                sql = "UPDATE propuestas SET " +
+                                    "user_edit = '" + this.user_edit + "' " +
+                                    " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' AND user_edit = '' ";
                             }
 
                         }
@@ -1270,6 +1277,7 @@ namespace ProyectoBrokerDelPuerto
                                 "cobertura_gastos = '" + this.cobertura_gastos + "'," +
                                 "cobertura_deducible = '" + this.cobertura_deducible + "'," +
                                 "promocion = '" + this.promocion + "'," +
+                                "user_edit = '" + this.user_edit + "'," +
                                 "paga = '" + this.paga + "'," +
                                 "usuariopaga = ''," +
                                 "fecha_paga  = '1000-01-01 01:00:00'," +
@@ -1322,6 +1330,7 @@ namespace ProyectoBrokerDelPuerto
                                 "productor = '" + this.productor + "'," +
                                 "formadepago = '" + this.formadepago + "'," +
                                 "prefijo = '" + this.prefijo + "'," +
+                                "user_edit = '" + this.user_edit + "'," +
                                 "tipopago = '" + this.tipopago + "'," +
                                 "compformapago = '" + this.compformapago + "'," +
                                 "envionube = '0'," +
@@ -1448,7 +1457,10 @@ namespace ProyectoBrokerDelPuerto
 
 
                 }
-
+                if(this.idpropuesta == "68560")
+                {
+                    Console.Write(sql);
+                }
                 con.query(sql);
 
                 return true;

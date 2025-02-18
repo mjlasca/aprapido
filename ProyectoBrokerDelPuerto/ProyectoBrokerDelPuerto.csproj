@@ -166,6 +166,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiMissing.cs" />
     <Compile Include="ApiReports.cs" />
     <Compile Include="AuditoriaBarrios.cs" />
     <Compile Include="actividades.cs" />

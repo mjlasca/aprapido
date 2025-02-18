@@ -69,6 +69,7 @@
             this.orden_select = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.fiscalizador_btn = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -458,11 +459,23 @@
             this.fiscalizador_btn.UseVisualStyleBackColor = true;
             this.fiscalizador_btn.Click += new System.EventHandler(this.fiscalizador_btn_Click);
             // 
+            // button4
+            // 
+            this.button4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button4.Location = new System.Drawing.Point(981, 5);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(25, 23);
+            this.button4.TabIndex = 33;
+            this.button4.Text = "*";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 555);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.fiscalizador_btn);
             this.Controls.Add(this.orden_select);
             this.Controls.Add(this.label5);
@@ -541,5 +554,6 @@
         private System.Windows.Forms.ComboBox orden_select;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button fiscalizador_btn;
+        private System.Windows.Forms.Button button4;
     }
 }
