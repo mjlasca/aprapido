@@ -555,11 +555,11 @@ namespace ProyectoBrokerDelPuerto
             if(codorganizador_ != "TODOS")
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59' AND codestado > 0 AND organizador = '" + codorganizador_+"'";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE codempresa='"+MDIParent1.codempresa+"' AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59' AND codestado > 0 AND organizador = '" + codorganizador_+"'";
             else
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59'  AND codestado > 0 ";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE codempresa='" + MDIParent1.codempresa + "' AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59'  AND codestado > 0 ";
             try
             {
                 ds = con.query(sql);
@@ -780,7 +780,7 @@ namespace ProyectoBrokerDelPuerto
                     "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago,"+
                     "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
                     " LEFT JOIN clientes ON clientes.id = propuestas.documento "+
-                " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                " WHERE propuestas.codempresa = '"+MDIParent1.codempresa+"' AND propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                 "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.user_edit LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 if (quienpaga)
@@ -794,7 +794,7 @@ namespace ProyectoBrokerDelPuerto
                     "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
                     "CONCAT(clientes.nombres,' ',clientes.apellidos) as nombre FROM propuestas " +
                     " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
-                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    " WHERE propuestas.codempresa = '" + MDIParent1.codempresa + "' AND propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                     "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.usuariopaga LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 }
@@ -806,7 +806,7 @@ namespace ProyectoBrokerDelPuerto
                     "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
                     "(clientes.nombres || ' ' || clientes.apellidos) as nombre FROM propuestas " +
                     " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
-                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    " WHERE propuestas.codempresa = '" + MDIParent1.codempresa + "' AND  propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                     "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.user_edit LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
 
                 if (quienpaga)
@@ -816,7 +816,7 @@ namespace ProyectoBrokerDelPuerto
                     "propuestas.fecha_paga,propuestas.fecha_paga,propuestas.usuariopaga,propuestas.tipopago,propuestas.compformapago," +
                     "(clientes.nombres || ' ' || clientes.apellidos) as nombre FROM propuestas " +
                     " LEFT JOIN clientes ON clientes.id = propuestas.documento " +
-                    " WHERE propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
+                    " WHERE propuestas.codempresa = '" + MDIParent1.codempresa + "' AND  propuestas.codestado > 0 AND  DATE(propuestas.ultmod) BETWEEN '" + fecha1.ToString("yyyy-MM-dd") + "' AND '" + fecha2.ToString("yyyy-MM-dd") +
                     "'  AND propuestas.formadepago = 'CREDITO' AND propuestas.usuariopaga LIKE '%" + user_ + "%' AND propuestas.paga " + sinpagar + " ";
                 }
             }
@@ -927,7 +927,7 @@ namespace ProyectoBrokerDelPuerto
             DataSet ds = new DataSet();
 
             sql = "SELECT DATE(ultmod) as fecha, user_edit as usuario, SUM(premio_total) as total FROM propuestas WHERE "+
-                " codestado >  '0' AND DATE(ultmod) BETWEEN '"+fecha1+"' AND '"+fecha2+"' GROUP BY "+
+                " codestado >  '0' AND codempresa = '"+MDIParent1.codempresa+"' AND DATE(ultmod) BETWEEN '"+fecha1+"' AND '"+fecha2+"' GROUP BY "+
                 " DATE(ultmod), user_edit";
             
             try
@@ -1005,7 +1005,7 @@ namespace ProyectoBrokerDelPuerto
                 " t1.user_edit = t3.loggin WHERE " + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" +
                 coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '" + coincidencia + "' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   ) AND t1.codempresa = '"+MDIParent1.codempresa+"'   " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
             else
@@ -1016,7 +1016,7 @@ namespace ProyectoBrokerDelPuerto
                 " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE "
                 + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   )  AND t1.codempresa = '" + MDIParent1.codempresa + "' " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
             
@@ -1070,7 +1070,7 @@ namespace ProyectoBrokerDelPuerto
                 " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
                 + estado_ + " (CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" + coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   ) AND t1.codempresa = '" + MDIParent1.codempresa + "'  " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
             else
@@ -1081,7 +1081,7 @@ namespace ProyectoBrokerDelPuerto
                 " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE " 
                 + estado_ + " ((t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
                 " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'   )   " + this.user_edit + "  " + this.referencia +
+                "  OR  t1.id_cobertura = '" + coincidencia + "'   ) AND t1.codempresa = '" + MDIParent1.codempresa + "'  " + this.user_edit + "  " + this.referencia +
                 " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
             }
             

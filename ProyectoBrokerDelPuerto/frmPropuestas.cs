@@ -1029,10 +1029,14 @@ namespace ProyectoBrokerDelPuerto
 
         public async void button4_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Se traerán propuestas de la nube de otros puntos del "+fec1.Value.Date.ToString("dd/MM/yyyy")+"\nesto puedo durar unos minutos", "Actualizar propuestas", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show("Se traerán propuestas de la nube de otros puntos del "+fec1.Value.Date.ToString("dd/MM/yyyy")+"\nesto puedo durar unos minutos en segundo plano", "Actualizar propuestas", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                ApiMissing apmiss = new ApiMissing();
-                int rest = await apmiss.Get(fec1.Value.Date.ToString("yyyy-MM-dd"));
+                Task.Run( async () => {
+                    ApiMissing apmiss = new ApiMissing();
+                    int rest = await apmiss.Get(fec1.Value.Date.ToString("yyyy-MM-dd"));
+                    MessageBox.Show("Se ha terminado de traer propuestas del día "+ fec1.Value.Date.ToString("dd/MM/yyyy"));
+                    this.busqueda_grid();
+                });
             }
         }
     }

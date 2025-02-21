@@ -318,6 +318,7 @@ namespace ProyectoBrokerDelPuerto
                                     LEFT JOIN propuestas p1 ON p1.id > 0
                                     WHERE t1.fechadia BETWEEN '@fecha1' AND '@fecha2'
                                       AND t1.codestado = 1
+                                      AND p1.codempresa = '@codempresa'
                                       AND p1.codestado > 0
                                       AND ( t1.id = '%@busqueda%' OR t1.nombre LIKE '%@busqueda%' OR t1.nombresupervisor LIKE '%@busqueda%' )
                                     @cierre  
@@ -328,6 +329,7 @@ namespace ProyectoBrokerDelPuerto
             // Añadir parámetros al comando SQL
             cmd.Parameters.AddWithValue("@fecha1", fecha1);
             cmd.Parameters.AddWithValue("@fecha2", fecha2);
+            cmd.Parameters.AddWithValue("@codempresa", MDIParent1.codempresa);
             cmd.Parameters.AddWithValue("@busqueda", busqueda);
             cmd.Parameters.AddWithValue("@cierre", cierre);
             string consultaConParametros = cmd.CommandText;
