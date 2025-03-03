@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "12.7";
+        public static string versionsistema { get; set; } = "12.8";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -720,11 +720,9 @@ namespace ProyectoBrokerDelPuerto
         private async void importCloudParametersLong(bool allImport = true)
         {
             Task.Run( async () => {
-                if(prefijo != "A")
-                {
-                    gruposbarrios gb = new gruposbarrios();
-                    gb.importGetApi();
-                }
+                
+                gruposbarrios gb = new gruposbarrios();
+                gb.importGetApi();
                 usuarios usu = new usuarios();
                 usu.updateCreateVersion_import();
                 if (allImport)

@@ -32,7 +32,7 @@ namespace ProyectoBrokerDelPuerto
         }
 
 
-        public async Task<int> Get(string date)
+        public async Task<int> Get(string date, string prefijo, string idpropuesta)
         {
             int rest = 0;
             List<coberturas> ls = new List<coberturas>();
@@ -41,7 +41,7 @@ namespace ProyectoBrokerDelPuerto
             client.BaseAddress = new Uri(this.baseEndPoint);
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(this.path + "/" + date + "/" + MDIParent1.codempresa + "/" + MDIParent1.prefijo, UriKind.Relative),
+                RequestUri = new Uri(this.path + "/" + date + "/" + MDIParent1.codempresa + "/" + prefijo + "/" + idpropuesta, UriKind.Relative),
                 Method = HttpMethod.Get,
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.apiKey);
@@ -55,7 +55,8 @@ namespace ProyectoBrokerDelPuerto
                     if(jsonContent != "" && jsonContent != "[]")
                     {
                         var jsonObject = JObject.Parse(jsonContent);
-                        var propuestas = jsonObject["report"]["propuestas"].ToObject<List<propuestas>>();
+                        rest = jsonObject["cantProp"].ToObject<int>();
+                        var propuestas = jsonObject["report"]["cantProp"].ToObject<List<propuestas>>();
                         var lineas = jsonObject["report"]["lineas"].ToObject<List<lineas_propuestas>>();
                         var clientes = jsonObject["report"]["clientes"].ToObject<List<clientes>>();
 
@@ -63,7 +64,7 @@ namespace ProyectoBrokerDelPuerto
                         imp.propuestas(propuestas);
                         imp.lineas_propuestas(lineas);
                         imp.clientes(clientes);
-                        rest = 1;
+                        
                     }
                 }
                 else

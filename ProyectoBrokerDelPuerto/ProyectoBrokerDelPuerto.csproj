@@ -424,6 +424,12 @@
     <Compile Include="frmMigraciones.Designer.cs">
       <DependentUpon>frmMigraciones.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmMissing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMissing.Designer.cs">
+      <DependentUpon>frmMissing.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmNewCommission.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -695,6 +701,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmMigraciones.resx">
       <DependentUpon>frmMigraciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMissing.resx">
+      <DependentUpon>frmMissing.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmNewCommission.resx">
       <DependentUpon>frmNewCommission.cs</DependentUpon>
