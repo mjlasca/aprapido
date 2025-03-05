@@ -31,18 +31,22 @@ namespace ProyectoBrokerDelPuerto
                 pref = prefijo_txt.Text;
                 idpro = idpropuesta_txt.Text;
             }
+            label4.Text = "Procesando...";
+            string date = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
+            this.Enabled = false;
             Task.Run(async () => {
                 ApiMissing apmiss = new ApiMissing();
-                int rest = await apmiss.Get(dateTimePicker1.Value.Date.ToString("yyyy-MM-dd"), pref, idpro);
+                int rest = await apmiss.Get(date, pref, idpro);
                 this.Invoke((MethodInvoker)delegate
                 {
-                    if(rest == 0)
+                    
+                    if (rest == 0)
                         label4.Text = $"No se encontraron resultados";
                     else
                     {
                         label4.Text = $"Se encontraron {rest} resultados, estará actualizando la(s) propuesta(s)";
                     }
-                        
+                    this.Enabled = true;
                 });
                 
             });

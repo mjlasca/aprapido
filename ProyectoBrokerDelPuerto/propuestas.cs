@@ -2277,7 +2277,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void no_vigente_all(DateTime fecha_)
         {
-            sql = "UPDATE propuestas SET codestado = 2 WHERE fechaHasta <= '" + fecha_.ToString("yyyy-MM-dd") + "' AND fechaHasta >= '" + fecha_.AddDays(-20).ToString("yyyy-MM-dd") + "' AND codestado = 1 ";
+            sql = "UPDATE propuestas SET codestado = 2 WHERE fechaHasta < '" + fecha_.ToString("yyyy-MM-dd") + "' AND codestado = 1 ";
             con.query(sql);
         }
 

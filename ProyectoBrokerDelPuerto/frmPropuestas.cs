@@ -1031,7 +1031,7 @@ namespace ProyectoBrokerDelPuerto
         public async void button4_Click(object sender, EventArgs e)
         {
             frmMissing frm = new frmMissing();
-            frm.ShowDialog();
+            frm.Show();
         }
     }
 
