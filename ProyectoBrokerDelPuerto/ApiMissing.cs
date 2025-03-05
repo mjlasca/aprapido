@@ -56,7 +56,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         var jsonObject = JObject.Parse(jsonContent);
                         rest = jsonObject["cantProp"].ToObject<int>();
-                        var propuestas = jsonObject["report"]["cantProp"].ToObject<List<propuestas>>();
+                        var propuestas = jsonObject["report"]["propuestas"].ToObject<List<propuestas>>();
                         var lineas = jsonObject["report"]["lineas"].ToObject<List<lineas_propuestas>>();
                         var clientes = jsonObject["report"]["clientes"].ToObject<List<clientes>>();
 
