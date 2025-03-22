@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "13.1";
+        public static string versionsistema { get; set; } = "13.4";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -595,6 +595,8 @@ namespace ProyectoBrokerDelPuerto
                     frmmig.exportarPropuestas();
                 });
             }
+
+            conex.query("UPDATE propuestas SET fecha_comprobante = '1001-01-01 00:00:01' WHERE prefijo = 'O' AND fecha_comprobante = '' ");
         }
 
         private async void MDIParent1_Load(object sender, EventArgs e)

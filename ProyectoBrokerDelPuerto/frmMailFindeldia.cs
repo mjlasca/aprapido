@@ -147,7 +147,7 @@ namespace ProyectoBrokerDelPuerto
 
                 if (!minfo.exist() || enviardenuevo)
                 {
-                    enviando.Text = "Generando archivos para enviar...";
+                    enviando.Text = "Procesando...";
 
                     if (MessageBox.Show("Segur@ desea enviar el mensaje?", "Confirmación", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     {
