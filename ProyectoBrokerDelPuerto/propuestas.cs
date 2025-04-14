@@ -555,11 +555,11 @@ namespace ProyectoBrokerDelPuerto
             if(codorganizador_ != "TODOS")
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE paga > 0 AND  codempresa='"+MDIParent1.codempresa+"' AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59' AND codestado > 0 AND organizador = '" + codorganizador_+"'";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE paga > 0 AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59' AND codestado > 0 AND organizador = '" + codorganizador_+"'";
             else
                 sql = "SELECT documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor," +
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE paga > 0 AND codempresa='" + MDIParent1.codempresa + "' AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59'  AND codestado > 0 ";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion FROM propuestas WHERE paga > 0 AND fecha_paga >= '" + fecha_ + " 00:00:00' AND fecha_paga <= '" + fecha_ + " 23:59:59'  AND codestado > 0 ";
             try
             {
                 ds = con.query(sql);
@@ -982,9 +982,9 @@ namespace ProyectoBrokerDelPuerto
             }
 
             if (fecha1 == "")
-                fecha1 = DateTime.Now.AddDays(-1).ToString("yyyy-MM-dd");
+                fecha1 = DateTime.Now.ToString("yyyy-MM-dd 00:01:00");
             if (fecha2 == "")
-                fecha2 = DateTime.Now.ToString("yyyy-MM-dd");
+                fecha2 = DateTime.Now.ToString("yyyy-MM-dd 23:59:00");
             if (this.referencia != "")
             {
                 this.referencia = " AND t1.referencia = '" + this.referencia + "' ";
@@ -997,33 +997,42 @@ namespace ProyectoBrokerDelPuerto
 
             if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,"+
-                    "t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura,"+
-                    " t1.fechaDesde, t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga "+
-                    "FROM propuestas t1 INNER JOIN clientes t2 INNER JOIN usuarios t3 ON " +
-                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND "+
-                " t1.user_edit = t3.loggin WHERE t1.codempresa = '" + MDIParent1.codempresa + "' AND " + estado_ + "   CONCAT(t1.prefijo,t1.idpropuesta)  LIKE '%" +
-                coincidencia + "%'    OR  t1.documento LIKE '" + coincidencia + "'  OR " +
-                " t2.nombres LIKE '" + coincidencia + "' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'   " + this.user_edit + "  " + this.referencia +
-                " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
+                sql = $@"
+                        SELECT t1.prefijo, t1.formadepago, t1.idpropuesta, t1.referencia, t1.prima, 
+                        t2.nombres, t2.apellidos, t1.fechaHasta, t1.premio_total, t1.id, t1.documento, 
+                        t1.ultmod, t1.id_cobertura, t1.fechaDesde, t1.fechaHasta, t1.codestado, 
+                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga 
+                        FROM propuestas t1 
+                        LEFT JOIN clientes t2 ON t2.id = t1.documento 
+                        LEFT JOIN usuarios t3 ON t1.user_edit = t3.loggin 
+                        WHERE {estado_} t1.ultmod BETWEEN '{fecha1}' AND '{fecha2}' 
+                        {this.user_edit} {this.referencia} AND (
+                        t1.idpropuesta = '{coincidencia}' OR t1.documento LIKE '%{coincidencia}%'  OR 
+                        t2.nombres LIKE '%{coincidencia}%' OR t2.apellidos LIKE '%{coincidencia}%' 
+                        ) GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC;";
             }
             else
             {
-                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
-                " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga  FROM propuestas t1 INNER JOIN clientes t2  " +
-                "  INNER JOIN usuarios t3 ON " +
-                " DATE(t1.ultmod) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE  t1.codempresa = '" + MDIParent1.codempresa + "' AND "
-                + estado_ + " (t1.prefijo || t1.idpropuesta)  LIKE '%" + coincidencia + "%'   OR  t1.documento LIKE '" + coincidencia + "'  OR " +
-                " t2.nombres LIKE '%" + coincidencia + "%' OR t2.apellidos LIKE '%" + coincidencia + "%'   " +
-                "  OR  t1.id_cobertura = '" + coincidencia + "'     " + this.user_edit + "  " + this.referencia +
-                " GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC";
+                sql = $@"
+                        SELECT t1.prefijo, t1.formadepago, t1.idpropuesta, t1.referencia, t1.prima, 
+                        t2.nombres, t2.apellidos, t1.fechaHasta, t1.premio_total, t1.id, t1.documento, 
+                        t1.ultmod, t1.id_cobertura, t1.fechaDesde, t1.fechaHasta, t1.codestado, 
+                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga 
+                        FROM propuestas t1 
+                        LEFT JOIN clientes t2 ON t2.id = t1.documento 
+                        LEFT JOIN usuarios t3 ON t1.user_edit = t3.loggin 
+                        WHERE {estado_} t1.ultmod BETWEEN '{fecha1}' AND '{fecha2}' 
+                        {this.user_edit} {this.referencia} AND (
+                        t1.idpropuesta = '{coincidencia}' OR t1.documento LIKE '%{coincidencia}%'  OR 
+                        t2.nombres LIKE '%{coincidencia}%' OR t2.apellidos LIKE '%{coincidencia}%' 
+                        ) GROUP BY t1.prefijo,t1.idpropuesta ORDER BY t1.id DESC;";
             }
             
 
             try
             {
                 ds = con.query(sql);
+                
                 CacheManager.AddToCache("propuestas","success",new TimeSpan(0,20,0));
             }
             catch (Exception ex)
@@ -1201,7 +1210,7 @@ namespace ProyectoBrokerDelPuerto
                                 "usuariopaga = '" + this.usuariopaga + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
                                 "valor_pagado = '" + this.valor_pagado + "'," +
-                                "fecha_comprobante = '" + this.formatField(this.fecha_comprobante) == "" ? "1001-01-01" : this.fecha_comprobante + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
                                 "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "cobertura_suma = '" + this.cobertura_suma + "'," +
@@ -1231,7 +1240,7 @@ namespace ProyectoBrokerDelPuerto
                                 "usuariopaga = '" + this.usuariopaga + "'," +
                                 "fecha_paga = '" + this.fecha_paga + "'," +
                                 "valor_pagado = '" + this.valor_pagado + "'," +
-                                "fecha_comprobante = '" + this.formatField(this.fecha_comprobante) == "" ? "1001-01-01" : this.fecha_comprobante + "'," +
+                                "fecha_comprobante = '" + this.fecha_comprobante + "'," +
                                 "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "paga = '" + this.paga + "'," +
@@ -1301,7 +1310,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.version + "'," +
                         "'" + this.valor_pagado + "'," +
                         "'" + this.imputacion + "'," +
-                        "'" + this.formatField(this.fecha_comprobante) == "" ? "1001-01-01" : this.fecha_comprobante + "'" +
+                        "'" + this.formatField(this.fecha_comprobante) + "'" +
                         
 
                         ") ";

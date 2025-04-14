@@ -619,6 +619,11 @@ namespace ProyectoBrokerDelPuerto
             DateTime? fecpagadefault = null;
             for (int i = 0; i < dd.Tables[0].Rows.Count; i++)
             {
+                DateTime? dateAuxPaga = null;
+                if (dd.Tables[0].Rows[i]["fecha_paga"].ToString() != "" && dd.Tables[0].Rows[i]["fecha_paga"].ToString() != "1000-01-01 01:00:00")
+                    dateAuxPaga = Convert.ToDateTime(dd.Tables[0].Rows[i]["fecha_paga"]);
+                else
+                    dateAuxPaga = fecpagadefault;
                 dt.Rows.Add(
                     dd.Tables[0].Rows[i]["ultmod"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["ultmod"]) : fecpagadefault,
                     dd.Tables[0].Rows[i]["prefijo"].ToString() + "" + dd.Tables[0].Rows[i]["idpropuesta"].ToString(),
@@ -642,7 +647,7 @@ namespace ProyectoBrokerDelPuerto
                     dd.Tables[0].Rows[i]["formadepago"].ToString(),
                     dd.Tables[0].Rows[i]["tipopago"].ToString(),
                     dd.Tables[0].Rows[i]["compformapago"].ToString(),
-                    dd.Tables[0].Rows[i]["fecha_paga"].ToString() != "1/1/1000 1:00:00 AM" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["fecha_paga"]) : fecpagadefault,
+                    dateAuxPaga,
                     dd.Tables[0].Rows[i]["fechaDesde"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["fechaDesde"]) : fecpagadefault,
                     dd.Tables[0].Rows[i]["fechaHasta"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["fechaHasta"]) : fecpagadefault,
                     aseguradora,
