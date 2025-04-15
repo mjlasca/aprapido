@@ -975,11 +975,14 @@ namespace ProyectoBrokerDelPuerto
             DataSet ds = new DataSet();
 
             var dataCache = CacheManager.GetFromCache("propuestas");
-            if(dataCache == null)
+            if (dataCache == null)
             {
                 /*MDIParent1.importExportMain();
                 MDIParent1.importMain();*/
             }
+
+            fecha1 = fecha1 + " 00:01:00";
+            fecha2 = fecha2 + " 23:59:00";
 
             if (fecha1 == "")
                 fecha1 = DateTime.Now.ToString("yyyy-MM-dd 00:01:00");

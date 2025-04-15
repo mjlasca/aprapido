@@ -281,6 +281,7 @@ namespace ProyectoBrokerDelPuerto
                     btnAnular.Enabled = false;
                     btnVer.Enabled = false;
                     btnPagar.Enabled = false;
+                    documents_all.Enabled = false;
                     libreDeuda_btn.Enabled = false;
                     fiscalizador_btn.Enabled = false;
                     return;
@@ -315,10 +316,12 @@ namespace ProyectoBrokerDelPuerto
                     btnPagar.Enabled = true;
                     libreDeuda_btn.Enabled = false;
                     fiscalizador_btn.Enabled = false;
+                    documents_all.Enabled = false;
                 }
                 else
                 {
                     btnPagar.Enabled = false;
+                    documents_all.Enabled = true;
                     libreDeuda_btn.Enabled = true;
                     fiscalizador_btn.Enabled = true;
                 }
@@ -1032,6 +1035,11 @@ namespace ProyectoBrokerDelPuerto
         {
             frmMissing frm = new frmMissing();
             frm.Show();
+        }
+
+        private void documents_all_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start($"{MDIParent1.apiuri}/descargaseguro/{dataGridView1.CurrentRow.Cells["idPropuesta"].Value}/{dataGridView1.CurrentRow.Cells["prefijo"].Value}");
         }
     }
 

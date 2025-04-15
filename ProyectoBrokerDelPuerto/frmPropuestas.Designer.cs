@@ -70,6 +70,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.fiscalizador_btn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.documents_all = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -470,11 +471,23 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // documents_all
+            // 
+            this.documents_all.Enabled = false;
+            this.documents_all.Location = new System.Drawing.Point(709, 520);
+            this.documents_all.Name = "documents_all";
+            this.documents_all.Size = new System.Drawing.Size(98, 23);
+            this.documents_all.TabIndex = 34;
+            this.documents_all.Text = "Ver documentos";
+            this.documents_all.UseVisualStyleBackColor = true;
+            this.documents_all.Click += new System.EventHandler(this.documents_all_Click);
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 555);
+            this.Controls.Add(this.documents_all);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.fiscalizador_btn);
             this.Controls.Add(this.orden_select);
@@ -555,5 +568,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button fiscalizador_btn;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button documents_all;
     }
 }
