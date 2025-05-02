@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Net;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -20,6 +21,8 @@ namespace ProyectoBrokerDelPuerto
                 Exception ex = (Exception)args.ExceptionObject;
                 MessageBox.Show(ex.ToString(), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             };*/
+            if (MDIParent1.apiuri.IndexOf("https") > -1)
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

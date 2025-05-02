@@ -5,6 +5,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Net;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -35,12 +36,14 @@ namespace ProyectoBrokerDelPuerto
             List<gruposbarrios> lsUs = new List<gruposbarrios>();
 
             var client = new HttpClient();
+            
             client.BaseAddress = new Uri(this.baseEndPoint);
             var request = new HttpRequestMessage
             {
                 RequestUri = new Uri(this.path+ "/" + MDIParent1.codempresa, UriKind.Relative),
                 Method = HttpMethod.Get,
             };
+            
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.apiKey);
 
             try

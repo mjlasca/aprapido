@@ -1657,30 +1657,32 @@ namespace ProyectoBrokerDelPuerto
         public string exigencias(string dato, int op)
         {
             string espacios = "";
-            if (dato.Length < 8)
+            if(dato != null)
             {
-                for (int i = 0; i < 8 - dato.Length; i++)
+                if (dato.Length < 8)
                 {
-                    espacios += "  ";
+                    for (int i = 0; i < 8 - dato.Length; i++)
+                    {
+                        espacios += "  ";
+                    }
+                    if (dato.Length < 7)
+                    {
+                        espacios += " ";
+                    }
                 }
-                if (dato.Length < 7)
+                try
                 {
-                    espacios += " ";
+                    if (dato != "")
+                    {
+                        dato = Convert.ToDouble(dato).ToString("#,##0");
+                    }
+                }
+                catch
+                {
+
                 }
             }
-            try
-            {
-                if (dato != "")
-                {
-                    dato = Convert.ToDouble(dato).ToString("#,##0");
-                }
-            } catch {
-
-            }
-
-
             string res = espacios + dato;
-
 
             return res;
         }

@@ -271,9 +271,8 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM clientes WHERE codestado = 1 AND "+
-                " ( nombres LIKE  '%"+coincidencia+ "%' OR id LIKE  '%" + coincidencia + "%' OR apellidos LIKE  '%" + coincidencia + "%' OR tipo_id LIKE  '%" 
-                + coincidencia + "%' OR telefono LIKE  '%" + coincidencia + "%'   )";
+            sql = "SELECT * FROM clientes WHERE codestado = 1 AND " +
+                " ( nombres LIKE  '%" + coincidencia + "%' OR id =  '" + coincidencia + "' OR apellidos LIKE  '%" + coincidencia + "%' );";
             try
             {
                 ds = con.query(sql);

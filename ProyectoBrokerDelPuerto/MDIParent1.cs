@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
+        public static string apiuri { get; } = "https://barriosprivadosstage.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
