@@ -87,6 +87,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.sinEnviar_btn = new System.Windows.Forms.Button();
             this.timer_parameters = new System.Windows.Forms.Timer(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -602,11 +603,23 @@
             this.timer_parameters.Interval = 600000;
             this.timer_parameters.Tick += new System.EventHandler(this.timer_parameters_Tick);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.BackColor = System.Drawing.Color.Red;
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(803, 665);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "label1";
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.sinEnviar_btn);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.importvez);
@@ -695,6 +708,7 @@
         private System.Windows.Forms.ToolStripMenuItem auditoríaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modificaciónDeBarriosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imputacionesToolStripMenuItem;
+        private System.Windows.Forms.Label label1;
     }
 }
 

@@ -601,6 +601,7 @@ namespace ProyectoBrokerDelPuerto
 
         private async void MDIParent1_Load(object sender, EventArgs e)
         {
+            label1.Text = $"Aplicativo de pruebas apuntando a {apiuri}";
             confiprosimport.dato = "prosimport";
             confiprosimport.deleteProsImport();
 
