@@ -201,12 +201,12 @@ namespace ProyectoBrokerDelPuerto
 
                 
 
-                if (barrio.Items.Count > 3 || nombarrio.Length > 250)
+                if (barrio.Items.Count > 3 || nombarrio.Length > 200)
                 {
                     
-                    if (nombarrio.Length > 250)
+                    if (nombarrio.Length > 200)
                     {
-                        barrioRecortado = nombarrio.Substring(0, 245) + "...";
+                        barrioRecortado = nombarrio.Substring(0, 200) + "...";
                         celdasEncabezado = new PdfPCell(new Phrase("A QUIEN CORRESPONDA \n" + barrioRecortado + "\nVer listado completo de barrios en la parte de abajo", _standardFont));
                     }
                     else
@@ -464,7 +464,7 @@ namespace ProyectoBrokerDelPuerto
 
                     
 
-                    if (barrio.Items.Count > 3 || nombarrio.Length > 250)
+                    if (barrio.Items.Count > 3 || nombarrio.Length > 200)
                     {
 
 

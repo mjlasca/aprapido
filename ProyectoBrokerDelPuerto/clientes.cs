@@ -144,7 +144,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM clientes WHERE codestado = 1";
+            sql = "SELECT * FROM clientes WHERE codestado = 1 AND fecha_nacimiento IS NOT NULL AND fecha_nacimiento != '1000-01-01' GROUP BY id";
             Console.WriteLine("CLI LOAD "+sql);
             try
             {
