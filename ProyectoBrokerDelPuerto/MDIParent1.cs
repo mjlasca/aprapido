@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "14.1";
+        public static string versionsistema { get; set; } = "17.1";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,13 +31,14 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "https://barriosprivadosstage.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
+        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
         public bool formabierto = false;
         private int childFormNumber = 0;
-        
+        public static string strconn { get; set; } = "";
+        public static bool installState { get; set; } = false;
 
         public MDIParent1()
         {
@@ -601,7 +602,7 @@ namespace ProyectoBrokerDelPuerto
 
         private async void MDIParent1_Load(object sender, EventArgs e)
         {
-            label1.Text = $"Aplicativo de pruebas apuntando a {apiuri}";
+            //label1.Text = $"Aplicativo de pruebas apuntando a {apiuri}";
             confiprosimport.dato = "prosimport";
             confiprosimport.deleteProsImport();
 

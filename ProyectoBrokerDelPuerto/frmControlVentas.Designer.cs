@@ -38,6 +38,17 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prefid = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tomador = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prima = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.premio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nota = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idpropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.useredit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha2 = new System.Windows.Forms.DateTimePicker();
             this.fecha1 = new System.Windows.Forms.DateTimePicker();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -50,17 +61,6 @@
             this.btnexportar = new System.Windows.Forms.Button();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button4 = new System.Windows.Forms.Button();
-            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prefid = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tomador = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prima = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.premio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nota = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idpropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.useredit = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -155,6 +155,87 @@
             this.dataGridView1.Size = new System.Drawing.Size(875, 418);
             this.dataGridView1.TabIndex = 8;
             this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
+            // 
+            // fecha
+            // 
+            this.fecha.FillWeight = 53.88288F;
+            this.fecha.HeaderText = "Fecha";
+            this.fecha.Name = "fecha";
+            this.fecha.ReadOnly = true;
+            // 
+            // prefid
+            // 
+            this.prefid.HeaderText = "ID Propuesta";
+            this.prefid.Name = "prefid";
+            this.prefid.ReadOnly = true;
+            // 
+            // referencia
+            // 
+            this.referencia.FillWeight = 79.47723F;
+            this.referencia.HeaderText = "Referencia";
+            this.referencia.Name = "referencia";
+            this.referencia.ReadOnly = true;
+            // 
+            // id
+            // 
+            this.id.FillWeight = 79.47723F;
+            this.id.HeaderText = "ID";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            // 
+            // tomador
+            // 
+            this.tomador.FillWeight = 248.731F;
+            this.tomador.HeaderText = "Tomador";
+            this.tomador.Name = "tomador";
+            this.tomador.ReadOnly = true;
+            // 
+            // prima
+            // 
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.prima.DefaultCellStyle = dataGridViewCellStyle1;
+            this.prima.FillWeight = 79.47723F;
+            this.prima.HeaderText = "Prima";
+            this.prima.Name = "prima";
+            this.prima.ReadOnly = true;
+            // 
+            // premio
+            // 
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.premio.DefaultCellStyle = dataGridViewCellStyle2;
+            this.premio.FillWeight = 79.47723F;
+            this.premio.HeaderText = "Premio";
+            this.premio.Name = "premio";
+            this.premio.ReadOnly = true;
+            // 
+            // nota
+            // 
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.nota.DefaultCellStyle = dataGridViewCellStyle3;
+            this.nota.FillWeight = 79.47723F;
+            this.nota.HeaderText = "NotaCred.";
+            this.nota.Name = "nota";
+            this.nota.ReadOnly = true;
+            // 
+            // idpropuesta
+            // 
+            this.idpropuesta.HeaderText = "idpropuesta";
+            this.idpropuesta.Name = "idpropuesta";
+            this.idpropuesta.ReadOnly = true;
+            this.idpropuesta.Visible = false;
+            // 
+            // prefijo
+            // 
+            this.prefijo.HeaderText = "prefijo";
+            this.prefijo.Name = "prefijo";
+            this.prefijo.ReadOnly = true;
+            this.prefijo.Visible = false;
+            // 
+            // useredit
+            // 
+            this.useredit.HeaderText = "Empleado";
+            this.useredit.Name = "useredit";
+            this.useredit.ReadOnly = true;
             // 
             // fecha2
             // 
@@ -268,87 +349,6 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // fecha
-            // 
-            this.fecha.FillWeight = 53.88288F;
-            this.fecha.HeaderText = "Fecha";
-            this.fecha.Name = "fecha";
-            this.fecha.ReadOnly = true;
-            // 
-            // prefid
-            // 
-            this.prefid.HeaderText = "ID Propuesta";
-            this.prefid.Name = "prefid";
-            this.prefid.ReadOnly = true;
-            // 
-            // referencia
-            // 
-            this.referencia.FillWeight = 79.47723F;
-            this.referencia.HeaderText = "Referencia";
-            this.referencia.Name = "referencia";
-            this.referencia.ReadOnly = true;
-            // 
-            // id
-            // 
-            this.id.FillWeight = 79.47723F;
-            this.id.HeaderText = "ID";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            // 
-            // tomador
-            // 
-            this.tomador.FillWeight = 248.731F;
-            this.tomador.HeaderText = "Tomador";
-            this.tomador.Name = "tomador";
-            this.tomador.ReadOnly = true;
-            // 
-            // prima
-            // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.prima.DefaultCellStyle = dataGridViewCellStyle1;
-            this.prima.FillWeight = 79.47723F;
-            this.prima.HeaderText = "Prima";
-            this.prima.Name = "prima";
-            this.prima.ReadOnly = true;
-            // 
-            // premio
-            // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.premio.DefaultCellStyle = dataGridViewCellStyle2;
-            this.premio.FillWeight = 79.47723F;
-            this.premio.HeaderText = "Premio";
-            this.premio.Name = "premio";
-            this.premio.ReadOnly = true;
-            // 
-            // nota
-            // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.nota.DefaultCellStyle = dataGridViewCellStyle3;
-            this.nota.FillWeight = 79.47723F;
-            this.nota.HeaderText = "NotaCred.";
-            this.nota.Name = "nota";
-            this.nota.ReadOnly = true;
-            // 
-            // idpropuesta
-            // 
-            this.idpropuesta.HeaderText = "idpropuesta";
-            this.idpropuesta.Name = "idpropuesta";
-            this.idpropuesta.ReadOnly = true;
-            this.idpropuesta.Visible = false;
-            // 
-            // prefijo
-            // 
-            this.prefijo.HeaderText = "prefijo";
-            this.prefijo.Name = "prefijo";
-            this.prefijo.ReadOnly = true;
-            this.prefijo.Visible = false;
-            // 
-            // useredit
-            // 
-            this.useredit.HeaderText = "Empleado";
-            this.useredit.Name = "useredit";
-            this.useredit.ReadOnly = true;
-            // 
             // frmControlVentas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -388,13 +388,10 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DateTimePicker fecha2;
-        private System.Windows.Forms.DateTimePicker fecha1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox txtFechaBorrar;
-        private System.Windows.Forms.TextBox txtReferencia;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button btnexportar;
@@ -411,5 +408,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn idpropuesta;
         private System.Windows.Forms.DataGridViewTextBoxColumn prefijo;
         private System.Windows.Forms.DataGridViewTextBoxColumn useredit;
+        public System.Windows.Forms.DateTimePicker fecha2;
+        public System.Windows.Forms.DateTimePicker fecha1;
+        public System.Windows.Forms.TextBox txtReferencia;
     }
 }

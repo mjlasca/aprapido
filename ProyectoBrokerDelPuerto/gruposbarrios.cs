@@ -277,11 +277,12 @@ namespace ProyectoBrokerDelPuerto
             if (ls.Count > 0)
             {
                 this.delete_all();
-                foreach (gruposbarrios obj in ls)
+                ImportInstall.ImportGruposBarrios(ls);
+                /*foreach (gruposbarrios obj in ls)
                 {
                     obj.envionube = "1";
                     obj.save();
-                }
+                }*/
             }
         }
 

@@ -93,7 +93,7 @@ namespace ProyectoBrokerDelPuerto
             }
 
 
-            
+            MDIParent1.strconn = "server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;SslMode=None;";
                 conecction = new MySqlConnection("server=" + ipguardada + $"; database={nombreBaseDatos}; Uid=" + usuarioBaseDatos + "; pwd=" + contraBaseDatos + "; Allow Zero Datetime=True;SslMode=None;");
                 conecction.Open();
             
@@ -105,6 +105,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 string connetionString = "Data Source=dbBroker.db;Version=3;New=True;Compress=True;";
+                MDIParent1.strconn = connetionString;
                 connectionSQLite = new SQLiteConnection(connetionString);
                 connectionSQLite.Open();
             }

@@ -753,7 +753,7 @@ namespace ProyectoBrokerDelPuerto
                 importapi impo = new importapi();
 
                 bool resimport = false;
-                Console.WriteLine("SE ESTÁ IMPORTANDO RESET ( "+cbReset.Checked+")" + DateTime.Now.ToString("HH:mm:ss"));
+                //Console.WriteLine("SE ESTÁ IMPORTANDO RESET ( "+cbReset.Checked+")" + DateTime.Now.ToString("HH:mm:ss"));
                 resimport = await impo.parametroscolaborador(fecha, sol, cbReset.Checked, solopropuestas, get_prefix_own);
                 
                 textBox1.Text += "DATOS IMPORTADOS " + Environment.NewLine + Environment.NewLine;

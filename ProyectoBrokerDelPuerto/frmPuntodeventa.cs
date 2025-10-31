@@ -151,32 +151,33 @@ namespace ProyectoBrokerDelPuerto
             frmMigraciones frmMig = new frmMigraciones();
             frmMig.flaginstalacion = true;
             frmMig.cbReset.Checked = true;
+            MDIParent1.installState = true;
             bool ps = false;
-            solicitudes s = new solicitudes();
 
+            solicitudes s = new solicitudes();
             s = new solicitudes();
             s.solicitud_propuestas = true;
             ps = await frmMig.importarData(s, false, true);
 
             s = new solicitudes();
-            s.solicitud_usuarios = true;
-            ps = await frmMig.importarData(s, false, true);
-
-            s = new solicitudes();
             s.solicitud_clientes = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_usuarios = true;
             ps = await frmMig.importarData(s, false, true);
 
             s = new solicitudes();
             s.solicitud_perfiles = true;
             ps = await frmMig.importarData(s, false, true);
             
-            s = new solicitudes();
+            /*s = new solicitudes();
             s.solicitud_arqueos = true;
             ps = await frmMig.importarData(s, false, true);
             
             s = new solicitudes();
             s.solicitud_rendiciones = true;
-            ps = await frmMig.importarData(s, false, true);
+            ps = await frmMig.importarData(s, false, true);*/
             
             s = new solicitudes();
             s.solicitud_actividades = true;
@@ -194,16 +195,12 @@ namespace ProyectoBrokerDelPuerto
             s.solicitud_barrios = true;
             ps = await frmMig.importarData(s, false, true);
             
-            s = new solicitudes();
-            s.solicitud_gruposbarrios = true;
-            ps = await frmMig.importarData(s, false, true);
             
             s = new solicitudes();
             s.solicitud_provincias = true;
             ps = await frmMig.importarData(s, false, true);
             
-            
-            
+
             /*if (ps)
             {*/
             this.Height = 312;
@@ -212,6 +209,7 @@ namespace ProyectoBrokerDelPuerto
                 this.DialogResult = DialogResult.OK;
             // }
             MDIParent1.installing = false;
+            MDIParent1.installState = false;
 
         }
 

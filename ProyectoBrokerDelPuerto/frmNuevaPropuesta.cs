@@ -609,11 +609,19 @@ namespace ProyectoBrokerDelPuerto
                 fechaHasta.Value = fechaDesde.Value.AddMonths(Convert.ToUInt16(comboBox4.Text));
             }
             this.suma_premio();
+            btnRecibo.Enabled = false;
+            btnEmitir.Enabled = false;
+            mail_btn.Enabled = false;
+            libreDeuda_btn.Enabled = false;
         }
 
         private void comboCobertura_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.suma_premio();
+            btnRecibo.Enabled = false;
+            btnEmitir.Enabled = false;
+            mail_btn.Enabled = false;
+            libreDeuda_btn.Enabled = false;
         }
 
         private void dataGridView1_CellLeave(object sender, DataGridViewCellEventArgs e)
@@ -1364,6 +1372,10 @@ namespace ProyectoBrokerDelPuerto
               
             }*/
             this.suma_premio();
+            btnRecibo.Enabled = false;
+            btnEmitir.Enabled = false;
+            mail_btn.Enabled = false;
+            libreDeuda_btn.Enabled = false;
         }
         /*void combocla(object sender, EventArgs e)
         {

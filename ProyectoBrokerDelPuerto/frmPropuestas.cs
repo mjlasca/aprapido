@@ -725,7 +725,12 @@ namespace ProyectoBrokerDelPuerto
             }
             catch(Exception ex)
             {
-                MessageBox.Show("No se ha podido pagar la propuesta \n" + ex.Message, "Error al pagar propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                propuestas.revertirenvio(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString());
+                Task.Run(() => {
+                    frmMigraciones frmmig = new frmMigraciones();
+                    frmmig.exportarPropuestas();
+                });
+                MessageBox.Show("La propuesta que intenta pagar aún no se ha subido\nSe acaba de enviar nuevamente. Inténtelo en 1 minuto", "No se ha subido la propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //logs.setError("PAGO404", ex.Message);
             }
             
@@ -1040,6 +1045,19 @@ namespace ProyectoBrokerDelPuerto
         private void documents_all_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start($"{MDIParent1.apiuri}/descargaseguro/{dataGridView1.CurrentRow.Cells["idPropuesta"].Value}/{dataGridView1.CurrentRow.Cells["prefijo"].Value}");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow.Cells["prefijo"] != null)
+            {
+                frmControlVentas fr = new frmControlVentas();
+                fr.fecha1 = fec1;
+                fr.fecha2 = fec2;
+                fr.txtReferencia.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString() + dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
+                fr.downloadInfoVentas();
+            }
+            
         }
     }
 
