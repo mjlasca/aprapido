@@ -500,7 +500,7 @@ namespace ProyectoBrokerDelPuerto
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Archivos de texto (*.xlsx)|*.xls|Todos los archivos (*.*)|*.*";
+            saveFileDialog.Filter = "Archivos de texto (*.xls)|*.xlsx|Todos los archivos (*.*)|*.*";
             saveFileDialog.FileName = "Archivo Informe ventas " + Convert.ToDateTime(fecha1.Value).ToString("dd-MM-yyyy") + "-" + Convert.ToDateTime(fecha2.Value).ToString("dd-MM-yyyy");
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {

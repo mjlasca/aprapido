@@ -317,7 +317,7 @@ namespace ProyectoBrokerDelPuerto
                         t0.meses,
                         t0.id_cobertura,
                         t0.user_edit,
-                        t3.documento,
+                        t3.documento as docase,
                         t3.nombres,
                         t3.apellidos,
                         t0.nota,
