@@ -230,12 +230,26 @@ namespace ProyectoBrokerDelPuerto
 
         public DataSet get_entre_controlventas(string fecha1, string fecha2, string refe = "")
         {
-            if(refe != "")
+            if (fecha2.ToString().Length < 11)
             {
-                if (MDIParent1.baseDatos == "MySql")
-                    refe = " AND ( t0.referencia = '" + refe + "' OR CONCAT(t0.prefijo,t0.idpropuesta) = '"+refe+"' )";
-                else
-                    refe = " AND ( t0.referencia = '" + refe + "' OR  (t0.prefijo || t0.idpropuesta)  = '" + refe + "' )";
+                fecha2 = fecha2 + " 23:59:59";
+            }
+            if (refe != "")
+            {
+                if(refe.IndexOf("-") > -1)
+                {
+                    if (MDIParent1.baseDatos == "MySql")
+                        refe = " AND  CONCAT(t0.prefijo,'-',t0.idpropuesta) = '" + refe + "' ";
+                    else
+                        refe = " AND  (t0.prefijo || '-' || t0.idpropuesta) = '" + refe + "' ";
+                }else
+                {
+                    if (MDIParent1.baseDatos == "MySql")
+                        refe = " AND  t0.referencia = '" + refe + "' ";
+                    else
+                        refe = " AND  t0.referencia = '" + refe + "' ";
+                }
+                
             }
             DataSet ds = new DataSet();
             if (MDIParent1.baseDatos == "MySql")

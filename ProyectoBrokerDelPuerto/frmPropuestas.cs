@@ -1054,7 +1054,7 @@ namespace ProyectoBrokerDelPuerto
                 frmControlVentas fr = new frmControlVentas();
                 fr.fecha1 = fec1;
                 fr.fecha2 = fec2;
-                fr.txtReferencia.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString() + dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
+                fr.txtReferencia.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString() + "-" + dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
                 fr.downloadInfoVentas();
             }
             

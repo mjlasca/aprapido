@@ -513,7 +513,7 @@ namespace ProyectoBrokerDelPuerto
                 /*try
                 {*/
                 DataTable dt2 = new DataTable();
-                int[] veccampfechas = { 1, 6, 10, 23, 24, 25 };
+                int[] veccampfechas = { 1, 6, 11, 24, 25, 26 };
                 xls.ExcelInfoVentas(ruta, this.exceltablas(fecha1.Value, fecha2.Value), dt2, veccampfechas);
                 MessageBox.Show("Archivo guardado con éxtio en la carpeta del programa \n " + ruta);
                 /*}
