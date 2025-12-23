@@ -345,11 +345,7 @@ namespace ProyectoBrokerDelPuerto
                     doc.Add(parCobertura);
 
                     parr = "" +
-                            "Se deja expresa constancia por medio de este endoso, que formará parte integrante de la póliza / certificado, que Sancor Cooperativas " +
-                                "de Seguros Limitada renuncia forma expresa a iniciar toda acción de repetición contra " + nombarrio +
-                            " ya sea con fundamentos en la Ley 24.557 o en cualquier otra norma jurídica, con motivo de las prestaciones en especie o dinerarias " +
-                            "que se vea obligada a otorgar o abonar al Asegurado declarado en la presente Póliza / Certificado, comprendido en la cobertura de la" +
-                            " presente Póliza/ Certificado de Accidentes Personales con motivo de la profesión o actividad declarada e In Itinere." +
+                            "La compañía aseguradora renuncia expresamente y de manera irrevocable al derecho de repetición contra cualquier tercero, ya sea persona física o jurídica, que pudiera ser considerado responsable, directa o indirectamente, del siniestro cubierto por la presente póliza. En virtud de esta renuncia, la aseguradora no podrá ejercer acciones de recuperación o subrogación contra ningún individuo, empresa, entidad pública o privada, eximiéndolos de cualquier obligación de reembolso derivada del pago de indemnizaciones efectuadas en cumplimiento de la cobertura contratada. " + nombarrio +
                             "\nSe extiende el presente en Benavidez, " + datett.ToString("dd/MM/yyyy") +
                             ". Esta constancia tendrá validez si se presenta con el correspondiente recibo de pago.";
 
@@ -493,7 +489,7 @@ namespace ProyectoBrokerDelPuerto
                         
                         
 
-                        parCobertura = new Paragraph("Se deja expresa constancia por medio de este endoso, que formará parte integrante de la póliza/certificado, que Sancor Cooperativas de  Seguros  Limitada renuncia forma expresa a  iniciar  toda  acción  de repetición  contra: " + concatbarrios + ". ", _standardFont);
+                        parCobertura = new Paragraph("La compañía aseguradora renuncia expresamente y de manera irrevocable al derecho de repetición contra cualquier tercero, ya sea persona física o jurídica, que pudiera ser considerado responsable, directa o indirectamente, del siniestro cubierto por la presente póliza. En virtud de esta renuncia, la aseguradora no podrá ejercer acciones de recuperación o subrogación contra ningún individuo, empresa, entidad pública o privada, eximiéndolos de cualquier obligación de reembolso derivada del pago de indemnizaciones efectuadas en cumplimiento de la cobertura contratada.  " + concatbarrios + ". ", _standardFont);
                         parCobertura.Alignment = Element.ALIGN_JUSTIFIED;
                         doc.Add(parCobertura);
 

@@ -77,8 +77,6 @@ namespace ProyectoBrokerDelPuerto
 
             if (s.solicitud_propuestas)
             {
-                /*try
-                {*/
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_propuestas";
                     this.para.cola = Cola.getLastCola("propuestas");
@@ -94,41 +92,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de propuestas";
                     }
-                /*}
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}"+ex.Message);
-                }*/
-                
-                    
-                
+
             }
 
-            /*if (s.solicitud_lineas_propuestas)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_lineas_propuestas";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de lineas propuestas";
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                
-            }*/
-            
 
             if (s.solicitud_clientes)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clientes";
                     this.para.cola = Cola.getLastCola("clientes");
@@ -138,19 +107,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de clientes";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_usuarios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_usuarios";
                     this.para.cola = Cola.getLastCola("usuarios");
@@ -160,19 +121,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de usuarios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
 
             }
 
             if (s.solicitud_perfiles)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_perfiles";
                     this.para.cola = Cola.getLastCola("perfiles");
@@ -182,19 +135,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de perfiles";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_arqueos)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_arqueos";
                     this.para.cola = Cola.getLastCola("arqueos");
@@ -204,17 +149,10 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de arqueos";
                     }
-                }catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                
             }
 
             if (s.solicitud_rendiciones)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_rendiciones";
                     this.para.cola = Cola.getLastCola("rendiciones");
@@ -224,40 +162,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de rendiciones";
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
-            /*if (s.solicitud_lineas_rendiciones)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_lineas_rendiciones";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de lineas rendiciones";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
-             
-            }*/
 
             if (s.solicitud_actividades)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_actividades";
                     this.para.cola = Cola.getLastCola("actividades");
@@ -267,19 +177,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de actvidades";
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
                     
                 
             }
 
             if (s.solicitud_coberturas)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_coberturas";
                     this.para.cola = Cola.getLastCola("coberturas");
@@ -289,19 +192,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de coberturas";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_clasificaciones)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clasificaciones";
                     this.para.cola = Cola.getLastCola("clasificaciones");
@@ -311,19 +206,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de clasificaciones";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_barrios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_barrios";
                     this.para.cola = Cola.getLastCola("barrios");
@@ -333,18 +220,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de barrios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
                     
             }
 
             if (s.solicitud_gruposbarrios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_gruposbarrios";
                     this.para.cola = Cola.getLastCola("gruposbarrios");
@@ -354,19 +234,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de gruposbarrios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_provincias)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_provincias";
                     this.para.cola = Cola.getLastCola("provincias");
@@ -376,35 +248,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de provincias";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
             }
-
-            /*if (s.solicitud_barrios_propuestas)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_barrios_propuestas";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de barrios propuestas";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-
-
-            }*/
-
 
             if (errores != "")
             {
@@ -438,8 +282,6 @@ namespace ProyectoBrokerDelPuerto
                 return true;
             }
 
-
-
             return false;
         }
 
@@ -466,30 +308,6 @@ namespace ProyectoBrokerDelPuerto
                     // Leer el resultado de forma asíncrona
                     string res = await response.Content.ReadAsStringAsync();
 
-                    // ... procesar 'res'
-                
-                /*   string url = MDIParent1.apiuri + "/api/parametros";
-                   Console.WriteLine("URL IMP \n"+url + " "+ this.para.solicitud);
-                   WebRequest _request = WebRequest.Create(url);
-
-                   _request.Method = "POST";
-                   _request.ContentType = "application/json;charset=UTF-8";
-                   _request.Timeout = 36000000;
-
-                   using (var osw = new StreamWriter(_request.GetRequestStream()))
-                   {
-                       osw.Write(json);
-                       osw.Flush();
-                       osw.Close();
-                   }
-
-                   WebResponse _response = await _request.GetResponse();
-
-                   string res = "";
-                   using (var ors = new StreamReader(_response.GetResponseStream()))
-                   {
-                        res = ors.ReadToEnd().Trim();
-                   }*/
                     if (res != "" && res != "[]")
                     {
                         JsonTextReader reader = new JsonTextReader(new StringReader(res));
@@ -538,9 +356,7 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
-                log.coderror = "I130";
-                log.mensaje = "Error al importar datos " +  ex.Message;
-                log.save();
+                logs.setError($"Import-{this.para.solicitud}", ex.Message);
                 MDIParent1.server500 = ex.Message;
             }
 
@@ -723,9 +539,7 @@ namespace ProyectoBrokerDelPuerto
                     }
                     catch (Exception ex)
                     {
-                        log.coderror = "I110";
-                        log.mensaje = "Error al guardar Propuesta " + ex.Message;
-                        log.save();
+                        logs.setError("Propuestas", ex.Message);
                     }
                 }
                 

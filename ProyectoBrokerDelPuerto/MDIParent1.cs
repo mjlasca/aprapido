@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "17.6";
+        public static string versionsistema { get; set; } = "18.0";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -1145,7 +1145,7 @@ namespace ProyectoBrokerDelPuerto
                 if (ds555.Tables[0].Rows.Count > 0)
                 {
                     Task.Run(async () => {
-                        
+
                         return frmmig.exportarPropuestas();
                     });
                 }

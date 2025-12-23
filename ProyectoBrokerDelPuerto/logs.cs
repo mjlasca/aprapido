@@ -48,7 +48,7 @@ namespace ProyectoBrokerDelPuerto
             logs log = new logs();
             log.coderror = coderror_;
             log.mensaje = mensaje_;
-            log.save();
+            log.save_1();
         }
 
         public void newError(string coderror_, string mensaje_)
@@ -71,7 +71,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 this.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                sql = $"INSERT INTO logs (" + this.columns + $") VALUES('${this.coderror}','${this.mensaje}','${this.ultmod}','${MDIParent1.sesionUser}','${MDIParent1.codempresa}') ";
+                sql = $"INSERT INTO logs (${ this.columns }) VALUES('${this.coderror}','${this.mensaje}','${this.ultmod}','${MDIParent1.sesionUser}','${MDIParent1.codempresa}') ";
 
                 con.query(sql);
                 
