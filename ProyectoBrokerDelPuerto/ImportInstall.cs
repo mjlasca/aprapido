@@ -346,43 +346,49 @@ namespace ProyectoBrokerDelPuerto
 
         public static void ImportBarrios(List<barrios> listobj)
         {
-
             IDbConnection connection = ImportInstall.conn();
-            // Crear transacción (opcional si quieres confirmar todo)
+
             using (var transaction = connection.BeginTransaction())
             {
                 try
                 {
-                    // Crear comando con parámetros
+                    // 🧹 1. Eliminar todos los barrios primero
+                    using (var deleteCmd = connection.CreateCommand())
+                    {
+                        deleteCmd.Transaction = transaction;
+                        deleteCmd.CommandText = "DELETE FROM barrios";
+                        deleteCmd.ExecuteNonQuery();
+                    }
+
+                    // 🧩 2. Insertar nuevos registros
                     using (var insertCmd = connection.CreateCommand())
                     {
                         insertCmd.Transaction = transaction;
                         insertCmd.CommandText = @"
-                                            INSERT INTO barrios (
-                                                id, nombre, telefono, direccion, email, sub_barrio, clase_barrio,
-                                                suma_muerte, suma_gm, suma_rc, exige, observaciones,
-                                                ultmod, user_edit, codestado, envionube
-                                            )
-                                            VALUES (
-                                                @id, @nombre, @telefono, @direccion, @email, @sub_barrio, @clase_barrio,
-                                                @suma_muerte, @suma_gm, @suma_rc, @exige, @observaciones,
-                                                @ultmod, @user_edit, @codestado, @envionube
-                                            )";
+                    INSERT INTO barrios (
+                        id, nombre, telefono, direccion, email, sub_barrio, clase_barrio,
+                        suma_muerte, suma_gm, suma_rc, exige, observaciones,
+                        ultmod, user_edit, codestado, envionube
+                    )
+                    VALUES (
+                        @id, @nombre, @telefono, @direccion, @email, @sub_barrio, @clase_barrio,
+                        @suma_muerte, @suma_gm, @suma_rc, @exige, @observaciones,
+                        @ultmod, @user_edit, @codestado, @envionube
+                    )";
 
-                        // Crear parámetros y agregarlos
                         var parameters = new[]
                         {
-                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
-                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
-                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
-                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter()
-                        };
+                    insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
+                    insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
+                    insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
+                    insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter()
+                };
 
                         string[] paramNames = {
-                            "@id", "@nombre", "@telefono", "@direccion", "@email", "@sub_barrio", "@clase_barrio",
-                            "@suma_muerte", "@suma_gm", "@suma_rc", "@exige", "@observaciones",
-                            "@ultmod", "@user_edit", "@codestado", "@envionube"
-                        };
+                    "@id", "@nombre", "@telefono", "@direccion", "@email", "@sub_barrio", "@clase_barrio",
+                    "@suma_muerte", "@suma_gm", "@suma_rc", "@exige", "@observaciones",
+                    "@ultmod", "@user_edit", "@codestado", "@envionube"
+                };
 
                         for (int i = 0; i < parameters.Length; i++)
                         {
@@ -390,44 +396,38 @@ namespace ProyectoBrokerDelPuerto
                             insertCmd.Parameters.Add(parameters[i]);
                         }
 
-                        // Insertar registros
                         foreach (var bar in listobj)
                         {
-                            try
-                            {
-                                parameters[0].Value = bar.id;
-                                parameters[1].Value = bar.nombre;
-                                parameters[2].Value = bar.telefono;
-                                parameters[3].Value = bar.direccion;
-                                parameters[4].Value = bar.email;
-                                parameters[5].Value = bar.sub_barrio;
-                                parameters[6].Value = bar.clase_barrio;
-                                parameters[7].Value = bar.suma_muerte;
-                                parameters[8].Value = bar.suma_gm;
-                                parameters[9].Value = bar.suma_rc;
-                                parameters[10].Value = bar.exige;
-                                parameters[11].Value = bar.observaciones;
-                                parameters[12].Value = bar.ultmod;
-                                parameters[13].Value = bar.user_edit;
-                                parameters[14].Value = bar.codestado;
-                                parameters[15].Value = 1; 
+                            // ❌ Quitamos el try/catch interno
+                            parameters[0].Value = bar.id;
+                            parameters[1].Value = bar.nombre;
+                            parameters[2].Value = bar.telefono;
+                            parameters[3].Value = bar.direccion;
+                            parameters[4].Value = bar.email;
+                            parameters[5].Value = bar.sub_barrio;
+                            parameters[6].Value = bar.clase_barrio;
+                            parameters[7].Value = bar.suma_muerte;
+                            parameters[8].Value = bar.suma_gm;
+                            parameters[9].Value = bar.suma_rc;
+                            parameters[10].Value = bar.exige;
+                            parameters[11].Value = bar.observaciones;
+                            parameters[12].Value = bar.ultmod;
+                            parameters[13].Value = bar.user_edit;
+                            parameters[14].Value = bar.codestado;
+                            parameters[15].Value = 1;
 
-                                insertCmd.ExecuteNonQuery();
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"Error en cliente {bar.id}: {ex.Message}");
-                            }
+                            insertCmd.ExecuteNonQuery(); // si falla → salta al catch general
                         }
                     }
 
-
+                    // ✅ 3. Confirmar todo
                     transaction.Commit();
                 }
                 catch (Exception ex)
                 {
+                    // 🔄 Revierte TODO (incluye DELETE)
                     transaction.Rollback();
-                    Console.WriteLine($"Error general en ImportarDatos: {ex.Message}");
+                    Console.WriteLine($"Error general en ImportBarrios: {ex.Message}");
                 }
             }
         }

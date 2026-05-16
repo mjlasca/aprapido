@@ -195,6 +195,7 @@
             this.migracionesToolStripMenuItem.Name = "migracionesToolStripMenuItem";
             this.migracionesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.migracionesToolStripMenuItem.Text = "Migraciones";
+            this.migracionesToolStripMenuItem.Visible = false;
             this.migracionesToolStripMenuItem.Click += new System.EventHandler(this.migracionesToolStripMenuItem_Click);
             // 
             // puntoDeVentaToolStripMenuItem

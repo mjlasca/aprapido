@@ -199,7 +199,12 @@ namespace ProyectoBrokerDelPuerto
             s = new solicitudes();
             s.solicitud_provincias = true;
             ps = await frmMig.importarData(s, false, true);
-            
+
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get("-1", MDIParent1.prefijo, "");
+            });
+
 
             /*if (ps)
             {*/

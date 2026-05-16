@@ -12,7 +12,7 @@ namespace ProyectoBrokerDelPuerto
         string sql = "";
 
         string columns = "coderror,mensaje, ultmod,user_edit,codempresa";
-        public string id, coderror = "", mensaje = "", ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codempresa = MDIParent1.codempresa;
+        public string id,coderror = "", mensaje = "", ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codempresa = MDIParent1.codempresa;
         conexion con = new conexion();
 
         public logs(bool inst = false)
