@@ -285,6 +285,8 @@ namespace ProyectoBrokerDelPuerto
                         c.telefono,
                         t0.codestado,
                         t3.premio,
+                        c.cuir,
+                        c2.cuir AS cuil_linea,
                         c.fecha_nacimiento AS nacimientotomador,
                         t3.fecha_nacimiento,
                         t3.actividad,
@@ -297,6 +299,8 @@ namespace ProyectoBrokerDelPuerto
                     LEFT JOIN 
                         clientes c 
                         ON c.id = t0.documento
+                    LEFT JOIN clientes c2
+                        ON c2.id = t3.documento
                     WHERE 
                         t0.ultmod >= '{fecha1}' 
                         AND t0.ultmod <= '{fecha2}'
@@ -335,11 +339,13 @@ namespace ProyectoBrokerDelPuerto
                         t3.nombres,
                         t3.apellidos,
                         t0.nota,
+                        c.cuir,
                         c.nombres || ' ' || c.apellidos AS nombre,
                         c.email AS correo,
                         c.telefono,
                         t0.codestado,
                         t3.premio,
+                        c2.cuir AS cuil_linea,
                         c.fecha_nacimiento AS nacimientotomador,
                         t3.fecha_nacimiento,
                         t3.actividad,
@@ -352,6 +358,8 @@ namespace ProyectoBrokerDelPuerto
                     LEFT JOIN 
                         clientes c 
                         ON c.id = t0.documento
+                    LEFT JOIN clientes c2
+                        ON c2.id = t3.documento
                     WHERE 
                         t0.ultmod >= '{fecha1}' 
                         AND t0.ultmod <= '{fecha2}'

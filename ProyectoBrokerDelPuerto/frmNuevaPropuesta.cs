@@ -345,6 +345,7 @@ namespace ProyectoBrokerDelPuerto
                                 if (ds.Tables[0].Rows.Count > 0)
                                 {
                                     dataGridView1.CurrentRow.Cells["documento"].Value = ds.Tables[0].Rows[0]["tipo_id"].ToString();
+                                    dataGridView1.CurrentRow.Cells["cuil"].Value = ds.Tables[0].Rows[0]["cuir"].ToString();
                                     dataGridView1.CurrentRow.Cells["apellido"].Value = ds.Tables[0].Rows[0]["apellidos"].ToString();
                                     dataGridView1.CurrentRow.Cells["nombre"].Value = ds.Tables[0].Rows[0]["nombres"].ToString();
                                     dataGridView1.CurrentRow.Cells["fecha"].Value = Convert.ToDateTime(ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy");
@@ -381,6 +382,8 @@ namespace ProyectoBrokerDelPuerto
             radioButton1.Checked = false;
             radioButton2.Checked = false;
             comboSituacion.Text = "";
+            cuir_txt.Text = "";
+            cuir_txt.Enabled = true;
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -408,6 +411,9 @@ namespace ProyectoBrokerDelPuerto
                         txtCodpostal.Text = ds.Tables[0].Rows[0]["codpostal"].ToString();
                         txtLocalidad.Text = ds.Tables[0].Rows[0]["localidad"].ToString();
                         txtCiudad.Text = ds.Tables[0].Rows[0]["ciudad"].ToString();
+                        cuir_txt.Text = ds.Tables[0].Rows[0]["cuir"].ToString();
+                        if (cuir_txt.Text != "")
+                            cuir_txt.Enabled = false;
                         if (ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "" && ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "00/00/0000")
                             txtFechanacimiento.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy");
                         if (ds.Tables[0].Rows[0]["sexo"] != null)
@@ -465,6 +471,8 @@ namespace ProyectoBrokerDelPuerto
                     return -1;
                 if (dataGridView1.Rows[i].Cells["documento"].Value == null)
                     return -1;
+                if (dataGridView1.Rows[i].Cells["cuil"].Value == null)
+                    return -1;
                 if (dataGridView1.Rows[i].Cells["apellido"].Value == null)
                     return -1;
                 if (dataGridView1.Rows[i].Cells["nombre"].Value == null)
@@ -476,6 +484,7 @@ namespace ProyectoBrokerDelPuerto
                 if (dataGridView1.Rows[i].Cells["clasificacion"].Value == null)
                     return -1;
 
+                dataGridView1.Rows[i].Cells["cuil"].Value = validaciones.RemoveSpecialCharacters( dataGridView1.Rows[i].Cells["cuil"].Value.ToString()) ?? "";
                 dataGridView1.Rows[i].Cells["apellido"].Value = dataGridView1.Rows[i].Cells["apellido"].Value.ToString().ToUpper();
                 dataGridView1.Rows[i].Cells["nombre"].Value = dataGridView1.Rows[i].Cells["nombre"].Value.ToString().ToUpper();
 
@@ -487,31 +496,29 @@ namespace ProyectoBrokerDelPuerto
 
                 clientes cli = new clientes();
                 dataGridView1.Rows[i].Cells["nodocumento"].Value = validaciones.RemoveSpecialCharacters(dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString()) ?? "";
-                cli.id = dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString();
+                DataSet dsCliGet = cli.get(dataGridView1.Rows[i].Cells["nodocumento"].Value.ToString());
+                cli.tipo_id = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
+                cli.cuir = dataGridView1.Rows[i].Cells["cuil"].Value.ToString();
+                cli.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
+                cli.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
 
-                if (!cli.validar_id())
+                try
                 {
-                    cli.tipo_id = dataGridView1.Rows[i].Cells["documento"].Value.ToString();
-                    cli.apellidos = dataGridView1.Rows[i].Cells["apellido"].Value.ToString();
-                    cli.nombres = dataGridView1.Rows[i].Cells["nombre"].Value.ToString();
-
-                    try
-                    {
-                        cli.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Fecha no válida" + errores, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        dataGridView1.Rows[i].Cells["fecha"].Value = null;
-                        dataGridView1.Rows[i].Cells["fecha"].Selected = true;
-                        return -1;
-                    }
-
-                    cli.user_edit = MDIParent1.sesionUser;
-                    cli.codestado = "1";
-                    cli.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                    cli.save();
+                    cli.fecha_nacimiento = Convert.ToDateTime(dataGridView1.Rows[i].Cells["fecha"].Value.ToString()).ToString("yyyy-MM-dd");
                 }
+                catch
+                {
+                    MessageBox.Show("Fecha no válida" + errores, "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    dataGridView1.Rows[i].Cells["fecha"].Value = null;
+                    dataGridView1.Rows[i].Cells["fecha"].Selected = true;
+                    return -1;
+                }
+
+                cli.user_edit = MDIParent1.sesionUser;
+                cli.codestado = "1";
+                cli.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                cli.save();
+                
             }
 
             if( (dataGridView1.Rows.Count - 1) < 2 )
@@ -655,8 +662,10 @@ namespace ProyectoBrokerDelPuerto
 
             validaciones val = new validaciones();
 
-            string[] descartados = { "txtTelefono", "txtCiudad", "txtEmail" };
+            string[] descartados = { "txtTelefono", "txtCiudad", "txtEmail", "cuir_txt" };
 
+            if (!validateCUil())
+                return;
             if (val.camposvacios_grupos_condescartados(this.groupBox1, descartados) && txtTipoid.Text != "")
             {
                 this.guardar_cliente();
@@ -712,13 +721,14 @@ namespace ProyectoBrokerDelPuerto
                         }
                         else
                         {
-                            dataGridView1.Rows.Add("", textBox1.Text.Trim(), txtTipoid.Text, txtApellidos.Text, txtNombres.Text, txtFechanacimiento.Text);
+                            dataGridView1.Rows.Add("", textBox1.Text.Trim(), txtTipoid.Text, cuir_txt.Text, txtApellidos.Text, txtNombres.Text, txtFechanacimiento.Text);
                         }
                     }
                     else
                     {
                         dataGridView1.Rows[filaEncontrada].Cells["documento"].Value = txtTipoid.Text;
                         dataGridView1.Rows[filaEncontrada].Cells["nodocumento"].Value = textBox1.Text;
+                        dataGridView1.Rows[filaEncontrada].Cells["cuil"].Value = textBox1.Text;
                         dataGridView1.Rows[filaEncontrada].Cells["apellido"].Value = txtApellidos.Text;
                         dataGridView1.Rows[filaEncontrada].Cells["nombre"].Value = txtNombres.Text;
                         dataGridView1.Rows[filaEncontrada].Cells["fecha"].Value = txtFechanacimiento.Text;
@@ -1140,7 +1150,7 @@ namespace ProyectoBrokerDelPuerto
             errores = "";
             validaciones val = new validaciones();
 
-            string[] descartados = { "txtTelefono", "txtCiudad", "txtEmail" };
+            string[] descartados = { "txtTelefono", "txtCiudad", "txtEmail", "cuir_txt" };
 
             if (!val.camposvacios_grupos_condescartados(this.groupBox1, descartados))
             {
@@ -1264,7 +1274,7 @@ namespace ProyectoBrokerDelPuerto
         void text_KeyUp(object sender, KeyEventArgs e)
         {
 
-            if (dataGridView1.CurrentCell.ColumnIndex == 5)
+            if (dataGridView1.CurrentCell.ColumnIndex == 6)
             {
                 if ((e.KeyCode > Keys.NumPad0 && e.KeyCode > Keys.NumPad9) || (e.KeyCode > Keys.D0 && e.KeyCode > Keys.D9))
                 {
@@ -1306,7 +1316,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
-            if (dataGridView1.CurrentCell.ColumnIndex == 5)
+            if (dataGridView1.CurrentCell.ColumnIndex == 6)
             {
 
                 DataGridViewTextBoxEditingControl dText = (DataGridViewTextBoxEditingControl)e.Control;
@@ -1315,7 +1325,7 @@ namespace ProyectoBrokerDelPuerto
             }
 
 
-            if (dataGridView1.CurrentCell.ColumnIndex == 6)
+            if (dataGridView1.CurrentCell.ColumnIndex == 7)
             {
 
                 /*DataGridViewComboBoxEditingControl cobtext = (DataGridViewComboBoxEditingControl)e.Control;
@@ -1396,7 +1406,7 @@ namespace ProyectoBrokerDelPuerto
         */
         void comboDataGrid(object sender, EventArgs e)
         {
-            if (dataGridView1.CurrentCell.ColumnIndex == 6)
+            if (dataGridView1.CurrentCell.ColumnIndex == 7)
             {
                 this.adicionar_items_clasificacion(dataGridView1.CurrentRow.Index, ((ComboBox)sender).Text);
             }
@@ -1456,7 +1466,26 @@ namespace ProyectoBrokerDelPuerto
             this.DialogResult = DialogResult.OK;
         }
 
-        private void guardar_cliente()
+        private bool validateCUil()
+        {
+            if (cuir_txt.Text == "")
+            {
+                if (MessageBox.Show("No se ha asignado el CUIT/CUIL\n¿Desea obtener el CUIT/CUIL?", "Información", MessageBoxButtons.OKCancel) == DialogResult.OK)
+                {
+                    configuraciones conf = new configuraciones();
+                    conf.get("url_cuil");
+                    if (conf.detail != "")
+                    {
+                        System.Diagnostics.Process.Start(conf.detail);
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool guardar_cliente(bool duplica = false)
         {
             clientes cli = new clientes();
             textBox1.Text = validaciones.RemoveSpecialCharacters(textBox1.Text.Trim());
@@ -1478,14 +1507,15 @@ namespace ProyectoBrokerDelPuerto
             cli.direccion = txtDireccion.Text;
             cli.telefono = txtTelefono.Text;
             cli.situacion = comboSituacion.Text;
-            
+            cli.cuir = cuir_txt.Text;
+
             try
             {
                 cli.fecha_nacimiento = Convert.ToDateTime(txtFechanacimiento.Text).ToString("yyyy-MM-dd");
             }catch(Exception e)
             {
                 MessageBox.Show("La fecha de nacimiento está mal escrita");
-                return;
+                return false;
             }
             
             if (radioButton1.Checked)
@@ -1498,6 +1528,8 @@ namespace ProyectoBrokerDelPuerto
             cli.ultmod = (DateTime.Now).ToString("yyyy-MM-dd HH:mm:ss");
 
             cli.save();
+
+            return true;
         }
 
         private void fechaDesde_ValueChanged(object sender, EventArgs e)
@@ -1867,6 +1899,8 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
+            if (!validateCUil())
+                return;
             this.formpago_ = "CONTADO";
             paga_ch.Checked = true;
             this.guardarPropuesta();
@@ -2420,17 +2454,34 @@ namespace ProyectoBrokerDelPuerto
 
         private void button5_Click(object sender, EventArgs e)
         {
+            if (!validateCUil())
+                return;
             this.formpago_ = "CREDITO";
             paga_ch.Checked = false;
             this.guardarPropuesta();
             
         }
 
+        private void label25_Click(object sender, EventArgs e)
+        {
+            configuraciones conf = new configuraciones();
+            conf.get("url_cuil");
+            if (conf.detail != "")
+            {
+                System.Diagnostics.Process.Start(conf.detail);
+            }else
+            {
+                MessageBox.Show("No se ha asignado el enlace");
+                frmUtilities frm = new frmUtilities();
+                frm.ShowDialog();
+            }
+        }
+
         private bool guardado(bool duplicar = false)
         {
             if (this.validacion(!duplicar))
             {
-                this.guardar_cliente();
+                this.guardar_cliente(duplicar);
                 
                 if (duplicar)
                 {

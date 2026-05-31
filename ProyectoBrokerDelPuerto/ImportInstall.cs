@@ -269,12 +269,12 @@ namespace ProyectoBrokerDelPuerto
                             INSERT INTO clientes (
                                 id, nombres, apellidos, tipo_id, telefono, direccion, email, codpostal, 
                                 localidad, ciudad, sexo, fecha_nacimiento, situacion, ultmod, user_edit,
-                                codestado, categoria, codempresa, idaseguradora, envionube
+                                codestado, categoria, codempresa, idaseguradora, envionube, cuir
                             )
                             VALUES (
                                 @id, @nombres, @apellidos, @tipo_id, @telefono, @direccion, @email, @codpostal,
                                 @localidad, @ciudad, @sexo, @fecha_nacimiento, @situacion, @ultmod, @user_edit,
-                                @codestado, @categoria, @codempresa, @idaseguradora, @envionube
+                                @codestado, @categoria, @codempresa, @idaseguradora, @envionube, @cuir
                             )";
 
                                             // Crear parámetros y agregarlos
@@ -284,13 +284,15 @@ namespace ProyectoBrokerDelPuerto
                             insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
                             insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
                             insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
-                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter()
+                            insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(), insertCmd.CreateParameter(),
+                            insertCmd.CreateParameter()
+
                         };
 
                         string[] paramNames = {
                             "@id", "@nombres", "@apellidos", "@tipo_id", "@telefono", "@direccion", "@email", "@codpostal",
                             "@localidad", "@ciudad", "@sexo", "@fecha_nacimiento", "@situacion", "@ultmod", "@user_edit",
-                            "@codestado", "@categoria", "@codempresa", "@idaseguradora", "@envionube"
+                            "@codestado", "@categoria", "@codempresa", "@idaseguradora", "@envionube", "@cuir"
                         };
 
                         for (int i = 0; i < parameters.Length; i++)
@@ -324,6 +326,7 @@ namespace ProyectoBrokerDelPuerto
                                 parameters[17].Value = MDIParent1.codempresa; 
                                 parameters[18].Value = cli.idaseguradora;
                                 parameters[19].Value = 1;
+                                parameters[20].Value = cli.cuir;
 
                                 insertCmd.ExecuteNonQuery();
                             }

@@ -749,6 +749,7 @@ namespace ProyectoBrokerDelPuerto
                                               categoria = val["categoria"] == null ? "" : val["categoria"],
                                               ultmod = val["ultmod"] == null ? "" : val["ultmod"],
                                               user_edit = val["user_edit"] == null ? "" : val["user_edit"],
+                                              cuir = val["cuir"] == null ? "" : val["cuir"],
                                               codestado = "1"
 
                                           }).ToList();

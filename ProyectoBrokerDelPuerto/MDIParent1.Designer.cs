@@ -88,6 +88,7 @@
             this.sinEnviar_btn = new System.Windows.Forms.Button();
             this.timer_parameters = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.utilidadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -461,7 +462,8 @@
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contentsToolStripMenuItem,
             this.toolStripSeparator8,
-            this.versiónToolStripMenuItem});
+            this.versiónToolStripMenuItem,
+            this.utilidadesToolStripMenuItem});
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(53, 20);
             this.helpMenu.Text = "Ay&uda";
@@ -469,7 +471,7 @@
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.contentsToolStripMenuItem.Text = "Contacto";
             this.contentsToolStripMenuItem.Visible = false;
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
@@ -477,12 +479,12 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(149, 6);
             // 
             // versiónToolStripMenuItem
             // 
             this.versiónToolStripMenuItem.Name = "versiónToolStripMenuItem";
-            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.versiónToolStripMenuItem.Text = "Versión";
             this.versiónToolStripMenuItem.Click += new System.EventHandler(this.versiónToolStripMenuItem_Click);
             // 
@@ -616,10 +618,18 @@
             this.label1.Text = "label1";
             this.label1.Visible = false;
             // 
+            // utilidadesToolStripMenuItem
+            // 
+            this.utilidadesToolStripMenuItem.Name = "utilidadesToolStripMenuItem";
+            this.utilidadesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.utilidadesToolStripMenuItem.Text = "Utilidades";
+            this.utilidadesToolStripMenuItem.Click += new System.EventHandler(this.utilidadesToolStripMenuItem_Click);
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.sinEnviar_btn);
@@ -711,6 +721,7 @@
         private System.Windows.Forms.ToolStripMenuItem modificaciónDeBarriosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imputacionesToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem utilidadesToolStripMenuItem;
     }
 }
 

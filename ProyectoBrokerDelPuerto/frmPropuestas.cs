@@ -437,9 +437,17 @@ namespace ProyectoBrokerDelPuerto
                         }
                         //MessageBox.Show("FEC NAC"+ lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString());
                         /***/
+
+                        DataSet clilineDat = new DataSet();
+                        if (lineas.Tables[0].Rows[i]["documento"] != null && lineas.Tables[0].Rows[i]["documento"].ToString() != "")
+                        {
+                            clientes cliLine = new clientes();
+                            clilineDat = cliLine.get(lineas.Tables[0].Rows[i]["documento"].ToString());
+                        }
                         frm.dataGridView1.Rows[i].Cells["idPropuesta"].Value = i;
                         frm.dataGridView1.Rows[i].Cells["nodocumento"].Value = lineas.Tables[0].Rows[i]["documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["documento"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["documento"].Value = lineas.Tables[0].Rows[i]["tipo_documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["tipo_documento"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["cuil"].Value = clilineDat.Tables[0].Rows[0]["cuir"].ToString() ?? "";
                         frm.dataGridView1.Rows[i].Cells["apellido"].Value = lineas.Tables[0].Rows[i]["apellidos"].ToString() != "" ? lineas.Tables[0].Rows[i]["apellidos"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["nombre"].Value = lineas.Tables[0].Rows[i]["nombres"].ToString() != "" ? lineas.Tables[0].Rows[i]["nombres"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["fecha"].Value = lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString() != "" ? Convert.ToDateTime(lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy") : "";

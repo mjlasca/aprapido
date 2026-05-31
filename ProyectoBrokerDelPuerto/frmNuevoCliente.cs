@@ -147,6 +147,7 @@ namespace ProyectoBrokerDelPuerto
                 cl.user_edit = MDIParent1.sesionUser;
                 cl.codestado = "1";
                 cl.categoria = txtCategoria.Text;
+                cl.cuir = cuir_txt.Text;
                 if (cl.save())
                 {
                     this.DialogResult = DialogResult.OK;

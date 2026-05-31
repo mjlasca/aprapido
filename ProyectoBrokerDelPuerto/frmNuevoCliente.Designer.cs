@@ -54,6 +54,8 @@
             this.label12 = new System.Windows.Forms.Label();
             this.txtCiudad = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.cuir_txt = new System.Windows.Forms.TextBox();
             this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label19 = new System.Windows.Forms.Label();
@@ -79,7 +81,7 @@
             // 
             this.txtIdentificacion.Location = new System.Drawing.Point(23, 85);
             this.txtIdentificacion.Name = "txtIdentificacion";
-            this.txtIdentificacion.Size = new System.Drawing.Size(193, 20);
+            this.txtIdentificacion.Size = new System.Drawing.Size(166, 20);
             this.txtIdentificacion.TabIndex = 4;
             this.txtIdentificacion.TextChanged += new System.EventHandler(this.txtIdentificacion_TextChanged);
             this.txtIdentificacion.Leave += new System.EventHandler(this.txtIdentificacion_Leave);
@@ -101,7 +103,6 @@
             "DNI",
             "LE",
             "LC",
-            "CUIT",
             "CI"});
             this.comboBox1.Location = new System.Drawing.Point(23, 37);
             this.comboBox1.Name = "comboBox1";
@@ -296,6 +297,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label17);
+            this.groupBox1.Controls.Add(this.cuir_txt);
             this.groupBox1.Controls.Add(this.label21);
             this.groupBox1.Controls.Add(this.label20);
             this.groupBox1.Controls.Add(this.label1);
@@ -336,6 +339,22 @@
             this.groupBox1.TabIndex = 25;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos cliente";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(193, 68);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(61, 13);
+            this.label17.TabIndex = 30;
+            this.label17.Text = "CUIT/CUIL";
+            // 
+            // cuir_txt
+            // 
+            this.cuir_txt.Location = new System.Drawing.Point(196, 85);
+            this.cuir_txt.Name = "cuir_txt";
+            this.cuir_txt.Size = new System.Drawing.Size(166, 20);
+            this.cuir_txt.TabIndex = 31;
             // 
             // label21
             // 
@@ -480,5 +499,7 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         public System.Windows.Forms.TextBox txtIdentificacion;
+        private System.Windows.Forms.Label label17;
+        public System.Windows.Forms.TextBox cuir_txt;
     }
 }

@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmNuevaPropuesta));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cuir_txt = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.lblPrefijo = new System.Windows.Forms.Label();
             this.referencianum_txt = new System.Windows.Forms.Label();
@@ -66,15 +68,6 @@
             this.txtTipoid = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.idPropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nodocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.documento = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.actividad = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.clasificacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.label13 = new System.Windows.Forms.Label();
             this.fechaDesde = new System.Windows.Forms.DateTimePicker();
             this.label14 = new System.Windows.Forms.Label();
@@ -105,22 +98,34 @@
             this.btnEliminar = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.mail_btn = new System.Windows.Forms.Button();
-            this.whatsapp = new System.Windows.Forms.PictureBox();
             this.btnDuplicar = new System.Windows.Forms.Button();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.button3 = new System.Windows.Forms.Button();
             this.libreDeuda_btn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.button3 = new System.Windows.Forms.Button();
+            this.whatsapp = new System.Windows.Forms.PictureBox();
+            this.idPropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nodocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.documento = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.cuil = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.apellido = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.actividad = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.clasificacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.whatsapp)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cuir_txt);
+            this.groupBox1.Controls.Add(this.label25);
             this.groupBox1.Controls.Add(this.label23);
             this.groupBox1.Controls.Add(this.lblPrefijo);
             this.groupBox1.Controls.Add(this.referencianum_txt);
@@ -159,11 +164,31 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(23, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(922, 243);
+            this.groupBox1.Size = new System.Drawing.Size(1015, 243);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Datos del Tomador";
             this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // cuir_txt
+            // 
+            this.cuir_txt.Location = new System.Drawing.Point(289, 39);
+            this.cuir_txt.Name = "cuir_txt";
+            this.cuir_txt.Size = new System.Drawing.Size(170, 20);
+            this.cuir_txt.TabIndex = 44;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label25.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.ForeColor = System.Drawing.Color.DeepSkyBlue;
+            this.label25.Location = new System.Drawing.Point(286, 23);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(61, 13);
+            this.label25.TabIndex = 43;
+            this.label25.Text = "CUIT/CUIL";
+            this.label25.Click += new System.EventHandler(this.label25_Click);
             // 
             // label23
             // 
@@ -265,7 +290,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(719, 206);
+            this.button4.Location = new System.Drawing.Point(823, 206);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(175, 23);
             this.button4.TabIndex = 24;
@@ -442,9 +467,9 @@
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(184, 40);
+            this.textBox1.Location = new System.Drawing.Point(118, 39);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(275, 20);
+            this.textBox1.Size = new System.Drawing.Size(168, 20);
             this.textBox1.TabIndex = 3;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
@@ -489,17 +514,16 @@
             "DNI",
             "LE",
             "LC",
-            "CUIT",
             "CI"});
             this.txtTipoid.Location = new System.Drawing.Point(32, 39);
             this.txtTipoid.Name = "txtTipoid";
-            this.txtTipoid.Size = new System.Drawing.Size(146, 21);
+            this.txtTipoid.Size = new System.Drawing.Size(81, 21);
             this.txtTipoid.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(181, 24);
+            this.label2.Location = new System.Drawing.Point(115, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(82, 13);
             this.label2.TabIndex = 0;
@@ -513,115 +537,6 @@
             this.label1.Size = new System.Drawing.Size(84, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tipo documento";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.idPropuesta,
-            this.nodocumento,
-            this.documento,
-            this.apellido,
-            this.nombre,
-            this.fecha,
-            this.actividad,
-            this.clasificacion});
-            this.dataGridView1.Location = new System.Drawing.Point(21, 261);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.Size = new System.Drawing.Size(924, 249);
-            this.dataGridView1.TabIndex = 26;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
-            this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
-            this.dataGridView1.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellLeave);
-            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
-            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
-            this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
-            this.dataGridView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView1_KeyPress);
-            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyUp);
-            this.dataGridView1.MouseLeave += new System.EventHandler(this.dataGridView1_MouseLeave);
-            // 
-            // idPropuesta
-            // 
-            this.idPropuesta.FillWeight = 300F;
-            this.idPropuesta.Frozen = true;
-            this.idPropuesta.HeaderText = "No.";
-            this.idPropuesta.MinimumWidth = 300;
-            this.idPropuesta.Name = "idPropuesta";
-            this.idPropuesta.Visible = false;
-            // 
-            // nodocumento
-            // 
-            this.nodocumento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.nodocumento.FillWeight = 70F;
-            this.nodocumento.Frozen = true;
-            this.nodocumento.HeaderText = "No. Documento";
-            this.nodocumento.Name = "nodocumento";
-            // 
-            // documento
-            // 
-            this.documento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.documento.Frozen = true;
-            this.documento.HeaderText = "Tipo Documento";
-            this.documento.Items.AddRange(new object[] {
-            "DNI",
-            "LE",
-            "LC",
-            "CUIT",
-            "CI"});
-            this.documento.Name = "documento";
-            this.documento.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.documento.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.documento.Width = 60;
-            // 
-            // apellido
-            // 
-            this.apellido.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.apellido.Frozen = true;
-            this.apellido.HeaderText = "Apellido";
-            this.apellido.Name = "apellido";
-            this.apellido.Width = 150;
-            // 
-            // nombre
-            // 
-            this.nombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.nombre.Frozen = true;
-            this.nombre.HeaderText = "Nombre";
-            this.nombre.Name = "nombre";
-            this.nombre.Width = 150;
-            // 
-            // fecha
-            // 
-            this.fecha.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.fecha.Frozen = true;
-            this.fecha.HeaderText = "Fecha Nacimiento (dd/mm/aaaa)";
-            this.fecha.Name = "fecha";
-            // 
-            // actividad
-            // 
-            this.actividad.AutoComplete = false;
-            this.actividad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
-            this.actividad.FillWeight = 150F;
-            this.actividad.Frozen = true;
-            this.actividad.HeaderText = "Actividad";
-            this.actividad.MinimumWidth = 150;
-            this.actividad.Name = "actividad";
-            this.actividad.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.actividad.Width = 150;
-            // 
-            // clasificacion
-            // 
-            this.clasificacion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
-            this.clasificacion.FillWeight = 150F;
-            this.clasificacion.Frozen = true;
-            this.clasificacion.HeaderText = "Clasificación";
-            this.clasificacion.MinimumWidth = 300;
-            this.clasificacion.Name = "clasificacion";
-            this.clasificacion.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.clasificacion.Width = 300;
             // 
             // label13
             // 
@@ -770,7 +685,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(611, 67);
+            this.label18.Location = new System.Drawing.Point(718, 61);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(61, 17);
             this.label18.TabIndex = 0;
@@ -779,7 +694,7 @@
             // txtPremio
             // 
             this.txtPremio.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPremio.Location = new System.Drawing.Point(614, 83);
+            this.txtPremio.Location = new System.Drawing.Point(721, 77);
             this.txtPremio.Name = "txtPremio";
             this.txtPremio.ReadOnly = true;
             this.txtPremio.Size = new System.Drawing.Size(130, 22);
@@ -790,7 +705,7 @@
             // 
             this.label19.AutoSize = true;
             this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label19.Location = new System.Drawing.Point(747, 67);
+            this.label19.Location = new System.Drawing.Point(854, 61);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(111, 17);
             this.label19.TabIndex = 0;
@@ -799,7 +714,7 @@
             // txtPremioTotal
             // 
             this.txtPremioTotal.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtPremioTotal.Location = new System.Drawing.Point(750, 83);
+            this.txtPremioTotal.Location = new System.Drawing.Point(857, 77);
             this.txtPremioTotal.Name = "txtPremioTotal";
             this.txtPremioTotal.ReadOnly = true;
             this.txtPremioTotal.Size = new System.Drawing.Size(141, 22);
@@ -862,7 +777,7 @@
             this.groupBox3.Controls.Add(this.fechaDesde);
             this.groupBox3.Location = new System.Drawing.Point(23, 516);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(922, 125);
+            this.groupBox3.Size = new System.Drawing.Size(1015, 125);
             this.groupBox3.TabIndex = 16;
             this.groupBox3.TabStop = false;
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
@@ -926,7 +841,7 @@
             this.btnEliminar.Enabled = false;
             this.btnEliminar.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnEliminar.ForeColor = System.Drawing.Color.White;
-            this.btnEliminar.Location = new System.Drawing.Point(915, 263);
+            this.btnEliminar.Location = new System.Drawing.Point(1000, 270);
             this.btnEliminar.Name = "btnEliminar";
             this.btnEliminar.Size = new System.Drawing.Size(30, 29);
             this.btnEliminar.TabIndex = 28;
@@ -957,21 +872,9 @@
             this.mail_btn.UseVisualStyleBackColor = true;
             this.mail_btn.Click += new System.EventHandler(this.mail_btn_Click);
             // 
-            // whatsapp
-            // 
-            this.whatsapp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.whatsapp.Image = global::ProyectoBrokerDelPuerto.Properties.Resources.whatsapp_logo_png_hd_2;
-            this.whatsapp.Location = new System.Drawing.Point(603, 642);
-            this.whatsapp.Name = "whatsapp";
-            this.whatsapp.Size = new System.Drawing.Size(32, 32);
-            this.whatsapp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.whatsapp.TabIndex = 60;
-            this.whatsapp.TabStop = false;
-            this.whatsapp.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // btnDuplicar
             // 
-            this.btnDuplicar.Location = new System.Drawing.Point(831, 647);
+            this.btnDuplicar.Location = new System.Drawing.Point(924, 647);
             this.btnDuplicar.Name = "btnDuplicar";
             this.btnDuplicar.Size = new System.Drawing.Size(114, 23);
             this.btnDuplicar.TabIndex = 61;
@@ -998,17 +901,6 @@
             this.vScrollBar1.Visible = false;
             this.vScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.vScrollBar1_Scroll);
             // 
-            // button3
-            // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.Location = new System.Drawing.Point(356, 647);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(25, 23);
-            this.button3.TabIndex = 65;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // libreDeuda_btn
             // 
             this.libreDeuda_btn.Location = new System.Drawing.Point(650, 647);
@@ -1030,11 +922,145 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.idPropuesta,
+            this.nodocumento,
+            this.documento,
+            this.cuil,
+            this.apellido,
+            this.nombre,
+            this.fecha,
+            this.actividad,
+            this.clasificacion});
+            this.dataGridView1.Location = new System.Drawing.Point(21, 261);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(1017, 249);
+            this.dataGridView1.TabIndex = 26;
+            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridView1.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEndEdit);
+            this.dataGridView1.CellEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellEnter);
+            this.dataGridView1.CellLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellLeave);
+            this.dataGridView1.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellValueChanged);
+            this.dataGridView1.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView1_DataError);
+            this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
+            this.dataGridView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dataGridView1_KeyPress);
+            this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyUp);
+            this.dataGridView1.MouseLeave += new System.EventHandler(this.dataGridView1_MouseLeave);
+            // 
+            // button3
+            // 
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.Location = new System.Drawing.Point(356, 647);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(25, 23);
+            this.button3.TabIndex = 65;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // whatsapp
+            // 
+            this.whatsapp.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.whatsapp.Image = global::ProyectoBrokerDelPuerto.Properties.Resources.whatsapp_logo_png_hd_2;
+            this.whatsapp.Location = new System.Drawing.Point(603, 642);
+            this.whatsapp.Name = "whatsapp";
+            this.whatsapp.Size = new System.Drawing.Size(32, 32);
+            this.whatsapp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.whatsapp.TabIndex = 60;
+            this.whatsapp.TabStop = false;
+            this.whatsapp.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // idPropuesta
+            // 
+            this.idPropuesta.FillWeight = 300F;
+            this.idPropuesta.Frozen = true;
+            this.idPropuesta.HeaderText = "No.";
+            this.idPropuesta.MinimumWidth = 300;
+            this.idPropuesta.Name = "idPropuesta";
+            this.idPropuesta.Visible = false;
+            // 
+            // nodocumento
+            // 
+            this.nodocumento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.nodocumento.FillWeight = 70F;
+            this.nodocumento.Frozen = true;
+            this.nodocumento.HeaderText = "No. Documento";
+            this.nodocumento.Name = "nodocumento";
+            // 
+            // documento
+            // 
+            this.documento.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.documento.Frozen = true;
+            this.documento.HeaderText = "Tipo Documento";
+            this.documento.Items.AddRange(new object[] {
+            "DNI",
+            "LE",
+            "LC",
+            "CI"});
+            this.documento.Name = "documento";
+            this.documento.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.documento.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.documento.Width = 60;
+            // 
+            // cuil
+            // 
+            this.cuil.FillWeight = 50F;
+            this.cuil.HeaderText = "CUIT/CUIL";
+            this.cuil.MinimumWidth = 100;
+            this.cuil.Name = "cuil";
+            // 
+            // apellido
+            // 
+            this.apellido.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.apellido.HeaderText = "Apellido";
+            this.apellido.Name = "apellido";
+            this.apellido.Width = 150;
+            // 
+            // nombre
+            // 
+            this.nombre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.nombre.HeaderText = "Nombre";
+            this.nombre.Name = "nombre";
+            this.nombre.Width = 150;
+            // 
+            // fecha
+            // 
+            this.fecha.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
+            this.fecha.HeaderText = "Fecha Nacimiento (dd/mm/aaaa)";
+            this.fecha.Name = "fecha";
+            // 
+            // actividad
+            // 
+            this.actividad.AutoComplete = false;
+            this.actividad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCells;
+            this.actividad.FillWeight = 150F;
+            this.actividad.HeaderText = "Actividad";
+            this.actividad.MinimumWidth = 150;
+            this.actividad.Name = "actividad";
+            this.actividad.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.actividad.Width = 150;
+            // 
+            // clasificacion
+            // 
+            this.clasificacion.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.DisplayedCellsExceptHeader;
+            this.clasificacion.FillWeight = 150F;
+            this.clasificacion.HeaderText = "Clasificación";
+            this.clasificacion.MinimumWidth = 300;
+            this.clasificacion.Name = "clasificacion";
+            this.clasificacion.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.clasificacion.Width = 300;
+            // 
             // frmNuevaPropuesta
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(968, 680);
+            this.ClientSize = new System.Drawing.Size(1063, 680);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.libreDeuda_btn);
             this.Controls.Add(this.button3);
@@ -1058,11 +1084,11 @@
             this.Load += new System.EventHandler(this.frmNuevaPropuesta_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.whatsapp)).EndInit();
             this.ResumeLayout(false);
 
@@ -1105,7 +1131,6 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Label label20;
         public System.Windows.Forms.TextBox textBox1;
-        public System.Windows.Forms.DataGridView dataGridView1;
         public System.Windows.Forms.ComboBox comboBox4;
         public System.Windows.Forms.ComboBox comboCobertura;
         public System.Windows.Forms.ComboBox comboBarrios;
@@ -1125,14 +1150,6 @@
         public System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.DataGridViewTextBoxColumn idPropuesta;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nodocumento;
-        private System.Windows.Forms.DataGridViewComboBoxColumn documento;
-        private System.Windows.Forms.DataGridViewTextBoxColumn apellido;
-        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
-        private System.Windows.Forms.DataGridViewComboBoxColumn actividad;
-        private System.Windows.Forms.DataGridViewComboBoxColumn clasificacion;
         private System.Windows.Forms.Button mail_btn;
         private System.Windows.Forms.PictureBox whatsapp;
         private System.Windows.Forms.Button btnInfoBarrios;
@@ -1153,5 +1170,17 @@
         public System.Windows.Forms.Button btnGuardar;
         public System.Windows.Forms.Button button5;
         public System.Windows.Forms.Label label24;
+        public System.Windows.Forms.TextBox cuir_txt;
+        private System.Windows.Forms.Label label25;
+        public System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn idPropuesta;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nodocumento;
+        private System.Windows.Forms.DataGridViewComboBoxColumn documento;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuil;
+        private System.Windows.Forms.DataGridViewTextBoxColumn apellido;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nombre;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
+        private System.Windows.Forms.DataGridViewComboBoxColumn actividad;
+        private System.Windows.Forms.DataGridViewComboBoxColumn clasificacion;
     }
 }

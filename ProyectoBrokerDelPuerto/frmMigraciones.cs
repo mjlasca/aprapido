@@ -1749,7 +1749,8 @@ namespace ProyectoBrokerDelPuerto
                                 ultmod = ds.Tables[0].Rows[i]["ultmod"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                                 user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
                                 codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
-                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString()
+                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString(),
+                                cuir = ds.Tables[0].Rows[i]["cuir"].ToString()
                             }
 
                         );

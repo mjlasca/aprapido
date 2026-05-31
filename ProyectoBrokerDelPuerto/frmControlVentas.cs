@@ -609,6 +609,8 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("aseguradora", typeof(string));
             dt.Columns.Add("cod_productor", typeof(string));
             dt.Columns.Add("cod_organizador", typeof(string));
+            dt.Columns.Add("Cuil/Cuit Tomador", typeof(string));
+            dt.Columns.Add("Cuil/Cuit Asegurado", typeof(string));
 
 
 
@@ -658,7 +660,9 @@ namespace ProyectoBrokerDelPuerto
                     dd.Tables[0].Rows[i]["fechaHasta"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["fechaHasta"]) : fecpagadefault,
                     aseguradora,
                     dd.Tables[0].Rows[i]["productor"].ToString(),
-                    dd.Tables[0].Rows[i]["organizador"].ToString()
+                    dd.Tables[0].Rows[i]["organizador"].ToString(),
+                    dd.Tables[0].Rows[i]["cuir"].ToString(),
+                    dd.Tables[0].Rows[i]["cuil_linea"].ToString()
                     );
             }
 

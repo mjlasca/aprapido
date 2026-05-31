@@ -532,6 +532,12 @@
     <Compile Include="frmUsuarios.Designer.cs">
       <DependentUpon>frmUsuarios.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmUtilities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUtilities.Designer.cs">
+      <DependentUpon>frmUtilities.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmVentasCredito.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -756,6 +762,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmUsuarios.resx">
       <DependentUpon>frmUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUtilities.resx">
+      <DependentUpon>frmUtilities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmVentasCredito.resx">
       <DependentUpon>frmVentasCredito.cs</DependentUpon>
