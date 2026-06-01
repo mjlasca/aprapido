@@ -458,7 +458,7 @@ namespace ProyectoBrokerDelPuerto
             txtApitoken.Text = this.generateroken();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private async void button2_Click(object sender, EventArgs e)
         {
             if(dataGridView1.CurrentRow.Cells["responsable"].Value != null)
             {
@@ -468,16 +468,28 @@ namespace ProyectoBrokerDelPuerto
                     return;
                 }
 
-                if(MessageBox.Show("¿Segur@ desea habilitar o desahabilitar éste punto de venta?", "Confirmar Habilitación o Inhabilitación", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("¿Segur@ desea habilitar o desahabilitar éste punto de venta?", "Confirmar Habilitación o Inhabilitación", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    ApiStateUser stUser = new ApiStateUser();
                     puntodeventa punt = new puntodeventa();
-                    punt.apitoken = this.generateroken();
                     punt.usuario = dataGridView1.CurrentRow.Cells["email"].Value.ToString();
-                    if (dataGridView1.CurrentRow.Cells["codestado"].Value.ToString() == "0")
-                        punt.inhabilitarpunto(1);
-                    else
-                        punt.inhabilitarpunto();
 
+                    int enabled = 0;
+                    punt.codestado = "0";
+                    if (dataGridView1.CurrentRow.Cells["codestado"].Value.ToString() == "0")
+                    {
+                        enabled = 1;
+                        punt.codestado = "1";
+                    }
+                    string res = await stUser.Post(punt.usuario, enabled);
+                    if ( res == null)
+                    {
+                        MessageBox.Show("Ha habido un error al actualizar el usuario en la nube, inténtelo nuevamente. Si el problema persiste consulte administrador",
+                "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    punt.apitoken = res;
+                    punt.inhabilitarpunto();
                     this.listado();
                     this.migrarPuntodeventa();
                 }

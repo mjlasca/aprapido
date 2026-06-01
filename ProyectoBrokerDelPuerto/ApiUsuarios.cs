@@ -59,17 +59,11 @@ namespace ProyectoBrokerDelPuerto
                         CacheManager.AddToCache("importUsuarios", colasList, new TimeSpan(1, 0, 0));
                     }
                 }
-                else
-                {
-                    logs log = new logs();
-                    log.newError(@"GET"+this.path, "No se ha podido obtener los usuarios "+response.StatusCode);
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Se produjo una excepción en la tarea SendAsync: " + ex.InnerException.Message);
-                logs log = new logs();
-                log.newError(@"GET" + this.path, "Ha ocurrido un error al obtener los datos " + ex.Message);
+                logs.setError("apiusuarios", "Ha ocurrido un error al obtener los datos " + ex.Message);
             }
 
 

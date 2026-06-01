@@ -90,7 +90,8 @@ namespace ProyectoBrokerDelPuerto
 
         public bool save()
         {
-            try
+            return true;
+            /*try
             {
                 
                     sql = "INSERT INTO logs (" + this.columns + ") VALUES(@coderror,@mensaje,@ultmod,@user_edit,@codempresa) ";
@@ -130,7 +131,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 //System.Windows.Forms.MessageBox.Show("No se ha podido generar el log "+ex);
                 return false;
-            }
+            }*/
 
         }
     }

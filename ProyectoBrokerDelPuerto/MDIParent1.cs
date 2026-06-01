@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
+        public static string apiuri { get; } = "https://barriosprivadosstage.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -602,6 +602,28 @@ namespace ProyectoBrokerDelPuerto
 
         private async void MDIParent1_Load(object sender, EventArgs e)
         {
+
+            puntodeventa punto = new puntodeventa();
+
+            if (punto.get_punto())
+            {
+                ApiStateUser stU = new ApiStateUser();
+                if (!await stU.Get(punto.usuario))
+                {
+
+                    MessageBox.Show("Este punto está deshabilitado o no existe",
+                    "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    frmUpdateToken frmU = new frmUpdateToken();
+                    frmU.ShowDialog();
+                    if(frmU.DialogResult != DialogResult.OK)
+                    {
+                        this.Close();
+                        return;
+                    }
+                    
+                }
+            }
+
             //label1.Text = $"Aplicativo de pruebas apuntando a {apiuri}";
             confiprosimport.dato = "prosimport";
             confiprosimport.deleteProsImport();

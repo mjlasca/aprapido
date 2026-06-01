@@ -55,17 +55,11 @@ namespace ProyectoBrokerDelPuerto
                     var result = JsonConvert.DeserializeObject<List<gruposbarrios>>(jsonContent);
                     lsUs = result;
                 }
-                else
-                {
-                    logs log = new logs();
-                    log.newError(@"GET"+this.path, "No se ha podido obtener los gruposbarrios "+response.StatusCode);
-                }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("Se produjo una excepción en la tarea SendAsync: " + ex.InnerException.Message);
-                logs log = new logs();
-                log.newError(@"GET" + this.path, "Ha ocurrido un error al obtener los datos " + ex.Message);
+                logs.setError("GRUPOSBARRIOS", ex.Message);
             }
 
 

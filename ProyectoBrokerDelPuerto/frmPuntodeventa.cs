@@ -22,6 +22,7 @@ namespace ProyectoBrokerDelPuerto
         public bool exito = false;
         public bool carga = false;
         string aseguradora, master, organizador, codmaster, codorganizador = "";
+        public bool updateToken = false;
         public frmPuntodeventa()
         {
             InitializeComponent();
@@ -60,8 +61,10 @@ namespace ProyectoBrokerDelPuerto
                 bool res = this.enviar_json(txtApitoken.Text);
                 if (res)
                 {
+
                     puntodeventa punt = new puntodeventa();
-                    punt.nombre = txtResponsable.Text;
+                     
+                     punt.nombre = txtResponsable.Text;
                     punt.rol = txtRol.Text;
                     punt.apitoken = txtApitoken.Text;
                     punt.prefijo = txtPrefijo.Text;
@@ -77,6 +80,8 @@ namespace ProyectoBrokerDelPuerto
                     punt.organizador = organizador;
                     punt.codmaster = codmaster;
                     punt.codorganizador = codorganizador;
+
+                     
 
                      if (!this.edit)
                     {
@@ -263,11 +268,11 @@ namespace ProyectoBrokerDelPuerto
             }
                 
             
-            if (punt.accesos > 0)
+            /*if (punt.accesos > 0)
             {
                 punt.actualizaraccesos(op);
                 return true;
-            }
+            }*/
 
             try
             {
@@ -318,6 +323,8 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine("Error, el Api Token es inválido o no se ha asignado");
                 return false;
             }
+
+            return false;
 
         }
 
@@ -400,6 +407,10 @@ namespace ProyectoBrokerDelPuerto
 
         private void frmPuntodeventa_Load(object sender, EventArgs e)
         {
+            if (updateToken)
+            {
+                button1.Text = "Actualizar token";
+            }
             puntodeventa punt = new puntodeventa();
             if (punt.get_principal())
             {

@@ -166,6 +166,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiStateUser.cs" />
     <Compile Include="ApiMissing.cs" />
     <Compile Include="ApiReports.cs" />
     <Compile Include="AuditoriaBarrios.cs" />
@@ -526,6 +527,12 @@
     <Compile Include="frmSoporte.Designer.cs">
       <DependentUpon>frmSoporte.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmUpdateToken.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateToken.Designer.cs">
+      <DependentUpon>frmUpdateToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmUsuarios.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -759,6 +766,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frmSoporte.resx">
       <DependentUpon>frmSoporte.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateToken.resx">
+      <DependentUpon>frmUpdateToken.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmUsuarios.resx">
       <DependentUpon>frmUsuarios.cs</DependentUpon>
