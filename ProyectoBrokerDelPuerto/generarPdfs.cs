@@ -16,6 +16,7 @@ namespace ProyectoBrokerDelPuerto
 {
     class generarPdfs
     {
+        public string empresa_ = "Broker del puerto";
         public void pdfEmisionBarriosPrivados(string idpropuesta, clientes tomador, DataGridView dgv, DateTime vigenciaDesde, DateTime vigenciaHasta, ListBox barrio, coberturas cobertura, bool norepeticion, bool benefbarrios, bool abrir = true, string ruta = "", bool pagado = false)
         {
 
@@ -80,7 +81,6 @@ namespace ProyectoBrokerDelPuerto
                 clLogo.BorderWidth = 0;
                 clLogo.BorderWidth = 0;
                 clLogo.HorizontalAlignment = Element.ALIGN_CENTER;
-
 
                 PdfPCell titulo = new PdfPCell(new Phrase("SEGURO DE ACCIDENTES PERSONALES EN OCASIÓN DEL TRABAJO - BARRIOS PRIVADOS", _TituloFont));
                 titulo.BorderWidth = 0;
@@ -302,6 +302,11 @@ namespace ProyectoBrokerDelPuerto
                     Espacio para la imagen y la fecha de pago
                 */
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
+                if (MDIParent1.codempresa == "segurosdelpilar")
+                {
+                    imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+                }
+                
                 imgPago.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
                 imgPago.ScaleAbsolute(180, 55);
                 Paragraph fechPAgo = new Paragraph(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), _standardFontBold);
@@ -407,7 +412,12 @@ namespace ProyectoBrokerDelPuerto
                 widths0 = new float[] { 20f, 30f, 40f, 10f };
                 tablaPrimaria.SetWidths(widths0);
 
+
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
+                if(MDIParent1.codempresa == "segurosdelpilar")
+                {
+                    logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
+                }
                 
 
                 //fila1
@@ -423,8 +433,13 @@ namespace ProyectoBrokerDelPuerto
                 celLogoBroker.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celLogoBroker);
-
-                PdfPCell celInfo = new PdfPCell(new Phrase("BROKER DEL PUERTO ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)", _standardFont));
+                string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
+                if (MDIParent1.codempresa == "segurosdelpilar")
+                {
+                    empresa_ = "Seguros del pilar";
+                    textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
+                }
+                PdfPCell celInfo = new PdfPCell(new Phrase(empresa_ + textEmpresa, _standardFont));
                 celInfo.Padding = 5;
                 celInfo.Border = 0;
                 celInfo.PaddingRight = 20;
@@ -432,11 +447,6 @@ namespace ProyectoBrokerDelPuerto
                 celInfo.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celInfo);
-
-                
-            
-                
-                
 
                 celLogoBroker = new PdfPCell();
                 celLogoBroker.Padding = 5;
@@ -556,6 +566,10 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.SetWidths(widths0);
 
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
+                if (MDIParent1.codempresa == "segurosdelpilar")
+                {
+                    logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
+                }
 
 
                 //fila1
@@ -571,8 +585,14 @@ namespace ProyectoBrokerDelPuerto
                 celLogoBroker.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celLogoBroker);
-
-                PdfPCell celInfo = new PdfPCell(new Phrase("BROKER DEL PUERTO ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)", _standardFont));
+                string empresa_ = "Broker del puerto";
+                string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
+                if (MDIParent1.codempresa == "segurosdelpilar")
+                {
+                    empresa_ = "Seguros del pilar";
+                    textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
+                }
+                PdfPCell celInfo = new PdfPCell(new Phrase( empresa_ + textEmpresa, _standardFont));
                 celInfo.Padding = 5;
                 celInfo.Border = 0;
                 celInfo.PaddingRight = 20;
@@ -824,6 +844,10 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.AddCell(celdasEncabezado);
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
+                if(MDIParent1.codempresa == "segurosdelpilar")
+            {
+                imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+            }
                 imgPago.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
                 imgPago.ScaleAbsolute(180, 55);
 
@@ -1691,7 +1715,11 @@ namespace ProyectoBrokerDelPuerto
 
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
-                imgPago.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
+            if(MDIParent1.codempresa == "segurosdelpilar")
+            {
+                imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+            }
+            imgPago.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
                 imgPago.ScaleAbsolute(180, 55);
 
                 doc.Add(imgPago);
