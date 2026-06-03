@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -1433,6 +1434,7 @@ namespace ProyectoBrokerDelPuerto
 
                 }
                 Console.WriteLine();
+                concat_ = Regex.Replace(concat_, ",+", ",");
                 if (concat_.ToString() != "")
                 {
                     perfiles pe = new perfiles();

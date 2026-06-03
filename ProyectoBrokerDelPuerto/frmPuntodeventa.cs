@@ -124,6 +124,7 @@ namespace ProyectoBrokerDelPuerto
                             usu.perfil = "productorSenior";
                         usu.codestado = "1";
                         usu.adminempresa = "1";
+                        usu.codempresa = txtCodEmpresa.Text;
                         usu.save();
 
                         /*
@@ -139,6 +140,7 @@ namespace ProyectoBrokerDelPuerto
                             usu.perfil = punt.perfil;
                         usu.codestado = "1";
                         usu.adminempresa = "1";
+                         usu.codempresa = "BDPAPRAPIDO";
                         usu.save();
 
                     }

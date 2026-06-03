@@ -19,7 +19,7 @@ namespace ProyectoBrokerDelPuerto
         public static string baseDatos { get; set; } = string.Empty;
         public static string rolPuntodeventa { get; set; } = string.Empty;
         public static string versionwindows { get; set; } = string.Empty;
-        public static string versionsistema { get; set; } = "20.0";
+        public static string versionsistema { get; set; } = "20.2";
         DateTime flagtimer = DateTime.Now;
         configuraciones confiprosimport = new configuraciones();
 
@@ -31,7 +31,7 @@ namespace ProyectoBrokerDelPuerto
         public static bool prosMigracion { get; set; } = false;
 
         public static bool prosimportNocierre { get; set; } = false;
-        public static string apiuri { get; } = "https://barriosprivados.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
+        public static string apiuri { get; } = "https://barriosprivadosstage.niveldigitalcol.com"; //https://barriosprivados.niveldigitalcol.com
         public static DateTime? importUpdate { get; set; } = null;
 
         public static string rutaInformes_global { get; set; } = string.Empty;
@@ -615,14 +615,15 @@ namespace ProyectoBrokerDelPuerto
                     "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     frmUpdateToken frmU = new frmUpdateToken();
                     frmU.ShowDialog();
-                    if(frmU.DialogResult != DialogResult.OK)
+                    if (frmU.DialogResult != DialogResult.OK)
                     {
                         this.Close();
                         return;
                     }
-                    
+
                 }
             }
+           
 
             //label1.Text = $"Aplicativo de pruebas apuntando a {apiuri}";
             confiprosimport.dato = "prosimport";
@@ -712,20 +713,7 @@ namespace ProyectoBrokerDelPuerto
                     " - COD. ORGANIZADOR : "+ organizador_user + " - PRODUCTOR : " 
                     + dsAr.Tables[0].Rows[0]["nombre"].ToString();
 
-                /*if (dsAr.Tables[0].Rows[0]["allow"].ToString() == "1")
-                {
-                    Task.Run(() =>
-                    {
-                        arqueos ar = new arqueos();
-                        dsAr = ar.get_all_rendiciones(DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd"), DateTime.Now.ToString("yyyy-MM-dd"));
-                        if (dsAr.Tables[0].Rows.Count > 0)
-                        {
-                            frmRendiciones frmred = new frmRendiciones();
-                            frmred.dateTimePicker1.Value = DateTime.Now.AddDays(-10);
-                            frmred.ShowDialog();
-                        }
-                    });
-                }*/
+        
 
                 frmMigraciones frmmig = new frmMigraciones();
                 solicitudes s = new solicitudes();
@@ -736,9 +724,6 @@ namespace ProyectoBrokerDelPuerto
 
                 timer1.Start();
 //                timer_parameters.Start();
-
-
-
             }
             
         }

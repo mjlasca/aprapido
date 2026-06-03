@@ -130,6 +130,7 @@ namespace ProyectoBrokerDelPuerto
                 user.codigoproductor = codProducto_txt.Text;    
                 user.codorganizador = organizador_txt.Text.Trim();
                 user.adminempresa = Convert.ToInt16(checkBox2.Checked).ToString();
+                user.codempresa = MDIParent1.codempresa;
                 if (user.save())
                 {
                     this.DialogResult = DialogResult.OK;

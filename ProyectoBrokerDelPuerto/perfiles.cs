@@ -887,7 +887,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.edicion + "'," +
                         "'" + this.eliminar + "'," +
                         "'" + this.exportar + "'," +
-                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.codempresa + "'," +
                         "'1'" +
                         ") ";
 
