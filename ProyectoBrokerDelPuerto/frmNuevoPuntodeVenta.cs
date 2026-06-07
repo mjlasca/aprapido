@@ -229,7 +229,8 @@ namespace ProyectoBrokerDelPuerto
                 this.errores += "\nEl correo electrónico no es válido";
             }
 
-            
+            txtCodEmpresa.Text = txtCodEmpresa.Text.ToUpper();
+            txtPrefijo.Text = txtPrefijo.Text.ToUpper();
 
             if (this.errores != "")
             {
@@ -295,8 +296,9 @@ namespace ProyectoBrokerDelPuerto
             usu.perfil = comboPerfil.Text;
             usu.mail = txtEmail.Text;
             usu.codestado = "1";
-            if (txtCodProductor.Text != "")
-                usu.codigoproductor = txtCodProductor.Text;
+            usu.codempresa = txtCodEmpresa.Text.Trim();
+            usu.codorganizador = conMaster.codorganizador.Trim() ?? "";
+            usu.codigoproductor = txtCodProductor.Text.Trim() ?? "";
             usu.save(); 
             
         }

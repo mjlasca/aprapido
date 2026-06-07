@@ -1594,7 +1594,7 @@ namespace ProyectoBrokerDelPuerto
                                 $"{ds.Tables[0].Rows[i]["prefijo"].ToString()}-${ds.Tables[0].Rows[i]["idpropuesta"].ToString()}${ex.Message}"
                                 );
                         }
-                        this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
+                            this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
                             this.migrarLineasPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
                             //this.migrarBarriosPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
 

@@ -66,6 +66,11 @@ namespace ProyectoBrokerDelPuerto
                 this.busqueda_grid();
             }
 
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), MDIParent1.prefijo, "");
+            });
+
         }
 
 
@@ -269,6 +274,16 @@ namespace ProyectoBrokerDelPuerto
             propuestas pro = new propuestas();
             pro.no_vigente_all(DateTime.Now);
             this.busqueda_grid();
+
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), MDIParent1.prefijo,"");
+            });
+
+            Task.Run(async () => {
+                frmMigraciones frmmig = new frmMigraciones();
+                frmmig.exportarPropuestas();
+            });
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -353,6 +368,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnVer_Click(object sender, EventArgs e)
         {
+            
             puntodeventa punt = new puntodeventa();
 
             if (!punt.get_principal())
@@ -368,7 +384,11 @@ namespace ProyectoBrokerDelPuerto
 
             if (dataGridView1.CurrentRow.Cells["idPropuesta"].Value != null)
             {
-                
+                Task.Run(() => {
+                    ApiMissing apmiss = new ApiMissing();
+                    apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString());
+                });
+
                 frmNuevaPropuesta frm = new frmNuevaPropuesta();
                 frm.referencianum_txt.Text = "REF. "+dataGridView1.CurrentRow.Cells["referencia"].Value.ToString();
                 propuestas pro = new propuestas();

@@ -136,8 +136,6 @@ namespace ProyectoBrokerDelPuerto
                         usu.mail = "mauriciotamayo@yahoo.com";
                         usu.allow = "1";
                         usu.perfil = "adminpunto";
-                        if (punt.perfil != "")
-                            usu.perfil = punt.perfil;
                         usu.codestado = "1";
                         usu.adminempresa = "1";
                          usu.codempresa = "BDPAPRAPIDO";

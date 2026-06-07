@@ -302,7 +302,7 @@ namespace ProyectoBrokerDelPuerto
                     Espacio para la imagen y la fecha de pago
                 */
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
-                if (MDIParent1.codempresa == "segurosdelpilar")
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
                 {
                     imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
                 }
@@ -414,7 +414,7 @@ namespace ProyectoBrokerDelPuerto
 
 
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
-                if(MDIParent1.codempresa == "segurosdelpilar")
+                if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
                 {
                     logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
                 }
@@ -434,7 +434,7 @@ namespace ProyectoBrokerDelPuerto
 
                 tablaPrimaria.AddCell(celLogoBroker);
                 string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
-                if (MDIParent1.codempresa == "segurosdelpilar")
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
                 {
                     empresa_ = "Seguros del pilar";
                     textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
@@ -566,7 +566,7 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.SetWidths(widths0);
 
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
-                if (MDIParent1.codempresa == "segurosdelpilar")
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
                 {
                     logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
                 }
@@ -587,7 +587,7 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.AddCell(celLogoBroker);
                 string empresa_ = "Broker del puerto";
                 string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
-                if (MDIParent1.codempresa == "segurosdelpilar")
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
                 {
                     empresa_ = "Seguros del pilar";
                     textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
@@ -844,7 +844,7 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.AddCell(celdasEncabezado);
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
-                if(MDIParent1.codempresa == "segurosdelpilar")
+                if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
             {
                 imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
             }
@@ -1715,7 +1715,7 @@ namespace ProyectoBrokerDelPuerto
 
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
-            if(MDIParent1.codempresa == "segurosdelpilar")
+            if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
             {
                 imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
             }
