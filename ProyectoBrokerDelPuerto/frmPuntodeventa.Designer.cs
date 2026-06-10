@@ -234,8 +234,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtPrefijo;
         private System.Windows.Forms.TextBox txtApitoken;
@@ -252,5 +250,6 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.TextBox txtPerfil;
         private System.Windows.Forms.Label lblCarga;
+        public System.Windows.Forms.Button button1;
     }
 }

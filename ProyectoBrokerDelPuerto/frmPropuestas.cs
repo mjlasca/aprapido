@@ -66,6 +66,11 @@ namespace ProyectoBrokerDelPuerto
                 this.busqueda_grid();
             }
 
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), MDIParent1.prefijo, "");
+            });
+
         }
 
 
@@ -269,6 +274,16 @@ namespace ProyectoBrokerDelPuerto
             propuestas pro = new propuestas();
             pro.no_vigente_all(DateTime.Now);
             this.busqueda_grid();
+
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), MDIParent1.prefijo,"");
+            });
+
+            Task.Run(async () => {
+                frmMigraciones frmmig = new frmMigraciones();
+                frmmig.exportarPropuestas();
+            });
         }
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -353,6 +368,7 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnVer_Click(object sender, EventArgs e)
         {
+            
             puntodeventa punt = new puntodeventa();
 
             if (!punt.get_principal())
@@ -368,7 +384,11 @@ namespace ProyectoBrokerDelPuerto
 
             if (dataGridView1.CurrentRow.Cells["idPropuesta"].Value != null)
             {
-                
+                Task.Run(() => {
+                    ApiMissing apmiss = new ApiMissing();
+                    apmiss.Get(DateTime.Now.ToString("yyyy-MM-dd"), dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString());
+                });
+
                 frmNuevaPropuesta frm = new frmNuevaPropuesta();
                 frm.referencianum_txt.Text = "REF. "+dataGridView1.CurrentRow.Cells["referencia"].Value.ToString();
                 propuestas pro = new propuestas();
@@ -437,9 +457,17 @@ namespace ProyectoBrokerDelPuerto
                         }
                         //MessageBox.Show("FEC NAC"+ lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString());
                         /***/
+
+                        DataSet clilineDat = new DataSet();
+                        if (lineas.Tables[0].Rows[i]["documento"] != null && lineas.Tables[0].Rows[i]["documento"].ToString() != "")
+                        {
+                            clientes cliLine = new clientes();
+                            clilineDat = cliLine.get(lineas.Tables[0].Rows[i]["documento"].ToString());
+                        }
                         frm.dataGridView1.Rows[i].Cells["idPropuesta"].Value = i;
                         frm.dataGridView1.Rows[i].Cells["nodocumento"].Value = lineas.Tables[0].Rows[i]["documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["documento"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["documento"].Value = lineas.Tables[0].Rows[i]["tipo_documento"].ToString() != "" ? lineas.Tables[0].Rows[i]["tipo_documento"].ToString() : "";
+                        frm.dataGridView1.Rows[i].Cells["cuil"].Value = clilineDat.Tables[0].Rows.Count > 0 ? clilineDat.Tables[0].Rows[0]["cuir"] : "";
                         frm.dataGridView1.Rows[i].Cells["apellido"].Value = lineas.Tables[0].Rows[i]["apellidos"].ToString() != "" ? lineas.Tables[0].Rows[i]["apellidos"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["nombre"].Value = lineas.Tables[0].Rows[i]["nombres"].ToString() != "" ? lineas.Tables[0].Rows[i]["nombres"].ToString() : "";
                         frm.dataGridView1.Rows[i].Cells["fecha"].Value = lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString() != "" ? Convert.ToDateTime(lineas.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("dd/MM/yyyy") : "";
@@ -725,7 +753,12 @@ namespace ProyectoBrokerDelPuerto
             }
             catch(Exception ex)
             {
-                MessageBox.Show("No se ha podido pagar la propuesta \n" + ex.Message, "Error al pagar propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                propuestas.revertirenvio(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idpropuestaprefijo"].Value.ToString());
+                Task.Run(() => {
+                    frmMigraciones frmmig = new frmMigraciones();
+                    frmmig.exportarPropuestas();
+                });
+                MessageBox.Show("La propuesta que intenta pagar aún no se ha subido\nSe acaba de enviar nuevamente. Inténtelo en 1 minuto", "No se ha subido la propuesta", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //logs.setError("PAGO404", ex.Message);
             }
             
@@ -1040,6 +1073,19 @@ namespace ProyectoBrokerDelPuerto
         private void documents_all_Click(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start($"{MDIParent1.apiuri}/descargaseguro/{dataGridView1.CurrentRow.Cells["idPropuesta"].Value}/{dataGridView1.CurrentRow.Cells["prefijo"].Value}");
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.CurrentRow.Cells["prefijo"] != null)
+            {
+                frmControlVentas fr = new frmControlVentas();
+                fr.fecha1 = fec1;
+                fr.fecha2 = fec2;
+                fr.txtReferencia.Text = dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString() + "-" + dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString();
+                fr.downloadInfoVentas();
+            }
+            
         }
     }
 

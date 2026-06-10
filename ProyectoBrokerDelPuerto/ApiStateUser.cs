@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ProyectoBrokerDelPuerto
 {
-    class ApiClasificaciones
+    class ApiStateUser
     {
         protected string baseEndPoint { get; set; }
         protected string apiKey { get; set; }
@@ -17,7 +18,7 @@ namespace ProyectoBrokerDelPuerto
         protected puntodeventa punt { get; set; }
         protected RegisterPending repen { get; set; }
 
-        public ApiClasificaciones()
+        public ApiStateUser()
         {
             this.baseEndPoint = MDIParent1.apiuri;
             this.punt = new puntodeventa();
@@ -26,20 +27,20 @@ namespace ProyectoBrokerDelPuerto
                 this.punt.get_colaborador();
             }
             this.apiKey = this.punt.apitoken;
-            this.path = "/api/clasificaciones";
+            this.path = "/api";
             this.repen = new RegisterPending();
         }
 
 
-        public async Task<List<clasificaciones>> Get()
+        public async Task<bool> Get(string email)
         {
-            List<clasificaciones> ls = new List<clasificaciones>();
+            
 
             var client = new HttpClient();
             client.BaseAddress = new Uri(this.baseEndPoint);
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(this.path + "/" + MDIParent1.codempresa, UriKind.Relative),
+                RequestUri = new Uri(this.path + "/stateuser/" + email, UriKind.Relative),
                 Method = HttpMethod.Get,
             };
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.apiKey);
@@ -50,33 +51,63 @@ namespace ProyectoBrokerDelPuerto
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<List<clasificaciones>>(jsonContent);
-                    ls = result;
+                    JObject json = JObject.Parse(jsonContent);
+                    string res = json["res"]?.ToString();
+
+                    return res == "1";
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
+
+
+            return false;
+        }
+
+        public async Task<bool> ValidateToken(string email, string token_)
+        {
+            var client = new HttpClient();
+            client.BaseAddress = new Uri(this.baseEndPoint);
+            var request = new HttpRequestMessage
+            {
+                RequestUri = new Uri(this.path + "/stateuser/" + email, UriKind.Relative),
+                Method = HttpMethod.Get,
+            };
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token_);
+
+            try
+            {
+                HttpResponseMessage response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonContent = await response.Content.ReadAsStringAsync();
+                    JObject json = JObject.Parse(jsonContent);
+                    return json != null;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Se produjo una excepción en la tarea SendAsync: " + ex.InnerException.Message);
+                return false;
             }
-            return ls;
 
+            return false;
         }
 
-        public async Task<bool> Post(List<clasificaciones> lsclasificaciones)
+        public async Task<string> Post(string email, int active)
         {
-            bool rest = false;
 
-            var jsonData = JsonConvert.SerializeObject(lsclasificaciones);
+
             var client = new HttpClient();
-
             client.BaseAddress = new Uri(this.baseEndPoint);
             var request = new HttpRequestMessage
             {
-                RequestUri = new Uri(this.path + "/setclasificaciones/" + MDIParent1.codempresa, UriKind.Relative),
+                RequestUri = new Uri(this.path + "/enabled/" + email + "/" + active , UriKind.Relative),
                 Method = HttpMethod.Post,
-                Content = new StringContent(jsonData, Encoding.UTF8, "application/json")
             };
-
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", this.apiKey);
 
             try
@@ -85,34 +116,24 @@ namespace ProyectoBrokerDelPuerto
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonContent = await response.Content.ReadAsStringAsync();
-                    var result = JsonConvert.DeserializeObject<List<clasificaciones>>(jsonContent);
-                    rest = true;
+                    JObject json = JObject.Parse(jsonContent);
+                    string res = json["res"]?.ToString();
+                    string tok = json["token"]?.ToString();
+                    if (res == "success")
+                        return tok;
+                }
 
-                    this.repen.path = this.path + "/setclasificaciones/" + MDIParent1.codempresa;
-                    this.repen.data = jsonData;
-                    this.repen.verbo = "Post";
-                    this.repen.codestado = 1;
-                    this.repen.save();
-                }
-                else
-                {
-                    rest = false;
-                }
             }
             catch (Exception ex)
             {
-                rest = false;
+                return null;
             }
 
-            this.repen.path = this.path + "/setclasificaciones/" + MDIParent1.codempresa;
-            this.repen.data = jsonData;
-            this.repen.verbo = "Post";
-            this.repen.save();
 
 
-            return rest;
-
+            return null;
         }
+
 
     }
 

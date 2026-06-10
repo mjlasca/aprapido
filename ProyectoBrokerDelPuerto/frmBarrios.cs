@@ -211,5 +211,36 @@ namespace ProyectoBrokerDelPuerto
             frm.mostrarBoton = false;
             frm.ShowDialog();
         }
+
+        private void import_btn_Click(object sender, EventArgs e)
+        {
+            import_barrios();
+        }
+
+        async public void import_barrios()
+        {
+            MDIParent1.installing = true;
+            MDIParent1.installState = true;
+            frmMigraciones frmMig = new frmMigraciones();
+            frmMig.flaginstalacion = true;
+            frmMig.cbReset.Checked = true;
+            bool ps = false;
+
+            solicitudes s = new solicitudes();
+            s = new solicitudes();
+            s.solicitud_barrios = true;
+
+            ps = await frmMig.importarData(s, false, true);
+            MDIParent1.installing = false;
+            MDIParent1.installState = false;
+
+            if (ps)
+            {
+                MessageBox.Show("La importación ha terminado");
+                this.busqueda_grid();
+            }
+                
+
+        }
     }
 }

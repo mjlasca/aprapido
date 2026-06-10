@@ -317,7 +317,7 @@ namespace ProyectoBrokerDelPuerto
 
             this.data.listtomador = this.listtomador;
             this.data.fechamigracion = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-            
+
             string jsonlistpropuestas = JsonConvert.SerializeObject(this.data);
             bool res = await this.enviar_json(jsonlistpropuestas);
             
@@ -753,7 +753,7 @@ namespace ProyectoBrokerDelPuerto
                 importapi impo = new importapi();
 
                 bool resimport = false;
-                Console.WriteLine("SE ESTÁ IMPORTANDO RESET ( "+cbReset.Checked+")" + DateTime.Now.ToString("HH:mm:ss"));
+                //Console.WriteLine("SE ESTÁ IMPORTANDO RESET ( "+cbReset.Checked+")" + DateTime.Now.ToString("HH:mm:ss"));
                 resimport = await impo.parametroscolaborador(fecha, sol, cbReset.Checked, solopropuestas, get_prefix_own);
                 
                 textBox1.Text += "DATOS IMPORTADOS " + Environment.NewLine + Environment.NewLine;
@@ -1537,69 +1537,80 @@ namespace ProyectoBrokerDelPuerto
                     
                     List<propuestas> listpropuestas = new List<propuestas>();
                     listlineas = new List<lineas_propuestas>();
-
-                    for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
-                    {
-
-                        listpropuestas.Add(
-                            new propuestas()
-                            {
-                                id = ds.Tables[0].Rows[i]["id"].ToString(),
-                                documento = ds.Tables[0].Rows[i]["documento"].ToString(),
-                                nombre = ds.Tables[0].Rows[i]["nombre"] == null ? "" : ds.Tables[0].Rows[i]["nombre"].ToString(),
-                                num_polizas = ds.Tables[0].Rows[i]["num_polizas"].ToString(),
-                                meses = ds.Tables[0].Rows[i]["meses"].ToString(),
-                                id_cobertura = ds.Tables[0].Rows[i]["id_cobertura"].ToString(),
-                                id_barrio = ds.Tables[0].Rows[i]["id_barrio"].ToString(),
-                                nueva_poliza = ds.Tables[0].Rows[i]["nueva_poliza"].ToString(),
-                                premio = ds.Tables[0].Rows[i]["premio"].ToString(),
-                                premio_total = ds.Tables[0].Rows[i]["premio_total"].ToString(),
-                                fechaDesde = Convert.ToDateTime( ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
-                                fechaHasta = Convert.ToDateTime( ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
-                                clausula = ds.Tables[0].Rows[i]["clausula"].ToString(),
-                                barrio_beneficiario = ds.Tables[0].Rows[i]["barrio_beneficiario"].ToString(),
-                                ultmod = Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
-                                user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
-                                codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
-                                cobertura_suma = ds.Tables[0].Rows[i]["cobertura_suma"].ToString(),
-                                cobertura_deducible = ds.Tables[0].Rows[i]["cobertura_deducible"].ToString(),
-                                cobertura_gastos = ds.Tables[0].Rows[i]["cobertura_gastos"].ToString(),
-                                promocion = ds.Tables[0].Rows[i]["promocion"].ToString(),
-                                paga = ds.Tables[0].Rows[i]["paga"].ToString(),
-                                fecha_paga = Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_paga"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
-                                referencia = ds.Tables[0].Rows[i]["referencia"].ToString(),
-                                prima = ds.Tables[0].Rows[i]["prima"].ToString(),
-                                master = ds.Tables[0].Rows[i]["master"].ToString(),
-                                organizador = ds.Tables[0].Rows[i]["organizador"].ToString(),
-                                formadepago = ds.Tables[0].Rows[i]["formadepago"].ToString(),
-                                productor = ds.Tables[0].Rows[i]["productor"].ToString(),
-                                prefijo = ds.Tables[0].Rows[i]["prefijo"].ToString(),
-                                idpropuesta = ds.Tables[0].Rows[i]["idpropuesta"].ToString(),
-                                fecha_nacimiento = ds.Tables[0].Rows[i]["fecha_nacimiento"] != null ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("yyyy-MM-dd") : "1900-01-01",
-                                nota = ds.Tables[0].Rows[i]["nota"].ToString(),
-                                data_barrios = ds.Tables[0].Rows[i]["data_barrios"].ToString(),
-                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString(),
-                                version = ds.Tables[0].Rows[i]["version"] != null ? Convert.ToInt16(ds.Tables[0].Rows[i]["version"].ToString()) : 0,
-                                valor_pagado = ds.Tables[0].Rows[i]["valor_pagado"].ToString(),
-                                imputacion = ds.Tables[0].Rows[i]["imputacion"].ToString(),
-                                fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "1900-01-01",
-                            }
-                        );
-
-                        this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
-                        this.migrarLineasPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
-                        //this.migrarBarriosPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
-                        
-
-
-                        textBox1.Text += "Id: "+ ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString() +
-                            " Tomador: "+ ds.Tables[0].Rows[i]["documento"].ToString()+ Environment.NewLine;
-
-                        cantregistros = i + 1;
-                        consecutivos += ds.Tables[0].Rows[i]["prefijo"].ToString() +":"+ ds.Tables[0].Rows[i]["idpropuesta"].ToString() + ",";
-                    }
                     
-                    this.data.listpropuestas = listpropuestas;
+                        for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                        {
+                        try
+                        {
+
+                            listpropuestas.Add(
+                                new propuestas()
+                                {
+                                    id = ds.Tables[0].Rows[i]["id"].ToString(),
+                                    documento = ds.Tables[0].Rows[i]["documento"].ToString(),
+                                    nombre = ds.Tables[0].Rows[i]["nombre"] == null ? "" : ds.Tables[0].Rows[i]["nombre"].ToString(),
+                                    num_polizas = ds.Tables[0].Rows[i]["num_polizas"].ToString(),
+                                    meses = ds.Tables[0].Rows[i]["meses"].ToString(),
+                                    id_cobertura = ds.Tables[0].Rows[i]["id_cobertura"].ToString(),
+                                    id_barrio = ds.Tables[0].Rows[i]["id_barrio"].ToString(),
+                                    nueva_poliza = ds.Tables[0].Rows[i]["nueva_poliza"].ToString(),
+                                    premio = ds.Tables[0].Rows[i]["premio"].ToString(),
+                                    premio_total = ds.Tables[0].Rows[i]["premio_total"].ToString(),
+                                    fechaDesde = Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaDesde"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
+                                    fechaHasta = Convert.ToDateTime(ds.Tables[0].Rows[i]["fechaHasta"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
+                                    clausula = ds.Tables[0].Rows[i]["clausula"].ToString(),
+                                    barrio_beneficiario = ds.Tables[0].Rows[i]["barrio_beneficiario"].ToString(),
+                                    ultmod = Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
+                                    user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
+                                    codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
+                                    cobertura_suma = ds.Tables[0].Rows[i]["cobertura_suma"].ToString(),
+                                    cobertura_deducible = ds.Tables[0].Rows[i]["cobertura_deducible"].ToString(),
+                                    cobertura_gastos = ds.Tables[0].Rows[i]["cobertura_gastos"].ToString(),
+                                    promocion = ds.Tables[0].Rows[i]["promocion"].ToString(),
+                                    paga = ds.Tables[0].Rows[i]["paga"].ToString(),
+                                    fecha_paga = Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_paga"].ToString()).ToString("yyyy-MM-dd HH:mm:ss"),
+                                    referencia = ds.Tables[0].Rows[i]["referencia"].ToString(),
+                                    prima = ds.Tables[0].Rows[i]["prima"].ToString(),
+                                    master = ds.Tables[0].Rows[i]["master"].ToString(),
+                                    organizador = ds.Tables[0].Rows[i]["organizador"].ToString(),
+                                    formadepago = ds.Tables[0].Rows[i]["formadepago"].ToString(),
+                                    productor = ds.Tables[0].Rows[i]["productor"].ToString(),
+                                    prefijo = ds.Tables[0].Rows[i]["prefijo"].ToString(),
+                                    idpropuesta = ds.Tables[0].Rows[i]["idpropuesta"].ToString(),
+                                    fecha_nacimiento = ds.Tables[0].Rows[i]["fecha_nacimiento"] != null ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_nacimiento"].ToString()).ToString("yyyy-MM-dd") : "1900-01-01",
+                                    nota = ds.Tables[0].Rows[i]["nota"].ToString(),
+                                    data_barrios = ds.Tables[0].Rows[i]["data_barrios"].ToString(),
+                                    codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString(),
+                                    version = ds.Tables[0].Rows[i]["version"] != null ? Convert.ToInt16(ds.Tables[0].Rows[i]["version"].ToString()) : 0,
+                                    valor_pagado = ds.Tables[0].Rows[i]["valor_pagado"].ToString(),
+                                    imputacion = ds.Tables[0].Rows[i]["imputacion"].ToString(),
+                                    fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "" && ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "0000-00-00" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "1900-01-01",
+                                }
+                            );
+                        }
+                        catch (Exception ex)
+                        {
+                            logs.setError("420", 
+                                $"{ds.Tables[0].Rows[i]["prefijo"].ToString()}-${ds.Tables[0].Rows[i]["idpropuesta"].ToString()}${ex.Message}"
+                                );
+                        }
+                            this.migrarUserListaTomador(ds.Tables[0].Rows[i]["documento"].ToString());
+                            this.migrarLineasPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
+                            //this.migrarBarriosPropuestas(ds.Tables[0].Rows[i]["idpropuesta"].ToString(), ds.Tables[0].Rows[i]["prefijo"].ToString());
+
+
+
+                            textBox1.Text += "Id: " + ds.Tables[0].Rows[i]["prefijo"].ToString() + ds.Tables[0].Rows[i]["idpropuesta"].ToString() +
+                                " Tomador: " + ds.Tables[0].Rows[i]["documento"].ToString() + Environment.NewLine;
+
+                            cantregistros = i + 1;
+                            consecutivos += ds.Tables[0].Rows[i]["prefijo"].ToString() + ":" + ds.Tables[0].Rows[i]["idpropuesta"].ToString() + ",";
+                        }
+                        this.data.listpropuestas = listpropuestas;
+                   
+                    
+                    
+                    
                     
 
 
@@ -1738,7 +1749,8 @@ namespace ProyectoBrokerDelPuerto
                                 ultmod = ds.Tables[0].Rows[i]["ultmod"].ToString() != "" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["ultmod"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
                                 user_edit = ds.Tables[0].Rows[i]["user_edit"].ToString(),
                                 codestado = ds.Tables[0].Rows[i]["codestado"].ToString(),
-                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString()
+                                codempresa = ds.Tables[0].Rows[i]["codempresa"].ToString(),
+                                cuir = ds.Tables[0].Rows[i]["cuir"].ToString()
                             }
 
                         );
@@ -1869,6 +1881,7 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
+                logs.setError("EXPORT", ex.Message);
                 return false;
             }
             

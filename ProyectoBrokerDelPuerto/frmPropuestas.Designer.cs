@@ -71,6 +71,7 @@
             this.fiscalizador_btn = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.documents_all = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -94,9 +95,9 @@
             // btnAnular
             // 
             this.btnAnular.Enabled = false;
-            this.btnAnular.Location = new System.Drawing.Point(264, 520);
+            this.btnAnular.Location = new System.Drawing.Point(245, 520);
             this.btnAnular.Name = "btnAnular";
-            this.btnAnular.Size = new System.Drawing.Size(115, 23);
+            this.btnAnular.Size = new System.Drawing.Size(100, 23);
             this.btnAnular.TabIndex = 12;
             this.btnAnular.Text = "Anular Propuesta";
             this.btnAnular.UseVisualStyleBackColor = true;
@@ -105,9 +106,9 @@
             // btnVer
             // 
             this.btnVer.Enabled = false;
-            this.btnVer.Location = new System.Drawing.Point(143, 520);
+            this.btnVer.Location = new System.Drawing.Point(131, 520);
             this.btnVer.Name = "btnVer";
-            this.btnVer.Size = new System.Drawing.Size(115, 23);
+            this.btnVer.Size = new System.Drawing.Size(108, 23);
             this.btnVer.TabIndex = 13;
             this.btnVer.Text = "Ver Propuesta";
             this.btnVer.UseVisualStyleBackColor = true;
@@ -117,7 +118,7 @@
             // 
             this.button2.Location = new System.Drawing.Point(22, 520);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(115, 23);
+            this.button2.Size = new System.Drawing.Size(103, 23);
             this.button2.TabIndex = 14;
             this.button2.Text = "Nueva Propuesta";
             this.button2.UseVisualStyleBackColor = true;
@@ -409,9 +410,9 @@
             // btnPagar
             // 
             this.btnPagar.Enabled = false;
-            this.btnPagar.Location = new System.Drawing.Point(385, 520);
+            this.btnPagar.Location = new System.Drawing.Point(351, 520);
             this.btnPagar.Name = "btnPagar";
-            this.btnPagar.Size = new System.Drawing.Size(115, 23);
+            this.btnPagar.Size = new System.Drawing.Size(96, 23);
             this.btnPagar.TabIndex = 28;
             this.btnPagar.Text = "Pagar";
             this.btnPagar.UseVisualStyleBackColor = true;
@@ -420,9 +421,9 @@
             // libreDeuda_btn
             // 
             this.libreDeuda_btn.Enabled = false;
-            this.libreDeuda_btn.Location = new System.Drawing.Point(506, 520);
+            this.libreDeuda_btn.Location = new System.Drawing.Point(453, 520);
             this.libreDeuda_btn.Name = "libreDeuda_btn";
-            this.libreDeuda_btn.Size = new System.Drawing.Size(115, 23);
+            this.libreDeuda_btn.Size = new System.Drawing.Size(97, 23);
             this.libreDeuda_btn.TabIndex = 29;
             this.libreDeuda_btn.Text = "Libre de Deuda";
             this.libreDeuda_btn.UseVisualStyleBackColor = true;
@@ -452,9 +453,9 @@
             // fiscalizador_btn
             // 
             this.fiscalizador_btn.Enabled = false;
-            this.fiscalizador_btn.Location = new System.Drawing.Point(627, 520);
+            this.fiscalizador_btn.Location = new System.Drawing.Point(556, 520);
             this.fiscalizador_btn.Name = "fiscalizador_btn";
-            this.fiscalizador_btn.Size = new System.Drawing.Size(76, 23);
+            this.fiscalizador_btn.Size = new System.Drawing.Size(65, 23);
             this.fiscalizador_btn.TabIndex = 32;
             this.fiscalizador_btn.Text = "Taker";
             this.fiscalizador_btn.UseVisualStyleBackColor = true;
@@ -474,19 +475,30 @@
             // documents_all
             // 
             this.documents_all.Enabled = false;
-            this.documents_all.Location = new System.Drawing.Point(709, 520);
+            this.documents_all.Location = new System.Drawing.Point(627, 520);
             this.documents_all.Name = "documents_all";
-            this.documents_all.Size = new System.Drawing.Size(98, 23);
+            this.documents_all.Size = new System.Drawing.Size(101, 23);
             this.documents_all.TabIndex = 34;
             this.documents_all.Text = "Ver documentos";
             this.documents_all.UseVisualStyleBackColor = true;
             this.documents_all.Click += new System.EventHandler(this.documents_all_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(734, 520);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(82, 23);
+            this.button5.TabIndex = 35;
+            this.button5.Text = "Para RPA";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1035, 555);
+            this.Controls.Add(this.button5);
             this.Controls.Add(this.documents_all);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.fiscalizador_btn);
@@ -569,5 +581,6 @@
         private System.Windows.Forms.Button fiscalizador_btn;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button documents_all;
+        private System.Windows.Forms.Button button5;
     }
 }

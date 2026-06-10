@@ -105,6 +105,7 @@ namespace ProyectoBrokerDelPuerto
             //columnas
             dt.Columns.Add("tipo_id", typeof(string));
             dt.Columns.Add("no_identificacion", typeof(string));
+            dt.Columns.Add("cuil-cuit", typeof(string));
             dt.Columns.Add("nombres", typeof(string));
             dt.Columns.Add("apellidos", typeof(string));
             dt.Columns.Add("telefono", typeof(string));
@@ -134,6 +135,7 @@ namespace ProyectoBrokerDelPuerto
                 dt.Rows.Add(
                     ds.Tables[0].Rows[i]["tipo_id"].ToString(),
                     ds.Tables[0].Rows[i]["id"].ToString(),
+                    ds.Tables[0].Rows[i]["cuir"].ToString(),
                     ds.Tables[0].Rows[i]["nombres"].ToString(),
                     ds.Tables[0].Rows[i]["apellidos"].ToString(),
                     ds.Tables[0].Rows[i]["telefono"].ToString(),
@@ -174,8 +176,9 @@ namespace ProyectoBrokerDelPuerto
             frm.txtCodpostal.Text = ds.Tables[0].Rows[0]["codpostal"].ToString();
             frm.txtLocalidad.Text = ds.Tables[0].Rows[0]["localidad"].ToString();
             frm.txtCiudad.Text = ds.Tables[0].Rows[0]["ciudad"].ToString();
-            
-            if(ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "" && ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "00/00/0000")
+            frm.cuir_txt.Text = ds.Tables[0].Rows[0]["cuir"].ToString();
+
+            if (ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "" && ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString() != "00/00/0000")
                 frm.txtFechaNacimiento.Text = Convert.ToDateTime(ds.Tables[0].Rows[0]["fecha_nacimiento"]).ToString("dd/MM/yyyy")  ;
             frm.txtSexo.Text = ds.Tables[0].Rows[0]["sexo"].ToString();
             frm.txtSituacion.Text = ds.Tables[0].Rows[0]["situacion"].ToString();

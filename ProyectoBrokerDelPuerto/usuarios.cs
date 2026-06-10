@@ -158,7 +158,6 @@ namespace ProyectoBrokerDelPuerto
         {
             try
             {
-                this.codempresa = MDIParent1.codempresa;
                 if (this.exist())
                 {
 
@@ -178,7 +177,6 @@ namespace ProyectoBrokerDelPuerto
                             "comisionprima = '" + this.comisionprima + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
                             "version = '" + this.version + "' " +
@@ -198,7 +196,6 @@ namespace ProyectoBrokerDelPuerto
                             "comisionprima = '" + this.comisionprima + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
                             "version = '" + this.version + "' " +
@@ -218,7 +215,6 @@ namespace ProyectoBrokerDelPuerto
                             "comisionprima = '" + this.comisionprima + "'," +
                             "comisionpremio = '" + this.comisionpremio + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
@@ -244,7 +240,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.comisionpremio + "'," +
                         "'" + this.codigoproductor + "'," +
                         "'" + this.codestado + "'," +
-                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.codempresa + "'," +
                         "'" + this.adminempresa + "'," +
                         "'" + this.codorganizador + "'," +
                         "'" + this.version + "'" +
@@ -263,7 +259,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.comisionpremio + "'," +
                         "'" + this.codigoproductor + "'," +
                         "'" + this.codestado + "'," +
-                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.codempresa + "'," +
                         "'" + this.adminempresa + "'," +
                         "'" + this.codorganizador + "'," +
                         "'" + this.version + "'" +
@@ -453,7 +449,7 @@ namespace ProyectoBrokerDelPuerto
                             "comisionprima = '" + this.comisionprima + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
+                            "codempresa = '" + this.codempresa + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
                             "version = '" + this.version + "' " +
@@ -473,7 +469,7 @@ namespace ProyectoBrokerDelPuerto
                             "comisionprima = '" + this.comisionprima + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
+                            "codempresa = '" + this.codempresa + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
                             "version = '" + this.version + "' " +
@@ -494,7 +490,7 @@ namespace ProyectoBrokerDelPuerto
                             "comisionpremio = '" + this.comisionpremio + "'," +
                             "codigoproductor = '" + this.codigoproductor + "'," +
                             "codorganizador = '" + this.codorganizador + "'," +
-                            "codempresa = '" + MDIParent1.codempresa + "'," +
+                            "codempresa = '" + this.codempresa + "'," +
                             "adminempresa = '" + this.adminempresa + "'," +
                             "codestado = '1'," +
                             "version = '" + this.version + "' " +
@@ -517,7 +513,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.comisionpremio + "'," +
                         "'" + this.codigoproductor + "'," +
                         "'" + this.codestado + "'," +
-                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.codempresa + "'," +
                         "'" + this.adminempresa + "'," +
                         "'" + this.codorganizador + "'," +
                         "'" + this.version + "'" +
@@ -536,7 +532,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.comisionpremio + "'," +
                         "'" + this.codigoproductor + "'," +
                         "'" + this.codestado + "'," +
-                        "'" + MDIParent1.codempresa + "'," +
+                        "'" + this.codempresa + "'," +
                         "'" + this.adminempresa + "'," +
                         "'" + this.codorganizador + "'," +
                         "'" + this.version + "'" +

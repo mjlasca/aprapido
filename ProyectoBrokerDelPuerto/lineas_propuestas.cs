@@ -182,7 +182,10 @@ namespace ProyectoBrokerDelPuerto
         {
             if (refe != "")
             {
-                refe = " AND t0.referencia = '" + refe + "' ";
+                if (MDIParent1.baseDatos == "MySql")
+                    refe = " AND ( t0.referencia = '" + refe + "' OR CONCAT(t0.prefijo,t0.idpropuesta) = '" + refe + "' )";
+                else
+                    refe = " AND ( t0.referencia = '" + refe + "' OR  (t0.prefijo || t0.idpropuesta)  = '" + refe + "' )";
             }
             DataSet ds = new DataSet();
             if (MDIParent1.baseDatos == "SQlite")
@@ -227,9 +230,26 @@ namespace ProyectoBrokerDelPuerto
 
         public DataSet get_entre_controlventas(string fecha1, string fecha2, string refe = "")
         {
-            if(refe != "")
+            if (fecha2.ToString().Length < 11)
             {
-                refe = " AND t0.referencia = '" + refe + "' ";
+                fecha2 = fecha2 + " 23:59:59";
+            }
+            if (refe != "")
+            {
+                if(refe.IndexOf("-") > -1)
+                {
+                    if (MDIParent1.baseDatos == "MySql")
+                        refe = " AND  CONCAT(t0.prefijo,'-',t0.idpropuesta) = '" + refe + "' ";
+                    else
+                        refe = " AND  (t0.prefijo || '-' || t0.idpropuesta) = '" + refe + "' ";
+                }else
+                {
+                    if (MDIParent1.baseDatos == "MySql")
+                        refe = " AND  t0.referencia = '" + refe + "' ";
+                    else
+                        refe = " AND  t0.referencia = '" + refe + "' ";
+                }
+                
             }
             DataSet ds = new DataSet();
             if (MDIParent1.baseDatos == "MySql")
@@ -256,6 +276,7 @@ namespace ProyectoBrokerDelPuerto
                         t0.meses,
                         t0.id_cobertura,
                         t0.user_edit,
+                        t3.documento as docase,
                         t3.nombres,
                         t3.apellidos,
                         t0.nota,
@@ -264,6 +285,8 @@ namespace ProyectoBrokerDelPuerto
                         c.telefono,
                         t0.codestado,
                         t3.premio,
+                        c.cuir,
+                        c2.cuir AS cuil_linea,
                         c.fecha_nacimiento AS nacimientotomador,
                         t3.fecha_nacimiento,
                         t3.actividad,
@@ -276,6 +299,8 @@ namespace ProyectoBrokerDelPuerto
                     LEFT JOIN 
                         clientes c 
                         ON c.id = t0.documento
+                    LEFT JOIN clientes c2
+                        ON c2.id = t3.documento
                     WHERE 
                         t0.ultmod >= '{fecha1}' 
                         AND t0.ultmod <= '{fecha2}'
@@ -310,14 +335,17 @@ namespace ProyectoBrokerDelPuerto
                         t0.meses,
                         t0.id_cobertura,
                         t0.user_edit,
+                        t3.documento as docase,
                         t3.nombres,
                         t3.apellidos,
                         t0.nota,
+                        c.cuir,
                         c.nombres || ' ' || c.apellidos AS nombre,
                         c.email AS correo,
                         c.telefono,
                         t0.codestado,
                         t3.premio,
+                        c2.cuir AS cuil_linea,
                         c.fecha_nacimiento AS nacimientotomador,
                         t3.fecha_nacimiento,
                         t3.actividad,
@@ -330,6 +358,8 @@ namespace ProyectoBrokerDelPuerto
                     LEFT JOIN 
                         clientes c 
                         ON c.id = t0.documento
+                    LEFT JOIN clientes c2
+                        ON c2.id = t3.documento
                     WHERE 
                         t0.ultmod >= '{fecha1}' 
                         AND t0.ultmod <= '{fecha2}'
@@ -359,7 +389,10 @@ namespace ProyectoBrokerDelPuerto
 
             if(referencia_ != "")
             {
-                referencia_ = " AND t2.referencia  LIKE '%" + referencia_ + "%' ";
+                if (MDIParent1.baseDatos == "MySql")
+                    referencia_ = " AND (t2.referencia  LIKE '" + referencia_ + "' OR CONCAT(t2.prefijo, t2.idpropuesta) LIKE '"+referencia_+"'  )";
+                else
+                    referencia_ = " AND (t2.referencia  LIKE '" + referencia_ + "' OR (t2.prefijo || t2.idpropuesta) LIKE '" + referencia_ + "'  )";
             }
 
             if (MDIParent1.baseDatos == "MySql")
@@ -369,7 +402,8 @@ namespace ProyectoBrokerDelPuerto
                 " t2.premio_total, t2.referencia,t2.prima,t2.nota" +
                 " FROM lineas_propuestas t1 INNER JOIN propuestas t2 ON t1.prefijo = t2.prefijo AND t2.idpropuesta = t1.id_propuesta"+
                 " WHERE " +
-                " t1.ultmod >= '" + fec1 + " 00:00:01'  AND t1.ultmod <= '" + fec2 + " 23:59:59'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" + this.user_edit + "%' " + referencia_ + "   ORDER BY t1.ultmod ASC ";
+                " t1.ultmod >= '" + fec1 + " 00:00:01'  AND t1.ultmod <= '" + fec2 + " 23:59:59'  AND t2.codestado > 0  AND t1.user_edit LIKE '%" +
+                this.user_edit + "%' " + referencia_ + "   ORDER BY t1.ultmod ASC ";
             }
             else
             {

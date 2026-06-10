@@ -49,15 +49,17 @@ namespace ProyectoBrokerDelPuerto
                     per.save();
                 }
 
-                frmMigraciones frmmig = new frmMigraciones();
-                Task.Run(() => {
-                    return frmmig.exportarPerfiles();
-                });
+                puntodeventa punt = new puntodeventa();
+                if (punt.get_principal())
+                {
+                    frmMigraciones frmmig = new frmMigraciones();
+                    Task.Run(() => {
+                        return frmmig.exportarPerfiles();
+                    });
+                }
 
                 this.llenarCombo();
-
                 comboBox1.Text = nombrePerfil;
-
                 this.llenarchecks(checkBox1, "vista", true);
                 this.llenarchecks(checkBox2, "edicion", true);
                 this.llenarchecks(checkBox3, "eliminar", true);

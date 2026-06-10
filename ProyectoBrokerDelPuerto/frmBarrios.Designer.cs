@@ -45,6 +45,7 @@
             this.clase_barrio = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.import_btn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -201,11 +202,22 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // import_btn
+            // 
+            this.import_btn.Location = new System.Drawing.Point(657, 33);
+            this.import_btn.Name = "import_btn";
+            this.import_btn.Size = new System.Drawing.Size(75, 23);
+            this.import_btn.TabIndex = 13;
+            this.import_btn.Text = "Importar";
+            this.import_btn.UseVisualStyleBackColor = true;
+            this.import_btn.Click += new System.EventHandler(this.import_btn_Click);
+            // 
             // frmBarrios
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(876, 456);
+            this.Controls.Add(this.import_btn);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.button5);
             this.Controls.Add(this.label1);
@@ -243,5 +255,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn sub_barrio;
         private System.Windows.Forms.DataGridViewTextBoxColumn clase_barrio;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button import_btn;
     }
 }

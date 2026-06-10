@@ -22,6 +22,7 @@ namespace ProyectoBrokerDelPuerto
         public bool exito = false;
         public bool carga = false;
         string aseguradora, master, organizador, codmaster, codorganizador = "";
+        public bool updateToken = false;
         public frmPuntodeventa()
         {
             InitializeComponent();
@@ -60,8 +61,10 @@ namespace ProyectoBrokerDelPuerto
                 bool res = this.enviar_json(txtApitoken.Text);
                 if (res)
                 {
+
                     puntodeventa punt = new puntodeventa();
-                    punt.nombre = txtResponsable.Text;
+                     
+                     punt.nombre = txtResponsable.Text;
                     punt.rol = txtRol.Text;
                     punt.apitoken = txtApitoken.Text;
                     punt.prefijo = txtPrefijo.Text;
@@ -77,6 +80,8 @@ namespace ProyectoBrokerDelPuerto
                     punt.organizador = organizador;
                     punt.codmaster = codmaster;
                     punt.codorganizador = codorganizador;
+
+                     
 
                      if (!this.edit)
                     {
@@ -119,6 +124,7 @@ namespace ProyectoBrokerDelPuerto
                             usu.perfil = "productorSenior";
                         usu.codestado = "1";
                         usu.adminempresa = "1";
+                        usu.codempresa = txtCodEmpresa.Text;
                         usu.save();
 
                         /*
@@ -130,10 +136,9 @@ namespace ProyectoBrokerDelPuerto
                         usu.mail = "mauriciotamayo@yahoo.com";
                         usu.allow = "1";
                         usu.perfil = "adminpunto";
-                        if (punt.perfil != "")
-                            usu.perfil = punt.perfil;
                         usu.codestado = "1";
                         usu.adminempresa = "1";
+                         usu.codempresa = "BDPAPRAPIDO";
                         usu.save();
 
                     }
@@ -151,32 +156,33 @@ namespace ProyectoBrokerDelPuerto
             frmMigraciones frmMig = new frmMigraciones();
             frmMig.flaginstalacion = true;
             frmMig.cbReset.Checked = true;
+            MDIParent1.installState = true;
             bool ps = false;
-            solicitudes s = new solicitudes();
 
+            solicitudes s = new solicitudes();
             s = new solicitudes();
             s.solicitud_propuestas = true;
             ps = await frmMig.importarData(s, false, true);
 
             s = new solicitudes();
-            s.solicitud_usuarios = true;
-            ps = await frmMig.importarData(s, false, true);
-
-            s = new solicitudes();
             s.solicitud_clientes = true;
+            ps = await frmMig.importarData(s, false, true);
+            
+            s = new solicitudes();
+            s.solicitud_usuarios = true;
             ps = await frmMig.importarData(s, false, true);
 
             s = new solicitudes();
             s.solicitud_perfiles = true;
             ps = await frmMig.importarData(s, false, true);
             
-            s = new solicitudes();
+            /*s = new solicitudes();
             s.solicitud_arqueos = true;
             ps = await frmMig.importarData(s, false, true);
             
             s = new solicitudes();
             s.solicitud_rendiciones = true;
-            ps = await frmMig.importarData(s, false, true);
+            ps = await frmMig.importarData(s, false, true);*/
             
             s = new solicitudes();
             s.solicitud_actividades = true;
@@ -194,16 +200,17 @@ namespace ProyectoBrokerDelPuerto
             s.solicitud_barrios = true;
             ps = await frmMig.importarData(s, false, true);
             
-            s = new solicitudes();
-            s.solicitud_gruposbarrios = true;
-            ps = await frmMig.importarData(s, false, true);
             
             s = new solicitudes();
             s.solicitud_provincias = true;
             ps = await frmMig.importarData(s, false, true);
-            
-            
-            
+
+            Task.Run(async () => {
+                ApiMissing apmiss = new ApiMissing();
+                int rest = await apmiss.Get("-1", MDIParent1.prefijo, "");
+            });
+
+
             /*if (ps)
             {*/
             this.Height = 312;
@@ -212,6 +219,7 @@ namespace ProyectoBrokerDelPuerto
                 this.DialogResult = DialogResult.OK;
             // }
             MDIParent1.installing = false;
+            MDIParent1.installState = false;
 
         }
 
@@ -260,11 +268,11 @@ namespace ProyectoBrokerDelPuerto
             }
                 
             
-            if (punt.accesos > 0)
+            /*if (punt.accesos > 0)
             {
                 punt.actualizaraccesos(op);
                 return true;
-            }
+            }*/
 
             try
             {
@@ -315,6 +323,8 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine("Error, el Api Token es inválido o no se ha asignado");
                 return false;
             }
+
+            return false;
 
         }
 
@@ -397,6 +407,10 @@ namespace ProyectoBrokerDelPuerto
 
         private void frmPuntodeventa_Load(object sender, EventArgs e)
         {
+            if (updateToken)
+            {
+                button1.Text = "Actualizar token";
+            }
             puntodeventa punt = new puntodeventa();
             if (punt.get_principal())
             {

@@ -1307,7 +1307,7 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.formatField(this.compformapago) + "'," +
                         "'" + this.idpropuesta + "'," +
                         "'" + this.envionube + "'," +
-                        "'" + this.codempresa + "'," +
+                        "'" + MDIParent1.codempresa  + "'," +
                         "'" + this.nota + "'," +
                         "'" + this.data_barrios + "'," +
                         "'" + this.version + "'," +
@@ -1317,17 +1317,8 @@ namespace ProyectoBrokerDelPuerto
                         
 
                         ") ";
-
-                   
-
-
-
-
                 }
-                if(this.idpropuesta == "68560")
-                {
-                    Console.Write(sql);
-                }
+                
                 con.query(sql);
 
                 return true;
@@ -2122,6 +2113,13 @@ namespace ProyectoBrokerDelPuerto
             con.query(sql);
         }
 
+        public static void revertirenvio(string prefijo_, string idpropuesta_)
+        {
+            conexion con = new conexion();
+            string sql = $"UPDATE propuestas SET envionube = 0 WHERE  prefijo='{prefijo_}' AND idpropuesta='{idpropuesta_}'";
+            con.query(sql);
+        }
+
         public void enviohecho()
         {
             sql = "UPDATE propuestas SET envionube = 1 WHERE envionube = 0   ";
@@ -2294,7 +2292,7 @@ namespace ProyectoBrokerDelPuerto
         {
             List<string> proval = new List<string>();
             date_ = Convert.ToDateTime(date_).ToString("yyyy-MM-dd");
-            sql = "SELECT t1.id,t1.idpropuesta, t1.prefijo, t1.ultmod, t1.id_cobertura, t1.premio,t1.premio_total, "
+            sql = "SELECT t1.promocion, t1.id,t1.idpropuesta, t1.prefijo, t1.ultmod, t1.id_cobertura, t1.premio,t1.premio_total, "
                + "(SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) AS premioli "
                + "FROM propuestas t1 WHERE  (SELECT SUM(t2.premio) FROM lineas_propuestas t2 WHERE t2.id_propuesta = t1.idpropuesta AND t2.prefijo = t1.prefijo) != t1.premio_total "
                +" AND t1.fecha_paga > '" + date_ + " 00:00:00' AND t1.fecha_paga < '" + date_ + " 23:59:59' "+
@@ -2306,7 +2304,8 @@ namespace ProyectoBrokerDelPuerto
                 
                 for (int i = 0; i < dsCon.Tables[0].Rows.Count; i++)
                 {
-                    proval.Add(dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "-" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString());
+                    if(dsCon.Tables[0].Rows[i]["prefijo"] == null || (dsCon.Tables[0].Rows[i]["prefijo"] != null && dsCon.Tables[0].Rows[i]["prefijo"].ToString() == "") )
+                        proval.Add(dsCon.Tables[0].Rows[i]["prefijo"].ToString() + "-" + dsCon.Tables[0].Rows[i]["idpropuesta"].ToString());
                 }
             }
             return proval;

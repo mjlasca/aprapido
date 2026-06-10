@@ -8,9 +8,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ProyectoBrokerDelPuerto
 {
@@ -76,8 +78,6 @@ namespace ProyectoBrokerDelPuerto
 
             if (s.solicitud_propuestas)
             {
-                /*try
-                {*/
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_propuestas";
                     this.para.cola = Cola.getLastCola("propuestas");
@@ -93,41 +93,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de propuestas";
                     }
-                /*}
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}"+ex.Message);
-                }*/
-                
-                    
-                
+
             }
 
-            /*if (s.solicitud_lineas_propuestas)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_lineas_propuestas";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de lineas propuestas";
-                    }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                
-            }*/
-            
 
             if (s.solicitud_clientes)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clientes";
                     this.para.cola = Cola.getLastCola("clientes");
@@ -137,19 +108,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de clientes";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_usuarios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_usuarios";
                     this.para.cola = Cola.getLastCola("usuarios");
@@ -159,19 +122,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de usuarios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
 
             }
 
             if (s.solicitud_perfiles)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_perfiles";
                     this.para.cola = Cola.getLastCola("perfiles");
@@ -181,19 +136,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de perfiles";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_arqueos)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_arqueos";
                     this.para.cola = Cola.getLastCola("arqueos");
@@ -203,17 +150,10 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de arqueos";
                     }
-                }catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                
             }
 
             if (s.solicitud_rendiciones)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_rendiciones";
                     this.para.cola = Cola.getLastCola("rendiciones");
@@ -223,40 +163,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de rendiciones";
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
-            /*if (s.solicitud_lineas_rendiciones)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_lineas_rendiciones";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de lineas rendiciones";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
-             
-            }*/
 
             if (s.solicitud_actividades)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_actividades";
                     this.para.cola = Cola.getLastCola("actividades");
@@ -266,19 +178,12 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de actvidades";
                     }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
                     
                 
             }
 
             if (s.solicitud_coberturas)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_coberturas";
                     this.para.cola = Cola.getLastCola("coberturas");
@@ -288,19 +193,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de coberturas";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_clasificaciones)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_clasificaciones";
                     this.para.cola = Cola.getLastCola("clasificaciones");
@@ -310,19 +207,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de clasificaciones";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_barrios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_barrios";
                     this.para.cola = Cola.getLastCola("barrios");
@@ -332,18 +221,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de barrios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
                     
             }
 
             if (s.solicitud_gruposbarrios)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_gruposbarrios";
                     this.para.cola = Cola.getLastCola("gruposbarrios");
@@ -353,19 +235,11 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de gruposbarrios";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
                 
             }
 
             if (s.solicitud_provincias)
             {
-                try
-                {
                     jsonlistpropuestas = "";
                     this.para.solicitud = "solicitud_provincias";
                     this.para.cola = Cola.getLastCola("provincias");
@@ -375,35 +249,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         errores += "No se puedo importar los datos de provincias";
                     }
-                }
-                catch(Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-                    
             }
-
-            /*if (s.solicitud_barrios_propuestas)
-            {
-                try
-                {
-                    jsonlistpropuestas = "";
-                    this.para.solicitud = "solicitud_barrios_propuestas";
-                    jsonlistpropuestas = JsonConvert.SerializeObject(this.para);
-                    res = await this.enviardatos(jsonlistpropuestas);
-                    if (!res)
-                    {
-                        errores += "No se puedo importar los datos de barrios propuestas";
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"Excepción {this.para.solicitud}" + ex.Message);
-                }
-
-
-            }*/
-
 
             if (errores != "")
             {
@@ -437,8 +283,6 @@ namespace ProyectoBrokerDelPuerto
                 return true;
             }
 
-
-
             return false;
         }
 
@@ -448,67 +292,64 @@ namespace ProyectoBrokerDelPuerto
 
             try
             {
-                string url = MDIParent1.apiuri + "/api/parametros";
-                Console.WriteLine("URL IMP \n"+url + " "+ this.para.solicitud);
-                WebRequest _request = WebRequest.Create(url);
-                
-                _request.Method = "POST";
-                _request.ContentType = "application/json;charset=UTF-8";
-                _request.Timeout = 36000000;
+                using (var client = new HttpClient())
+                {
+                    string url = MDIParent1.apiuri + "/api/parametros";
+                    // Establecer el timeout, aunque 36000000 ms (10 horas) es excesivo.
+                    client.Timeout = TimeSpan.FromHours(10);
+                    // Crear el contenido del POST
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                using (var osw = new StreamWriter(_request.GetRequestStream()))
-                {
-                    osw.Write(json);
-                    osw.Flush();
-                    osw.Close();
-                }
+                    // 2. Usar await para NO bloquear el hilo de la UI
+                    HttpResponseMessage response = await client.PostAsync(url, content);
 
-                WebResponse _response = _request.GetResponse();
-                validaciones val = new validaciones();
-                string res = "";
-                using (var ors = new StreamReader(_response.GetResponseStream()))
-                {
-                     res = ors.ReadToEnd().Trim();
-                }
-                if (res != "" && res != "[]")
-                {
-                    JsonTextReader reader = new JsonTextReader(new StringReader(res));
-                        JObject obj = JObject.Load(reader);
-                        await Task.Run(() =>
-                        {
-                            if (this.para.solicitud == "solicitud_propuestas")
+                    // Verificar si la respuesta fue exitosa (código 200-299)
+                    response.EnsureSuccessStatusCode();
+
+                    // Leer el resultado de forma asíncrona
+                    string res = await response.Content.ReadAsStringAsync();
+
+                    if (res != "" && res != "[]")
+                    {
+                        JsonTextReader reader = new JsonTextReader(new StringReader(res));
+                            JObject obj = JObject.Load(reader);
+                            await Task.Run(() =>
                             {
-                                this.tarea_propuestas(res);
-                                this.tarea_lineas_propuestas(res);
-                                this.tarea_clientes(res);
-                            }
-                            if (this.para.solicitud == "solicitud_clientes")
-                                this.tarea_clientes(res);
-                            if (this.para.solicitud == "solicitud_arqueos")
-                                this.tarea_arqueos(res);
-                            if (this.para.solicitud == "solicitud_rendiciones")
-                                this.tarea_rendiciones(res);
-                            if (this.para.solicitud == "solicitud_lineas_rendiciones")
-                                this.tarea_lineas_rendiciones(res);
-                            if (this.para.solicitud == "solicitud_usuarios")
-                                this.tarea_usuarios(res);
-                            if (this.para.solicitud == "solicitud_coberturas")
-                                this.tarea_coberturas(res);
-                            if (this.para.solicitud == "solicitud_actividades")
-                                this.tarea_actividades(res);
-                            if (this.para.solicitud == "solicitud_clasificaciones")
-                                this.tarea_clasificaciones(res);
-                            if (this.para.solicitud == "solicitud_perfiles")
-                                this.tarea_perfiles(res);
-                            if (this.para.solicitud == "solicitud_barrios" )
-                                this.tarea_barrios(res);
-                            if(this.para.solicitud == "solicitud_gruposbarrios")
-                                this.tarea_grupos_barrios(res);
-                            if (this.para.solicitud == "solicitud_provincias")
-                                this.tarea_provincias(res);
+                                if (this.para.solicitud == "solicitud_propuestas")
+                                {
+                                    this.tarea_propuestas(res);
+                                    this.tarea_lineas_propuestas(res);
+                                    if(MDIParent1.installState != true)
+                                        this.tarea_clientes(res);
+                                }
+                                if (this.para.solicitud == "solicitud_clientes")
+                                    this.tarea_clientes(res);
+                                if (this.para.solicitud == "solicitud_arqueos")
+                                    this.tarea_arqueos(res);
+                                if (this.para.solicitud == "solicitud_rendiciones")
+                                    this.tarea_rendiciones(res);
+                                if (this.para.solicitud == "solicitud_lineas_rendiciones")
+                                    this.tarea_lineas_rendiciones(res);
+                                if (this.para.solicitud == "solicitud_usuarios")
+                                    this.tarea_usuarios(res);
+                                if (this.para.solicitud == "solicitud_coberturas")
+                                    this.tarea_coberturas(res);
+                                if (this.para.solicitud == "solicitud_actividades")
+                                    this.tarea_actividades(res);
+                                if (this.para.solicitud == "solicitud_clasificaciones")
+                                    this.tarea_clasificaciones(res);
+                                if (this.para.solicitud == "solicitud_perfiles")
+                                    this.tarea_perfiles(res);
+                                if (this.para.solicitud == "solicitud_barrios" )
+                                    this.tarea_barrios(res);
+                                if(this.para.solicitud == "solicitud_gruposbarrios")
+                                    this.tarea_grupos_barrios(res);
+                                if (this.para.solicitud == "solicitud_provincias")
+                                    this.tarea_provincias(res);
 
-                        });
+                            });
 
+                    }
                 }
 
                 return true;
@@ -516,9 +357,7 @@ namespace ProyectoBrokerDelPuerto
             }
             catch (Exception ex)
             {
-                log.coderror = "I130";
-                log.mensaje = "Error al importar datos " +  ex.Message;
-                log.save();
+                logs.setError($"Import-{this.para.solicitud}", ex.Message);
                 MDIParent1.server500 = ex.Message;
             }
 
@@ -629,52 +468,54 @@ namespace ProyectoBrokerDelPuerto
                     Console.WriteLine("Importando  propuestas (" + obj["propuestas"].Count() + ") " + DateTime.Now);
 
                     this.concattextbox += "IMPORTACIÓN PROPUESTAS / " + obj["propuestas"].Count() + " Registros " + Environment.NewLine;
-
                     List<propuestas> listobj = (from dynamic val in obj["propuestas"].AsEnumerable().ToList()
-                                                select new propuestas()
-                                                {
-                                                    denube = true,
-                                                    documento = val["documento"] == null ? "" : val["documento"],
-                                                    num_polizas = val["num_polizas"] == null ? "" : val["num_polizas"],
-                                                    meses = val["meses"] == null ? "" : val["meses"],
-                                                    id_cobertura = val["id_cobertura"] == null ? "" : val["id_cobertura"],
-                                                    id_barrio = val["id_barrio"] == null ? "" : val["id_barrio"],
-                                                    nueva_poliza = val["nueva_poliza"] == null ? "" : val["nueva_poliza"],
-                                                    premio = val["premio"] == null ? "" : val["premio"],
-                                                    premio_total = val["premio_total"] == null ? "" : val["premio_total"],
-                                                    fechaDesde = val["fechaDesde"] == null ? "" : val["fechaDesde"],
-                                                    fechaHasta = val["fechaHasta"] == null ? "" : val["fechaHasta"],
-                                                    clausula = val["clausula"] == null ? "" : val["clausula"],
-                                                    barrio_beneficiario = val["barrio_beneficiario"] == null ? "" : val["barrio_beneficiario"],
-                                                    ultmod = val["ultmod"] == null ? "" : val["ultmod"],
-                                                    user_edit = val["useredit"] == null ? "online" : val["useredit"],
-                                                    codestado = val["codestado"] == null ? "0" : val["codestado"],
-                                                    cobertura_suma = val["cobertura_suma"] == null ? "0" : val["cobertura_suma"],
-                                                    cobertura_deducible = val["cobertura_deducible"] == null ? "0" : val["cobertura_deducible"],
-                                                    cobertura_gastos = val["cobertura_gastos"] == null ? "0" : val["cobertura_gastos"],
-                                                    promocion = val["promocion"] == null ? "" : val["promocion"],
-                                                    paga = val["paga"] == null ? "0" : val["paga"],
-                                                    fecha_paga = val["fecha_paga"] == null ? "1000-01-01 01:00:00" : val["fecha_paga"],
-                                                    referencia = val["referencia"] == null ? "" : val["referencia"],
-                                                    prima = val["prima"] == null ? "0" : val["prima"],
-                                                    master = val["master"] == null ? "" : val["master"],
-                                                    organizador = val["organizador"] == null ? "" : val["organizador"],
-                                                    productor = val["productor"] == null ? "" : val["productor"],
-                                                    prefijo = val["prefijo"] == null ? "" : val["prefijo"],
-                                                    tipopago = val["tipopago"] == null ? "" : val["tipopago"],
-                                                    formadepago = val["formadepago"] == null ? "" : val["formadepago"],
-                                                    compformapago = val["compformadepago"] == null ? "" : val["compformadepago"],
-                                                    usuariopaga = val["usuariopaga"] == null ? "" : val["usuariopaga"],
-                                                    idpropuesta = val["reg"] == null ? "" : val["reg"],
-                                                    nota = val["nota"] == null ? "" : val["nota"],
-                                                    envionube = "1",
-                                                    data_barrios = val["data_barrios"] == null ? "{\"barrios\":[]}" : val["data_barrios"],
-                                                    version = val["version"] == null ? "" : val["version"],
-                                                    valor_pagado = val["valor_pagado"] == null ? "" : val["valor_pagado"],
-                                                    imputacion = val["imputacion"] == null ? "" : val["imputacion"],
-                                                    fecha_comprobante = val["fecha_comprobante"] == null ? "1000-01-01" : val["fecha_comprobante"],
-
-                                                }).ToList();
+                                                    select new propuestas()
+                                                    {
+                                                        denube = true,
+                                                        documento = val["documento"] == null ? "" : val["documento"],
+                                                        num_polizas = val["num_polizas"] == null ? "" : val["num_polizas"],
+                                                        meses = val["meses"] == null ? "" : val["meses"],
+                                                        id_cobertura = val["id_cobertura"] == null ? "" : val["id_cobertura"],
+                                                        id_barrio = val["id_barrio"] == null ? "" : val["id_barrio"],
+                                                        nueva_poliza = val["nueva_poliza"] == null ? "" : val["nueva_poliza"],
+                                                        premio = val["premio"] == null ? "" : val["premio"],
+                                                        premio_total = val["premio_total"] == null ? "" : val["premio_total"],
+                                                        fechaDesde = val["fechaDesde"] == null ? "" : val["fechaDesde"],
+                                                        fechaHasta = val["fechaHasta"] == null ? "" : val["fechaHasta"],
+                                                        clausula = val["clausula"] == null ? "" : val["clausula"],
+                                                        barrio_beneficiario = val["barrio_beneficiario"] == null ? "" : val["barrio_beneficiario"],
+                                                        ultmod = val["ultmod"] == null ? "" : val["ultmod"],
+                                                        user_edit = val["useredit"] == null ? "online" : val["useredit"],
+                                                        codestado = val["codestado"] == null ? "0" : val["codestado"],
+                                                        cobertura_suma = val["cobertura_suma"] == null ? "0" : val["cobertura_suma"],
+                                                        cobertura_deducible = val["cobertura_deducible"] == null ? "0" : val["cobertura_deducible"],
+                                                        cobertura_gastos = val["cobertura_gastos"] == null ? "0" : val["cobertura_gastos"],
+                                                        promocion = val["promocion"] == null ? "" : val["promocion"],
+                                                        paga = val["paga"] == null ? "0" : val["paga"],
+                                                        fecha_paga = val["fecha_paga"] == null ? "1000-01-01 01:00:00" : val["fecha_paga"],
+                                                        referencia = val["referencia"] == null ? "" : val["referencia"],
+                                                        prima = val["prima"] == null ? "0" : val["prima"],
+                                                        master = val["master"] == null ? "" : val["master"],
+                                                        organizador = val["organizador"] == null ? "" : val["organizador"],
+                                                        productor = val["productor"] == null ? "" : val["productor"],
+                                                        prefijo = val["prefijo"] == null ? "" : val["prefijo"],
+                                                        tipopago = val["tipopago"] == null ? "" : val["tipopago"],
+                                                        formadepago = val["formadepago"] == null ? "" : val["formadepago"],
+                                                        compformapago = val["compformadepago"] == null ? "" : val["compformadepago"],
+                                                        usuariopaga = val["usuariopaga"] == null ? "" : val["usuariopaga"],
+                                                        idpropuesta = val["reg"] == null ? "" : val["reg"],
+                                                        nota = val["nota"] == null ? "" : val["nota"],
+                                                        envionube = "1",
+                                                        data_barrios = val["data_barrios"] == null ? "{\"barrios\":[]}" : val["data_barrios"],
+                                                        version = val["version"] == null ? "" : val["version"],
+                                                        valor_pagado = val["valor_pagado"] == null ? "" : val["valor_pagado"],
+                                                        imputacion = val["imputacion"] == null ? "" : val["imputacion"],
+                                                        fecha_comprobante = val["fecha_comprobante"] == null ? "1000-01-01" : val["fecha_comprobante"],
+                                                        codempresa = val["codempresa"] == null ? MDIParent1.codempresa : val["codempresa"]
+                                                    }).ToList();
+                    
+                    
+                    
 
                     var concat_ = new System.Text.StringBuilder();
                     List<string> listAux = new List<string>();
@@ -683,18 +524,23 @@ namespace ProyectoBrokerDelPuerto
                     int aux = 0;
                     try
                     {
-                        foreach(propuestas pros in listobj)
+                        
+                        if (MDIParent1.installState)
                         {
-                            pros.save_import();
+                            ImportInstall.ImportPropuestas(listobj);
+                        }else
+                        {
+                            foreach (propuestas pros in listobj)
+                            {
+                                pros.save_import();
+                            }
                         }
                         this.colas(json);
 
                     }
                     catch (Exception ex)
                     {
-                        log.coderror = "I110";
-                        log.mensaje = "Error al guardar Propuesta " + ex.Message;
-                        log.save();
+                        logs.setError("Propuestas", ex.Message);
                     }
                 }
                 
@@ -746,15 +592,22 @@ namespace ProyectoBrokerDelPuerto
                 
                 try
                 {
-                    for (int i = 0; i < listobj.Count; i++)
+                    if (MDIParent1.installState)
                     {
-                        listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
-                    }
-                    for (int i = 0; i < listobj.Count; i++)
+                        ImportInstall.ImportLineasPropuestas(listobj);
+                    }else
                     {
-                        listobj[i].delete_idpropuesta_doc(listobj[i].id_propuesta, listobj[i].prefijo, listobj[i].documento);
-                        listobj[i].save();
+                        for (int i = 0; i < listobj.Count; i++)
+                        {
+                            listobj[i].delete_idpropuesta(listobj[i].id_propuesta, listobj[i].prefijo);
+                        }
+                        for (int i = 0; i < listobj.Count; i++)
+                        {
+                            listobj[i].delete_idpropuesta_doc(listobj[i].id_propuesta, listobj[i].prefijo, listobj[i].documento);
+                            listobj[i].save();
+                        }
                     }
+                    
 
                 }
                 catch (Exception ex)
@@ -897,6 +750,7 @@ namespace ProyectoBrokerDelPuerto
                                               categoria = val["categoria"] == null ? "" : val["categoria"],
                                               ultmod = val["ultmod"] == null ? "" : val["ultmod"],
                                               user_edit = val["user_edit"] == null ? "" : val["user_edit"],
+                                              cuir = val["cuir"] == null ? "" : val["cuir"],
                                               codestado = "1"
 
                                           }).ToList();
@@ -904,15 +758,19 @@ namespace ProyectoBrokerDelPuerto
                 var concat_ = new System.Text.StringBuilder();
                 try
                 {
-                    int bandera_concat = 1000;
-                    foreach(clientes cliente in listobj)
+                    if (MDIParent1.installState)
                     {
-                        cliente.envionube = 1;
-                        cliente.save();
+                        ImportInstall.ImportClientes(listobj);
+                    }else
+                    {
+                        int bandera_concat = 1000;
+                        foreach (clientes cliente in listobj)
+                        {
+                            cliente.envionube = 1;
+                            cliente.save();
+                        }
                     }
-
                     this.colas(json);
-
                 }
                 catch (Exception ex)
                 {
@@ -1335,11 +1193,17 @@ namespace ProyectoBrokerDelPuerto
                 var concat_ = new System.Text.StringBuilder();
                 try
                 {
-                    foreach(barrios barrio in listobj) { 
-                        barrio.envionube = 1;
-                        barrio.save();
+                    if (MDIParent1.installState)
+                    {
+                        ImportInstall.ImportBarrios(listobj);
+                    }else
+                    {
+                        foreach (barrios barrio in listobj)
+                        {
+                            barrio.envionube = 1;
+                            barrio.save();
+                        }
                     }
-
                     this.colas(json);
                 }
                 catch(Exception ex)
@@ -1348,8 +1212,6 @@ namespace ProyectoBrokerDelPuerto
                     log.newError("IMPBARRIOS", ex.Message);
                 }
                 
-                
-
 
                 migraciones mig = new migraciones();
                 mig.tabla = "barrios";
@@ -1434,28 +1296,32 @@ namespace ProyectoBrokerDelPuerto
                 {
                     prov.delete_all();
                 }
-
-                for (int i = 0; i < listobj.Count; i++)
+                if (MDIParent1.installState)
                 {
-                    try
+                    ImportInstall.ImportProvincias(listobj);
+                }else
+                {
+                    for (int i = 0; i < listobj.Count; i++)
                     {
-                        if (concat_.ToString() != "")
-                            concat_.AppendLine(", " + listobj[i].concat_sql());
-                        else
-                            concat_.AppendLine(listobj[i].concat_sql());
+                        try
+                        {
+                            if (concat_.ToString() != "")
+                                concat_.AppendLine(", " + listobj[i].concat_sql());
+                            else
+                                concat_.AppendLine(listobj[i].concat_sql());
+                        }
+                        catch (Exception ex)
+                        {
+                            log.coderror = "I108";
+                            log.mensaje = "Error al guardar Provincia" + listobj[i].codpostal + " / " + listobj[i].ciudad + ex.Message;
+                            log.save();
+                        }
                     }
-                    catch (Exception ex)
+                    if (concat_.ToString() != "")
                     {
-                        log.coderror = "I108";
-                        log.mensaje = "Error al guardar Provincia" + listobj[i].codpostal + " / " + listobj[i].ciudad + ex.Message;
-                        log.save();
+                        prov.save_concat(concat_.ToString());
                     }
                 }
-                if (concat_.ToString() != "")
-                {
-                    prov.save_concat(concat_.ToString());
-                }
-
                 this.colas(json);
             }
 
@@ -1568,6 +1434,7 @@ namespace ProyectoBrokerDelPuerto
 
                 }
                 Console.WriteLine();
+                concat_ = Regex.Replace(concat_, ",+", ",");
                 if (concat_.ToString() != "")
                 {
                     perfiles pe = new perfiles();

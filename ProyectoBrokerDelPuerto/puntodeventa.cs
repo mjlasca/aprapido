@@ -180,6 +180,52 @@ namespace ProyectoBrokerDelPuerto
             return res;
         }
 
+        public bool get_punto()
+        {
+            bool res = false;
+
+            sql = "SELECT * FROM puntodeventa WHERE rol = 'COLABORADOR'";
+            try
+            {
+                DataSet ds = new DataSet();
+                ds = con.query(sql);
+                Console.WriteLine("SQL " + sql + " / COUNT " + ds.Tables[0].Rows.Count);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    this.nombre = ds.Tables[0].Rows[0]["nombre"].ToString();
+                    this.usuario = ds.Tables[0].Rows[0]["usuario"].ToString();
+                    this.prefijo = ds.Tables[0].Rows[0]["prefijo"].ToString();
+                    this.apitoken = ds.Tables[0].Rows[0]["apitoken"].ToString();
+                    this.apiversion = ds.Tables[0].Rows[0]["apiversion"].ToString();
+                    this.rol = ds.Tables[0].Rows[0]["rol"].ToString();
+                    this.user_edit = ds.Tables[0].Rows[0]["user_edit"].ToString();
+                    this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                    this.ultmod = ds.Tables[0].Rows[0]["ultmod"].ToString();
+                    this.urlapi = ds.Tables[0].Rows[0]["urlapi"].ToString();
+                    this.codempresa = ds.Tables[0].Rows[0]["codempresa"].ToString();
+                    this.perfil = ds.Tables[0].Rows[0]["perfil"].ToString();
+                    this.master = ds.Tables[0].Rows[0]["master"].ToString();
+                    this.organizador = ds.Tables[0].Rows[0]["organizador"].ToString();
+                    this.aseguradora = ds.Tables[0].Rows[0]["aseguradora"].ToString();
+                    this.codmaster = ds.Tables[0].Rows[0]["codmaster"].ToString();
+                    this.codorganizador = ds.Tables[0].Rows[0]["codorganizador"].ToString();
+                    res = true;
+                }
+                else
+                {
+                    res = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res = false;
+                Console.Write("ERROR al consultar puntodeventa " + ex.Message);
+            }
+
+            return res;
+        }
+
 
         public bool get_principal()
         {
@@ -228,10 +274,10 @@ namespace ProyectoBrokerDelPuerto
             return res;
         }
 
-        public void inhabilitarpunto(int activo = 0)
+        public void inhabilitarpunto()
         {
             sql = "UPDATE puntodeventa SET " +
-                    "codestado = '"+activo+"', apitoken = '"+this.apitoken+"'   WHERE usuario = '" + this.usuario + "' ;";
+                    "codestado = '"+this.codestado+"', apitoken = '"+this.apitoken+"'   WHERE usuario = '" + this.usuario + "' ;";
 
             
             con.query(sql);

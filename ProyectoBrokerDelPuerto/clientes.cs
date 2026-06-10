@@ -10,8 +10,8 @@ namespace ProyectoBrokerDelPuerto
     class clientes
     {
         string sql = "";
-        string columns = "id,nombres,apellidos,tipo_id,telefono,direccion,email, codpostal, localidad,ciudad, sexo, fecha_nacimiento, situacion,ultmod,user_edit,codestado,categoria,codempresa,idaseguradora,envionube";
-        public string id, nombres, apellidos, tipo_id, telefono, direccion, email, codpostal, localidad, ciudad, sexo, fecha_nacimiento, situacion, ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codestado = "1", categoria, codempresa, idaseguradora = "";
+        string columns = "id,nombres,apellidos,tipo_id,telefono,direccion,email, codpostal, localidad,ciudad, sexo, fecha_nacimiento, situacion,ultmod,user_edit,codestado,categoria,codempresa,idaseguradora,envionube,cuir";
+        public string id, nombres, apellidos, tipo_id, telefono, direccion, email, codpostal, localidad, ciudad, sexo, fecha_nacimiento, situacion, ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codestado = "1", categoria, codempresa, idaseguradora = "", cuir = "";
         public int envionube = 0;
         conexion con = new conexion();
 
@@ -96,6 +96,8 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE clientes ADD COLUMN idaseguradora VARCHAR(150) NULL;");
                     if (con.query("SHOW COLUMNS FROM clientes WHERE Field = 'envionube' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE clientes ADD COLUMN envionube INT(1) DEFAULT 1;");
+                    if (con.query("SHOW COLUMNS FROM clientes WHERE Field = 'cuir' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE clientes ADD COLUMN cuir VARCHAR(20) NULL;");
                 }
                 catch
                 {
@@ -108,6 +110,7 @@ namespace ProyectoBrokerDelPuerto
                 con.query("ALTER TABLE clientes ADD COLUMN codempresa VARCHAR(150) NULL;");
                 con.query("ALTER TABLE clientes ADD COLUMN idaseguradora VARCHAR(150) NULL;");
                 con.query("ALTER TABLE clientes ADD COLUMN envionube INT(1) DEFAULT 1;");
+                con.query("ALTER TABLE clientes ADD COLUMN cuir VARCHAR(20) NULL;");
             }
             
 
@@ -144,7 +147,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM clientes WHERE codestado = 1";
+            sql = "SELECT * FROM clientes WHERE codestado = 1 AND fecha_nacimiento IS NOT NULL AND fecha_nacimiento != '1000-01-01' GROUP BY id";
             Console.WriteLine("CLI LOAD "+sql);
             try
             {
@@ -183,6 +186,28 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 ds = con.query(sql);
+                if (ds.Tables[0].Rows.Count > 0)
+                {
+                    this.id = ds.Tables[0].Rows[0]["id"].ToString();
+                    this.nombres = ds.Tables[0].Rows[0]["nombres"].ToString();
+                    this.apellidos = ds.Tables[0].Rows[0]["apellidos"].ToString();
+                    this.tipo_id = ds.Tables[0].Rows[0]["tipo_id"].ToString();
+                    this.telefono = ds.Tables[0].Rows[0]["telefono"].ToString();
+                    this.direccion = ds.Tables[0].Rows[0]["direccion"].ToString();
+                    this.email = ds.Tables[0].Rows[0]["email"].ToString();
+                    this.codpostal = ds.Tables[0].Rows[0]["codpostal"].ToString();
+                    this.localidad = ds.Tables[0].Rows[0]["localidad"].ToString();
+                    this.ciudad = ds.Tables[0].Rows[0]["ciudad"].ToString();
+                    this.sexo = ds.Tables[0].Rows[0]["sexo"].ToString();
+                    this.fecha_nacimiento = ds.Tables[0].Rows[0]["fecha_nacimiento"].ToString();
+                    this.user_edit = ds.Tables[0].Rows[0]["user_edit"].ToString();
+                    this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                    this.categoria = ds.Tables[0].Rows[0]["categoria"].ToString();
+                    this.codempresa = ds.Tables[0].Rows[0]["codempresa"].ToString();
+                    this.idaseguradora = ds.Tables[0].Rows[0]["idaseguradora"].ToString();
+                    this.envionube = Convert.ToInt16(ds.Tables[0].Rows[0]["envionube"]);
+                    this.cuir = ds.Tables[0].Rows[0]["cuir"].ToString();
+                }
             }
             catch (Exception ex)
             {
@@ -399,6 +424,7 @@ namespace ProyectoBrokerDelPuerto
                         "categoria = '" + this.categoria + "', " +
                         "idaseguradora = '" + this.idaseguradora + "', " +
                         "envionube = '" + this.envionube + "', " +
+                        "cuir = '" + this.cuir + "', " +
                         "codempresa = '" + MDIParent1.codempresa + "' " +
                         " WHERE id = '" + this.id + "'";
                 }
@@ -424,7 +450,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.categoria + "'," +
                         "'" + MDIParent1.codempresa + "'," +
                         "'" + idaseguradora + "'," +
-                        "'" + this.envionube + "'" +
+                        "'" + this.envionube + "'," +
+                        "'" + this.cuir + "'" +
                         ") ";
                 }
 
@@ -473,7 +500,8 @@ namespace ProyectoBrokerDelPuerto
                         "codestado  = '" + this.codestado + "'," +
                         "categoria = '" + this.categoria + "', " +
                         "idaseguradora = '" + this.idaseguradora + "', " +
-                        "codempresa = '" + MDIParent1.codempresa + "' " +
+                        "codempresa = '" + MDIParent1.codempresa + "', " +
+                        "cuir = '" + this.cuir + "' " +
                         " WHERE id = '" + this.id + "'";
 
                     con.query(sql);
@@ -500,7 +528,8 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.codestado + "'," +
                         "'" + this.categoria + "'," +
                         "'" + MDIParent1.codempresa + "'," +
-                        "'" + this.idaseguradora + "'" +
+                        "'" + this.idaseguradora + "'," +
+                        "'" + this.cuir + "'" +
                         ") ";
                 }
 

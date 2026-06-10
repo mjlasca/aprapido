@@ -12,7 +12,7 @@ namespace ProyectoBrokerDelPuerto
         string sql = "";
 
         string columns = "coderror,mensaje, ultmod,user_edit,codempresa";
-        public string id, coderror = "", mensaje = "", ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codempresa = MDIParent1.codempresa;
+        public string id,coderror = "", mensaje = "", ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), user_edit = MDIParent1.sesionUser, codempresa = MDIParent1.codempresa;
         conexion con = new conexion();
 
         public logs(bool inst = false)
@@ -48,7 +48,7 @@ namespace ProyectoBrokerDelPuerto
             logs log = new logs();
             log.coderror = coderror_;
             log.mensaje = mensaje_;
-            log.save();
+            log.save_1();
         }
 
         public void newError(string coderror_, string mensaje_)
@@ -71,7 +71,7 @@ namespace ProyectoBrokerDelPuerto
             try
             {
                 this.ultmod = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-                sql = $"INSERT INTO logs (" + this.columns + $") VALUES('${this.coderror}','${this.mensaje}','${this.ultmod}','${MDIParent1.sesionUser}','${MDIParent1.codempresa}') ";
+                sql = $"INSERT INTO logs (${ this.columns }) VALUES('${this.coderror}','${this.mensaje}','${this.ultmod}','${MDIParent1.sesionUser}','${MDIParent1.codempresa}') ";
 
                 con.query(sql);
                 
@@ -90,7 +90,8 @@ namespace ProyectoBrokerDelPuerto
 
         public bool save()
         {
-            try
+            return true;
+            /*try
             {
                 
                     sql = "INSERT INTO logs (" + this.columns + ") VALUES(@coderror,@mensaje,@ultmod,@user_edit,@codempresa) ";
@@ -130,7 +131,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 //System.Windows.Forms.MessageBox.Show("No se ha podido generar el log "+ex);
                 return false;
-            }
+            }*/
 
         }
     }

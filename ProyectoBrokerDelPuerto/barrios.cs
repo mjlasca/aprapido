@@ -240,7 +240,7 @@ namespace ProyectoBrokerDelPuerto
         {
             DataSet ds = new DataSet();
 
-            sql = "SELECT * FROM barrios WHERE codestado = 1";
+            sql = "SELECT * FROM barrios WHERE codestado = 1 GROUP BY id ";
             try
             {
                 ds = con.query(sql);

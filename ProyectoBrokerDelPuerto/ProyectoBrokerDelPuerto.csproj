@@ -166,6 +166,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiStateUser.cs" />
     <Compile Include="ApiMissing.cs" />
     <Compile Include="ApiReports.cs" />
     <Compile Include="AuditoriaBarrios.cs" />
@@ -526,11 +527,23 @@
     <Compile Include="frmSoporte.Designer.cs">
       <DependentUpon>frmSoporte.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmUpdateToken.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUpdateToken.Designer.cs">
+      <DependentUpon>frmUpdateToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="frmUsuarios.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmUsuarios.Designer.cs">
       <DependentUpon>frmUsuarios.cs</DependentUpon>
+    </Compile>
+    <Compile Include="frmUtilities.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmUtilities.Designer.cs">
+      <DependentUpon>frmUtilities.cs</DependentUpon>
     </Compile>
     <Compile Include="frmVentasCredito.cs">
       <SubType>Form</SubType>
@@ -554,6 +567,7 @@
     <Compile Include="gruposbarrios.cs" />
     <Compile Include="importapi.cs" />
     <Compile Include="importCycle.cs" />
+    <Compile Include="ImportInstall.cs" />
     <Compile Include="ImportListObject.cs" />
     <Compile Include="informes.cs" />
     <Compile Include="jsonapi.cs" />
@@ -753,8 +767,14 @@
     <EmbeddedResource Include="frmSoporte.resx">
       <DependentUpon>frmSoporte.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frmUpdateToken.resx">
+      <DependentUpon>frmUpdateToken.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frmUsuarios.resx">
       <DependentUpon>frmUsuarios.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmUtilities.resx">
+      <DependentUpon>frmUtilities.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmVentasCredito.resx">
       <DependentUpon>frmVentasCredito.cs</DependentUpon>

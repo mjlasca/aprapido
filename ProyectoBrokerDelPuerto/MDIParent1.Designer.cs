@@ -74,6 +74,7 @@
             this.contentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.versiónToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.utilidadesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -195,6 +196,7 @@
             this.migracionesToolStripMenuItem.Name = "migracionesToolStripMenuItem";
             this.migracionesToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.migracionesToolStripMenuItem.Text = "Migraciones";
+            this.migracionesToolStripMenuItem.Visible = false;
             this.migracionesToolStripMenuItem.Click += new System.EventHandler(this.migracionesToolStripMenuItem_Click);
             // 
             // puntoDeVentaToolStripMenuItem
@@ -460,7 +462,8 @@
             this.helpMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.contentsToolStripMenuItem,
             this.toolStripSeparator8,
-            this.versiónToolStripMenuItem});
+            this.versiónToolStripMenuItem,
+            this.utilidadesToolStripMenuItem});
             this.helpMenu.Name = "helpMenu";
             this.helpMenu.Size = new System.Drawing.Size(53, 20);
             this.helpMenu.Text = "Ay&uda";
@@ -468,7 +471,7 @@
             // contentsToolStripMenuItem
             // 
             this.contentsToolStripMenuItem.Name = "contentsToolStripMenuItem";
-            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.contentsToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.contentsToolStripMenuItem.Text = "Contacto";
             this.contentsToolStripMenuItem.Visible = false;
             this.contentsToolStripMenuItem.Click += new System.EventHandler(this.contentsToolStripMenuItem_Click);
@@ -476,14 +479,21 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(120, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(123, 6);
             // 
             // versiónToolStripMenuItem
             // 
             this.versiónToolStripMenuItem.Name = "versiónToolStripMenuItem";
-            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
+            this.versiónToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.versiónToolStripMenuItem.Text = "Versión";
             this.versiónToolStripMenuItem.Click += new System.EventHandler(this.versiónToolStripMenuItem_Click);
+            // 
+            // utilidadesToolStripMenuItem
+            // 
+            this.utilidadesToolStripMenuItem.Name = "utilidadesToolStripMenuItem";
+            this.utilidadesToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.utilidadesToolStripMenuItem.Text = "Utilidades";
+            this.utilidadesToolStripMenuItem.Click += new System.EventHandler(this.utilidadesToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -558,7 +568,7 @@
             // timer1
             // 
             this.timer1.Enabled = true;
-            this.timer1.Interval = 400000;
+            this.timer1.Interval = 1000000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // importvez
@@ -613,11 +623,13 @@
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 22;
             this.label1.Text = "label1";
+            this.label1.Visible = false;
             // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1264, 681);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.sinEnviar_btn);
@@ -709,6 +721,7 @@
         private System.Windows.Forms.ToolStripMenuItem modificaciónDeBarriosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem imputacionesToolStripMenuItem;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ToolStripMenuItem utilidadesToolStripMenuItem;
     }
 }
 

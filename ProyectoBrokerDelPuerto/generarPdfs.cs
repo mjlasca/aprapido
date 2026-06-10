@@ -16,6 +16,7 @@ namespace ProyectoBrokerDelPuerto
 {
     class generarPdfs
     {
+        public string empresa_ = "Broker del puerto";
         public void pdfEmisionBarriosPrivados(string idpropuesta, clientes tomador, DataGridView dgv, DateTime vigenciaDesde, DateTime vigenciaHasta, ListBox barrio, coberturas cobertura, bool norepeticion, bool benefbarrios, bool abrir = true, string ruta = "", bool pagado = false)
         {
 
@@ -80,7 +81,6 @@ namespace ProyectoBrokerDelPuerto
                 clLogo.BorderWidth = 0;
                 clLogo.BorderWidth = 0;
                 clLogo.HorizontalAlignment = Element.ALIGN_CENTER;
-
 
                 PdfPCell titulo = new PdfPCell(new Phrase("SEGURO DE ACCIDENTES PERSONALES EN OCASIÓN DEL TRABAJO - BARRIOS PRIVADOS", _TituloFont));
                 titulo.BorderWidth = 0;
@@ -201,12 +201,12 @@ namespace ProyectoBrokerDelPuerto
 
                 
 
-                if (barrio.Items.Count > 3 || nombarrio.Length > 250)
+                if (barrio.Items.Count > 3 || nombarrio.Length > 200)
                 {
                     
-                    if (nombarrio.Length > 250)
+                    if (nombarrio.Length > 200)
                     {
-                        barrioRecortado = nombarrio.Substring(0, 245) + "...";
+                        barrioRecortado = nombarrio.Substring(0, 200) + "...";
                         celdasEncabezado = new PdfPCell(new Phrase("A QUIEN CORRESPONDA \n" + barrioRecortado + "\nVer listado completo de barrios en la parte de abajo", _standardFont));
                     }
                     else
@@ -302,6 +302,11 @@ namespace ProyectoBrokerDelPuerto
                     Espacio para la imagen y la fecha de pago
                 */
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+                {
+                    imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+                }
+                
                 imgPago.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
                 imgPago.ScaleAbsolute(180, 55);
                 Paragraph fechPAgo = new Paragraph(DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss"), _standardFontBold);
@@ -345,11 +350,7 @@ namespace ProyectoBrokerDelPuerto
                     doc.Add(parCobertura);
 
                     parr = "" +
-                            "Se deja expresa constancia por medio de este endoso, que formará parte integrante de la póliza / certificado, que Sancor Cooperativas " +
-                                "de Seguros Limitada renuncia forma expresa a iniciar toda acción de repetición contra " + nombarrio +
-                            " ya sea con fundamentos en la Ley 24.557 o en cualquier otra norma jurídica, con motivo de las prestaciones en especie o dinerarias " +
-                            "que se vea obligada a otorgar o abonar al Asegurado declarado en la presente Póliza / Certificado, comprendido en la cobertura de la" +
-                            " presente Póliza/ Certificado de Accidentes Personales con motivo de la profesión o actividad declarada e In Itinere." +
+                            "La compañía aseguradora renuncia expresamente y de manera irrevocable al derecho de repetición contra cualquier tercero, ya sea persona física o jurídica, que pudiera ser considerado responsable, directa o indirectamente, del siniestro cubierto por la presente póliza. En virtud de esta renuncia, la aseguradora no podrá ejercer acciones de recuperación o subrogación contra ningún individuo, empresa, entidad pública o privada, eximiéndolos de cualquier obligación de reembolso derivada del pago de indemnizaciones efectuadas en cumplimiento de la cobertura contratada. " + nombarrio +
                             "\nSe extiende el presente en Benavidez, " + datett.ToString("dd/MM/yyyy") +
                             ". Esta constancia tendrá validez si se presenta con el correspondiente recibo de pago.";
 
@@ -411,7 +412,12 @@ namespace ProyectoBrokerDelPuerto
                 widths0 = new float[] { 20f, 30f, 40f, 10f };
                 tablaPrimaria.SetWidths(widths0);
 
+
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
+                if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+                {
+                    logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
+                }
                 
 
                 //fila1
@@ -427,8 +433,13 @@ namespace ProyectoBrokerDelPuerto
                 celLogoBroker.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celLogoBroker);
-
-                PdfPCell celInfo = new PdfPCell(new Phrase("BROKER DEL PUERTO ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)", _standardFont));
+                string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+                {
+                    empresa_ = "Seguros del pilar";
+                    textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
+                }
+                PdfPCell celInfo = new PdfPCell(new Phrase(empresa_ + textEmpresa, _standardFont));
                 celInfo.Padding = 5;
                 celInfo.Border = 0;
                 celInfo.PaddingRight = 20;
@@ -436,11 +447,6 @@ namespace ProyectoBrokerDelPuerto
                 celInfo.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celInfo);
-
-                
-            
-                
-                
 
                 celLogoBroker = new PdfPCell();
                 celLogoBroker.Padding = 5;
@@ -464,7 +470,7 @@ namespace ProyectoBrokerDelPuerto
 
                     
 
-                    if (barrio.Items.Count > 3 || nombarrio.Length > 250)
+                    if (barrio.Items.Count > 3 || nombarrio.Length > 200)
                     {
 
 
@@ -493,7 +499,7 @@ namespace ProyectoBrokerDelPuerto
                         
                         
 
-                        parCobertura = new Paragraph("Se deja expresa constancia por medio de este endoso, que formará parte integrante de la póliza/certificado, que Sancor Cooperativas de  Seguros  Limitada renuncia forma expresa a  iniciar  toda  acción  de repetición  contra: " + concatbarrios + ". ", _standardFont);
+                        parCobertura = new Paragraph("La compañía aseguradora renuncia expresamente y de manera irrevocable al derecho de repetición contra cualquier tercero, ya sea persona física o jurídica, que pudiera ser considerado responsable, directa o indirectamente, del siniestro cubierto por la presente póliza. En virtud de esta renuncia, la aseguradora no podrá ejercer acciones de recuperación o subrogación contra ningún individuo, empresa, entidad pública o privada, eximiéndolos de cualquier obligación de reembolso derivada del pago de indemnizaciones efectuadas en cumplimiento de la cobertura contratada.  " + concatbarrios + ". ", _standardFont);
                         parCobertura.Alignment = Element.ALIGN_JUSTIFIED;
                         doc.Add(parCobertura);
 
@@ -560,6 +566,10 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.SetWidths(widths0);
 
                 iTextSharp.text.Image logoBroker = iTextSharp.text.Image.GetInstance("brokerlogo.png");
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+                {
+                    logoBroker = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarlogo.png");
+                }
 
 
                 //fila1
@@ -575,8 +585,14 @@ namespace ProyectoBrokerDelPuerto
                 celLogoBroker.HorizontalAlignment = Element.ALIGN_CENTER;
 
                 tablaPrimaria.AddCell(celLogoBroker);
-
-                PdfPCell celInfo = new PdfPCell(new Phrase("BROKER DEL PUERTO ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)", _standardFont));
+                string empresa_ = "Broker del puerto";
+                string textEmpresa = " ...\nTU TRANQUILIDAD VALE\nwww.brokerdelpuerto.com\nbarriosprivados@brokerdelpuerto.com\nTel. (03327-485189) Cel. 15-55841038\nSarmiento 3314 (1621 - Benavidez)";
+                if (MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+                {
+                    empresa_ = "Seguros del pilar";
+                    textEmpresa = " ...\nEl mejor Seguro, estés donde estés.\nsegurosdelpilar.com.ar/\nTel. (113291-6722)\nAv. Sgto. Cayetano Beliera 2650, B 1629 Pilar, provincia de Buenos Aires";
+                }
+                PdfPCell celInfo = new PdfPCell(new Phrase( empresa_ + textEmpresa, _standardFont));
                 celInfo.Padding = 5;
                 celInfo.Border = 0;
                 celInfo.PaddingRight = 20;
@@ -828,6 +844,10 @@ namespace ProyectoBrokerDelPuerto
                 tablaPrimaria.AddCell(celdasEncabezado);
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
+                if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+            {
+                imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+            }
                 imgPago.Alignment = iTextSharp.text.Image.ALIGN_CENTER;
                 imgPago.ScaleAbsolute(180, 55);
 
@@ -1695,7 +1715,11 @@ namespace ProyectoBrokerDelPuerto
 
 
                 iTextSharp.text.Image imgPago = iTextSharp.text.Image.GetInstance("imgpago.png");
-                imgPago.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
+            if(MDIParent1.codempresa.ToLower() == "segurosdelpilar")
+            {
+                imgPago = iTextSharp.text.Image.GetInstance("https://barriosprivadosstage.niveldigitalcol.com/img/pilarpagado.png");
+            }
+            imgPago.Alignment = iTextSharp.text.Image.ALIGN_RIGHT;
                 imgPago.ScaleAbsolute(180, 55);
 
                 doc.Add(imgPago);

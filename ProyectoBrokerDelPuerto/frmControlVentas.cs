@@ -106,7 +106,6 @@ namespace ProyectoBrokerDelPuerto
             {
                 MessageBox.Show("La fecha y la ruta del archivo deben haberse seleccionado", "Error de validación", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            
         }
 
         private void fecha1_ValueChanged(object sender, EventArgs e)
@@ -490,14 +489,19 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnexportar_Click(object sender, EventArgs e)
         {
+            this.downloadInfoVentas();
+        }
+
+        public void downloadInfoVentas()
+        {
             excelDocuments xls = new excelDocuments();
             string ruta = "";
 
 
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
-            saveFileDialog.Filter = "Archivos de texto (*.xlsx)|*.xls|Todos los archivos (*.*)|*.*";
-            saveFileDialog.FileName = "Archivo Informe ventas " + Convert.ToDateTime(fecha1.Value).ToString("dd-MM-yyyy") + "-" + Convert.ToDateTime(fecha2.Value).ToString("dd-MM-yyyy") ;
+            saveFileDialog.Filter = "Archivos de texto (*.xls)|*.xlsx|Todos los archivos (*.*)|*.*";
+            saveFileDialog.FileName = "Archivo Informe ventas " + Convert.ToDateTime(fecha1.Value).ToString("dd-MM-yyyy") + "-" + Convert.ToDateTime(fecha2.Value).ToString("dd-MM-yyyy");
             if (saveFileDialog.ShowDialog(this) == DialogResult.OK)
             {
                 string FileName = saveFileDialog.FileName;
@@ -508,10 +512,10 @@ namespace ProyectoBrokerDelPuerto
             {
                 /*try
                 {*/
-                    DataTable dt2 = new DataTable();
-                    int[] veccampfechas = { 1, 6,10, 23, 24, 25 };
-                    xls.ExcelInfoVentas(ruta, this.exceltablas(fecha1.Value, fecha2.Value), dt2, veccampfechas);
-                    MessageBox.Show("Archivo guardado con éxtio en la carpeta del programa \n " + ruta);
+                DataTable dt2 = new DataTable();
+                int[] veccampfechas = { 1, 6, 11, 24, 25, 26 };
+                xls.ExcelInfoVentas(ruta, this.exceltablas(fecha1.Value, fecha2.Value), dt2, veccampfechas);
+                MessageBox.Show("Archivo guardado con éxtio en la carpeta del programa \n " + ruta);
                 /*}
                 catch (Exception ex)
                 {
@@ -584,6 +588,7 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("Fecha.Nacimiento.Tomador", typeof(DateTime));
             dt.Columns.Add("Email.Tomador", typeof(string));
             dt.Columns.Add("Telf.Tomador", typeof(string));
+            dt.Columns.Add("Documento asegurado(a)", typeof(string));
             dt.Columns.Add("asegurado(a)", typeof(string));
             dt.Columns.Add("Fecha.Nacimiento.Asegurado", typeof(DateTime));
             dt.Columns.Add("meses", typeof(int));
@@ -604,6 +609,8 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("aseguradora", typeof(string));
             dt.Columns.Add("cod_productor", typeof(string));
             dt.Columns.Add("cod_organizador", typeof(string));
+            dt.Columns.Add("Cuil/Cuit Tomador", typeof(string));
+            dt.Columns.Add("Cuil/Cuit Asegurado", typeof(string));
 
 
 
@@ -633,6 +640,7 @@ namespace ProyectoBrokerDelPuerto
                     dd.Tables[0].Rows[i]["nacimientotomador"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["nacimientotomador"]) : fecpagadefault,
                     dd.Tables[0].Rows[i]["correo"].ToString(),
                     dd.Tables[0].Rows[i]["telefono"].ToString(),
+                    dd.Tables[0].Rows[i]["docase"].ToString(),
                     dd.Tables[0].Rows[i]["nombres"].ToString()+" "+ dd.Tables[0].Rows[i]["apellidos"].ToString(),
                     Convert.ToDateTime(dd.Tables[0].Rows[i]["fecha_nacimiento"]), 
                     dd.Tables[0].Rows[i]["meses"].ToString(),
@@ -652,7 +660,9 @@ namespace ProyectoBrokerDelPuerto
                     dd.Tables[0].Rows[i]["fechaHasta"].ToString() != "" ? Convert.ToDateTime(dd.Tables[0].Rows[i]["fechaHasta"]) : fecpagadefault,
                     aseguradora,
                     dd.Tables[0].Rows[i]["productor"].ToString(),
-                    dd.Tables[0].Rows[i]["organizador"].ToString()
+                    dd.Tables[0].Rows[i]["organizador"].ToString(),
+                    dd.Tables[0].Rows[i]["cuir"].ToString(),
+                    dd.Tables[0].Rows[i]["cuil_linea"].ToString()
                     );
             }
 
