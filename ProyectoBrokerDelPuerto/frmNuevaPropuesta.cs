@@ -439,7 +439,7 @@ namespace ProyectoBrokerDelPuerto
         public int edadVieja(string fechaUsuario)
         {
             int res = 0;
-            try
+            /*try
             {
                 if ((Convert.ToInt16(DateTime.Now.Year) - Convert.ToInt16(Convert.ToDateTime(fechaUsuario).Year)) > 65)
                     res = 1;
@@ -458,7 +458,7 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine("ERROR..." + ex.Message);
             }
 
-
+            */
             return res;
         }
 

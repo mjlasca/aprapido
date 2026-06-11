@@ -352,7 +352,7 @@ namespace ProyectoBrokerDelPuerto
                             }
                             
                                 
-                            if ((Convert.ToInt16(DateTime.Now.Year) - Convert.ToInt16(Convert.ToDateTime(dd.Tables[0].Rows[k]["fecha_nacimiento"].ToString()).Year)) > 65)
+                           /* if ((Convert.ToInt16(DateTime.Now.Year) - Convert.ToInt16(Convert.ToDateTime(dd.Tables[0].Rows[k]["fecha_nacimiento"].ToString()).Year)) > 65)
                             {
                                 filamayores.Items.Add(aux);
                             }
@@ -361,7 +361,7 @@ namespace ProyectoBrokerDelPuerto
                             {
                                 if(this.edadVieja(dd.Tables[0].Rows[k]["fecha_nacimiento"].ToString()) == 1)
                                     filamayores.Items.Add(aux);
-                            }
+                            }*/
                             
 
                             if (dd.Tables[0].Rows[k]["premio"].ToString() != "")
@@ -453,7 +453,7 @@ namespace ProyectoBrokerDelPuerto
         public int edadVieja(string fechaUsuario)
         {
             int res = 0;
-            try
+            /*try
             {
                 if ((Convert.ToInt16(DateTime.Now.Year) - Convert.ToInt16(Convert.ToDateTime(fechaUsuario).Year)) > 65)
                     res = 1;
@@ -473,7 +473,7 @@ namespace ProyectoBrokerDelPuerto
                 Console.WriteLine("ERROR..." + ex.Message);
             }
 
-
+            */
             return res;
         }
 
