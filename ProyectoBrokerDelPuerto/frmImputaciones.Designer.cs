@@ -29,17 +29,6 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.emision = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idpropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.suma_total = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.valor_comprobante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comprobante = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.imputado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.si = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.date1 = new System.Windows.Forms.DateTimePicker();
             this.date2 = new System.Windows.Forms.DateTimePicker();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -57,6 +46,20 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.suma_btn = new System.Windows.Forms.Button();
             this.suma_lbl = new System.Windows.Forms.Label();
+            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.emision = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idpropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.suma_total = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valor_comprobante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comprobante = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.imputado = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.si = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.name = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.document = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cuil = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,79 +80,15 @@
             this.valor_comprobante,
             this.comprobante,
             this.imputado,
-            this.si});
+            this.si,
+            this.name,
+            this.document,
+            this.cuil});
             this.dataGridView1.Location = new System.Drawing.Point(32, 88);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.Size = new System.Drawing.Size(912, 364);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // id
-            // 
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
-            this.id.ReadOnly = true;
-            this.id.Visible = false;
-            // 
-            // emision
-            // 
-            this.emision.HeaderText = "Fecha emisión";
-            this.emision.Name = "emision";
-            this.emision.ReadOnly = true;
-            // 
-            // fecha
-            // 
-            this.fecha.HeaderText = "Fecha comprobante";
-            this.fecha.Name = "fecha";
-            this.fecha.ReadOnly = true;
-            // 
-            // referencia
-            // 
-            this.referencia.HeaderText = "Referencia";
-            this.referencia.Name = "referencia";
-            this.referencia.ReadOnly = true;
-            // 
-            // prefijo
-            // 
-            this.prefijo.HeaderText = "Prefijo";
-            this.prefijo.Name = "prefijo";
-            this.prefijo.ReadOnly = true;
-            // 
-            // idpropuesta
-            // 
-            this.idpropuesta.HeaderText = "ID Propuesta";
-            this.idpropuesta.Name = "idpropuesta";
-            this.idpropuesta.ReadOnly = true;
-            // 
-            // suma_total
-            // 
-            this.suma_total.HeaderText = "Valor póliza";
-            this.suma_total.Name = "suma_total";
-            this.suma_total.ReadOnly = true;
-            // 
-            // valor_comprobante
-            // 
-            this.valor_comprobante.HeaderText = "Valor pagado";
-            this.valor_comprobante.Name = "valor_comprobante";
-            this.valor_comprobante.ReadOnly = true;
-            // 
-            // comprobante
-            // 
-            this.comprobante.HeaderText = "No. Comprobante";
-            this.comprobante.Name = "comprobante";
-            this.comprobante.ReadOnly = true;
-            // 
-            // imputado
-            // 
-            this.imputado.HeaderText = "Imputado";
-            this.imputado.Name = "imputado";
-            // 
-            // si
-            // 
-            this.si.HeaderText = "si";
-            this.si.Name = "si";
-            this.si.ReadOnly = true;
-            this.si.Visible = false;
             // 
             // date1
             // 
@@ -310,6 +249,91 @@
             this.suma_lbl.Size = new System.Drawing.Size(0, 13);
             this.suma_lbl.TabIndex = 18;
             // 
+            // id
+            // 
+            this.id.HeaderText = "id";
+            this.id.Name = "id";
+            this.id.ReadOnly = true;
+            this.id.Visible = false;
+            // 
+            // emision
+            // 
+            this.emision.HeaderText = "Fecha emisión";
+            this.emision.Name = "emision";
+            this.emision.ReadOnly = true;
+            // 
+            // fecha
+            // 
+            this.fecha.HeaderText = "Fecha comprobante";
+            this.fecha.Name = "fecha";
+            this.fecha.ReadOnly = true;
+            // 
+            // referencia
+            // 
+            this.referencia.HeaderText = "Referencia";
+            this.referencia.Name = "referencia";
+            this.referencia.ReadOnly = true;
+            // 
+            // prefijo
+            // 
+            this.prefijo.HeaderText = "Prefijo";
+            this.prefijo.Name = "prefijo";
+            this.prefijo.ReadOnly = true;
+            // 
+            // idpropuesta
+            // 
+            this.idpropuesta.HeaderText = "ID Propuesta";
+            this.idpropuesta.Name = "idpropuesta";
+            this.idpropuesta.ReadOnly = true;
+            // 
+            // suma_total
+            // 
+            this.suma_total.HeaderText = "Valor póliza";
+            this.suma_total.Name = "suma_total";
+            this.suma_total.ReadOnly = true;
+            // 
+            // valor_comprobante
+            // 
+            this.valor_comprobante.HeaderText = "Valor pagado";
+            this.valor_comprobante.Name = "valor_comprobante";
+            this.valor_comprobante.ReadOnly = true;
+            // 
+            // comprobante
+            // 
+            this.comprobante.HeaderText = "No. Comprobante";
+            this.comprobante.Name = "comprobante";
+            this.comprobante.ReadOnly = true;
+            // 
+            // imputado
+            // 
+            this.imputado.HeaderText = "Imputado";
+            this.imputado.Name = "imputado";
+            // 
+            // si
+            // 
+            this.si.HeaderText = "si";
+            this.si.Name = "si";
+            this.si.ReadOnly = true;
+            this.si.Visible = false;
+            // 
+            // name
+            // 
+            this.name.HeaderText = "Nombre";
+            this.name.Name = "name";
+            this.name.ReadOnly = true;
+            // 
+            // document
+            // 
+            this.document.HeaderText = "DNI";
+            this.document.Name = "document";
+            this.document.ReadOnly = true;
+            // 
+            // cuil
+            // 
+            this.cuil.HeaderText = "CUIL/CUIT";
+            this.cuil.Name = "cuil";
+            this.cuil.ReadOnly = true;
+            // 
             // frmImputaciones
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -360,6 +384,8 @@
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Button suma_btn;
+        private System.Windows.Forms.Label suma_lbl;
         private System.Windows.Forms.DataGridViewTextBoxColumn id;
         private System.Windows.Forms.DataGridViewTextBoxColumn emision;
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
@@ -371,7 +397,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn comprobante;
         private System.Windows.Forms.DataGridViewCheckBoxColumn imputado;
         private System.Windows.Forms.DataGridViewTextBoxColumn si;
-        private System.Windows.Forms.Button suma_btn;
-        private System.Windows.Forms.Label suma_lbl;
+        private System.Windows.Forms.DataGridViewTextBoxColumn name;
+        private System.Windows.Forms.DataGridViewTextBoxColumn document;
+        private System.Windows.Forms.DataGridViewTextBoxColumn cuil;
     }
 }

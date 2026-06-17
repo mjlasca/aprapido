@@ -458,6 +458,15 @@ namespace ProyectoBrokerDelPuerto
 
                 
                 con.query(sql);
+
+                if(this.envionube == 0)
+                {
+                    frmMigraciones frmmig = new frmMigraciones();
+                    Task.Run(() => {
+                        return frmmig.exportarClientes_2();
+                    });
+                }
+
                 return true;
 
             }catch(Exception ex)

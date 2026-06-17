@@ -89,6 +89,7 @@
             this.sinEnviar_btn = new System.Windows.Forms.Button();
             this.timer_parameters = new System.Windows.Forms.Timer(this.components);
             this.label1 = new System.Windows.Forms.Label();
+            this.label_update = new System.Windows.Forms.Label();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -625,12 +626,25 @@
             this.label1.Text = "label1";
             this.label1.Visible = false;
             // 
+            // label_update
+            // 
+            this.label_update.AutoSize = true;
+            this.label_update.BackColor = System.Drawing.Color.Lime;
+            this.label_update.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label_update.ForeColor = System.Drawing.Color.White;
+            this.label_update.Location = new System.Drawing.Point(529, 456);
+            this.label_update.Name = "label_update";
+            this.label_update.Size = new System.Drawing.Size(183, 24);
+            this.label_update.TabIndex = 24;
+            this.label_update.Text = "Actualizando datos...";
+            // 
             // MDIParent1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.Controls.Add(this.label_update);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.sinEnviar_btn);
             this.Controls.Add(this.textBox1);
@@ -722,6 +736,7 @@
         private System.Windows.Forms.ToolStripMenuItem imputacionesToolStripMenuItem;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ToolStripMenuItem utilidadesToolStripMenuItem;
+        private System.Windows.Forms.Label label_update;
     }
 }
 

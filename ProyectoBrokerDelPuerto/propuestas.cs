@@ -2244,32 +2244,62 @@ namespace ProyectoBrokerDelPuerto
             string filter = "";
 
             if(referencia != "")
-                filter += " AND referencia = '" + referencia + "' ";
+                filter += " AND p.referencia = '" + referencia + "' ";
             if (propuesta != "")
             {
                 if (MDIParent1.baseDatos == "SQlite")
-                    filter += " AND (prefijo || idpropuesta) LIKE '" + propuesta + "' ";
+                    filter += " AND (p.prefijo || p.idpropuesta) LIKE '" + propuesta + "' ";
                 else
-                    filter += " AND CONCAT(prefijo, idpropuesta) LIKE '" + propuesta + "' ";
+                    filter += " AND CONCAT(p.prefijo, p.idpropuesta) LIKE '" + propuesta + "' ";
             }
 
             if(fecha1 != null && fecha2 != null)
             {
                 
                 if (tipo_fecha == "Comprobante")
-                    filter += " AND  fecha_comprobante >= '" + fecha1.Date.ToString("yyyy-MM-dd")+ "' AND fecha_comprobante <= '" + fecha2.Date.ToString("yyyy-MM-dd") + "' ";
+                    filter += " AND  p.fecha_comprobante >= '" + fecha1.Date.ToString("yyyy-MM-dd")+ "' AND p.fecha_comprobante <= '" + fecha2.Date.ToString("yyyy-MM-dd") + "' ";
                 else
-                    filter += " AND  ultmod >= '" + fecha1.Date.ToString("yyyy-MM-dd 00:00:00") + "' AND ultmod <= '" + fecha2.Date.ToString("yyyy-MM-dd 23:59:59") + "' ";
+                    filter += " AND  p.ultmod >= '" + fecha1.Date.ToString("yyyy-MM-dd 00:00:00") + "' AND p.ultmod <= '" + fecha2.Date.ToString("yyyy-MM-dd 23:59:59") + "' ";
             }
 
             if(imputacion_ > -1)
             {
                 filter += " AND imputacion = '" + imputacion_ + "' ";
             }
-                
 
-            sql = "SELECT id,idpropuesta,prefijo,referencia,paga,fecha_paga,DATE(ultmod) AS ultmod,codestado,valor_pagado,DATE(fecha_comprobante) AS fecha_comprobante,premio_total,formadepago,usuariopaga,tipopago,compformapago,imputacion  from " +
-                "  propuestas WHERE paga > 0 AND  formadepago = 'CREDITO' AND tipopago != 'EFECTIVO' " + filter+"  order by fecha_paga DESC";
+
+            sql = @"SELECT 
+                p.id,
+                p.idpropuesta,
+                p.prefijo,
+                p.referencia,
+                p.paga,
+                p.fecha_paga,
+                DATE(p.ultmod) AS ultmod,
+                p.codestado,
+                p.valor_pagado,
+                DATE(p.fecha_comprobante) AS fecha_comprobante,
+                p.premio_total,
+                p.formadepago,
+                p.usuariopaga,
+                p.tipopago,
+                p.compformapago,
+                p.imputacion,
+
+                c.id AS cliente_id,
+                c.nombres,
+                c.apellidos,
+                c.cuir
+
+            FROM propuestas p
+            LEFT JOIN clientes c ON c.id = p.documento
+
+            WHERE p.paga > 0
+              AND p.formadepago = 'CREDITO'
+              AND p.tipopago != 'EFECTIVO' 
+              " + filter + @"
+        
+            ORDER BY p.fecha_paga DESC";
 
             cons = con.query(sql);
             return cons;
