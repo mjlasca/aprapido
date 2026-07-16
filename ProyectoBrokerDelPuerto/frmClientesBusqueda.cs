@@ -194,6 +194,14 @@ namespace ProyectoBrokerDelPuerto
                         
                     }
 
+                    if(dataGridView1.Rows.Count > 0)
+                    {
+                        Task.Run(() => {
+                            frmMigraciones frmm = new frmMigraciones();
+                            frmm.migrarGrupoBarrios(DateTime.Now.ToString("yyyy-MM-dd"));
+                        });
+                    }
+
                     
                     txtNombreGrupo.Text = "";
                 }

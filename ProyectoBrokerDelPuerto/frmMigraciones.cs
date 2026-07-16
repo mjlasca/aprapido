@@ -1257,7 +1257,7 @@ namespace ProyectoBrokerDelPuerto
 
         }
 
-        private void migrarGrupoBarrios(string fecha)
+        public void migrarGrupoBarrios(string fecha)
         {
 
 

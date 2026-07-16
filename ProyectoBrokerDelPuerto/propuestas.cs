@@ -2292,7 +2292,15 @@ namespace ProyectoBrokerDelPuerto
                 c.cuir
 
             FROM propuestas p
-            LEFT JOIN clientes c ON c.id = p.documento
+            LEFT JOIN (
+                SELECT
+                    id,
+                    MAX(nombres) AS nombres,
+                    MAX(apellidos) AS apellidos,
+                    MAX(cuir) AS cuir
+                FROM clientes
+                GROUP BY id
+            ) c ON c.id = p.documento
 
             WHERE p.paga > 0
               AND p.formadepago = 'CREDITO'

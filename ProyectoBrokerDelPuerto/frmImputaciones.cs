@@ -152,10 +152,10 @@ namespace ProyectoBrokerDelPuerto
                     dataGridView1.Rows[i].Cells["suma_total"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["comprobante"].Value.ToString(),
-                    dataGridView1.Rows[i].Cells["imputado"].Value.ToString() == "True" ? "SI" : "NO"
+                    dataGridView1.Rows[i].Cells["imputado"].Value.ToString() == "True" ? "SI" : "NO",
                     dataGridView1.Rows[i].Cells["name"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["document"].Value.ToString(),
-                    dataGridView1.Rows[i].Cells["cuil"].Value.ToString(),
+                    dataGridView1.Rows[i].Cells["cuil"].Value.ToString()
                 );
                 total_ += dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["valor_comprobante"].Value) : 0;
                 sum_total += dataGridView1.Rows[i].Cells["suma_total"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["suma_total"].Value) : 0;
