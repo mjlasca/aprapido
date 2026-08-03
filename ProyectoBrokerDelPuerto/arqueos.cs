@@ -307,10 +307,10 @@ namespace ProyectoBrokerDelPuerto
             SqlCommand cmd = new SqlCommand();
             cmd.CommandText = @"
                                    SELECT t1.id,t1.fechadia,t1.nombre,t1.usuario,t1.valormanual,t1.cuadredescuadre,t1.nombresupervisor,t1.observaciones, 
-                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario THEN 1 ELSE 0 END) AS cantpoli,
-                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CONTADO' THEN p1.premio_total ELSE 0 END) AS contado,
-                                           SUM(CASE WHEN  DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CREDITO' THEN p1.premio_total ELSE 0 END) AS credito,
-                                           SUM(CASE WHEN DATE(p1.ultmod) = t1.fechadia AND p1.user_edit = t1.usuario THEN p1.premio_total ELSE 0 END) AS total,
+                                           SUM(CASE WHEN DATE(p1.fecha_paga) = t1.fechadia AND p1.user_edit = t1.usuario THEN 1 ELSE 0 END) AS cantpoli,
+                                           SUM(CASE WHEN DATE(p1.fecha_paga) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CONTADO' THEN p1.premio_total ELSE 0 END) AS contado,
+                                           SUM(CASE WHEN  DATE(p1.fecha_paga) = t1.fechadia AND p1.user_edit = t1.usuario AND  p1.formadepago = 'CREDITO' THEN p1.premio_total ELSE 0 END) AS credito,
+                                           SUM(CASE WHEN DATE(p1.fecha_paga) = t1.fechadia AND p1.user_edit = t1.usuario THEN p1.premio_total ELSE 0 END) AS total,
                                            SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND p1.paga = 1 AND p1.formadepago = 'CREDITO' THEN p1.premio_total ELSE 0 END) AS pagoscreditos,
                                            SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND  p1.paga = 1 AND p1.formadepago = 'CREDITO' AND p1.tipopago != 'EFECTIVO' THEN p1.premio_total ELSE 0 END) AS pagoscreditos_difefectivo,
                                            SUM(CASE WHEN   DATE(p1.fecha_paga) = t1.fechadia AND p1.usuariopaga = t1.usuario AND p1.paga = 1 THEN p1.premio_total ELSE 0 END) AS realcaja

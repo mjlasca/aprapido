@@ -198,7 +198,7 @@ namespace ProyectoBrokerDelPuerto
                     {
                         Task.Run(() => {
                             frmMigraciones frmm = new frmMigraciones();
-                            frmm.migrarGrupoBarrios(DateTime.Now.ToString("yyyy-MM-dd"));
+                            frmm.exportarGruposBarrios();
                         });
                     }
 

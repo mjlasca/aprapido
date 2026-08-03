@@ -47,6 +47,7 @@ namespace ProyectoBrokerDelPuerto
                         ds.Tables[0].Rows[i]["premio_total"].ToString(),
                         ds.Tables[0].Rows[i]["valor_pagado"].ToString(),
                         ds.Tables[0].Rows[i]["compformapago"].ToString(),
+                        ds.Tables[0].Rows[i]["cuit_pagador"].ToString(),
                         Convert.ToBoolean(ds.Tables[0].Rows[i]["imputacion"]),
                         Convert.ToInt16(ds.Tables[0].Rows[i]["imputacion"]),
                         ds.Tables[0].Rows[i]["nombres"] != null ? ds.Tables[0].Rows[i]["nombres"].ToString() + " " + ds.Tables[0].Rows[i]["apellidos"].ToString() : "",
@@ -139,6 +140,7 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("nombres", typeof(string));
             dt.Columns.Add("dni", typeof(string));
             dt.Columns.Add("cuil/cuit", typeof(string));
+            dt.Columns.Add("cuit_pagador", typeof(string));
 
             double total_ = 0;
             double sum_total = 0;
@@ -155,7 +157,8 @@ namespace ProyectoBrokerDelPuerto
                     dataGridView1.Rows[i].Cells["imputado"].Value.ToString() == "True" ? "SI" : "NO",
                     dataGridView1.Rows[i].Cells["name"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["document"].Value.ToString(),
-                    dataGridView1.Rows[i].Cells["cuil"].Value.ToString()
+                    dataGridView1.Rows[i].Cells["cuil"].Value.ToString(),
+                    dataGridView1.Rows[i].Cells["cuit_pagador"].Value.ToString()
                 );
                 total_ += dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["valor_comprobante"].Value) : 0;
                 sum_total += dataGridView1.Rows[i].Cells["suma_total"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["suma_total"].Value) : 0;

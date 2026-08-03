@@ -428,7 +428,7 @@ namespace ProyectoBrokerDelPuerto
             {
                 gruposbarrios gr = new gruposbarrios();
                 gr.actualizar_envionube();
-                this.miBarrios.save();
+                
                 return true;
             }
 
@@ -1265,8 +1265,8 @@ namespace ProyectoBrokerDelPuerto
             mi.tipo = "EXPORTACION";
             mi.fecha = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
             mi.tabla = "grupobarrios";
-            if (!mi.exist())
-            {
+            //if (!mi.exist())
+            //{
                 int cantregistros = 0;
                 string consecutivos = "";
 
@@ -1318,11 +1318,11 @@ namespace ProyectoBrokerDelPuerto
 
                 textBox1.Text += Environment.NewLine + Environment.NewLine;
 
-            }
-            else
-            {
-                Console.WriteLine("La migración de GruposBarrios del " + fecha + " ya se ha hecho");
-            }
+            //}
+            //else
+            //{
+            //    Console.WriteLine("La migración de GruposBarrios del " + fecha + " ya se ha hecho");
+            //}
 
 
 
@@ -1585,6 +1585,7 @@ namespace ProyectoBrokerDelPuerto
                                     valor_pagado = ds.Tables[0].Rows[i]["valor_pagado"].ToString(),
                                     imputacion = ds.Tables[0].Rows[i]["imputacion"].ToString(),
                                     fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "" && ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "0000-00-00" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "1900-01-01",
+                                    cuit_pagador = ds.Tables[0].Rows[i]["cuit_pagador"].ToString(),
                                 }
                             );
                         }

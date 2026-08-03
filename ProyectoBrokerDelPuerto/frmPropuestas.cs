@@ -775,6 +775,7 @@ namespace ProyectoBrokerDelPuerto
             string formapago = "";
             string compformapago = "";
             string valor_pagado = "";
+            string cuit_pago = "";
             DateTime dt_fecComprobante;
 
             frmFormadepago frmpaga = new frmFormadepago();
@@ -788,6 +789,7 @@ namespace ProyectoBrokerDelPuerto
                 compformapago = frmpaga.textBox2.Text;
                 valor_pagado = frmpaga.ValorPagado_txt.Text;
                 dt_fecComprobante = frmpaga.fecha_comprobante.Value;
+                cuit_pago = frmpaga.cuit_pagador.Text;
             }
             else
             {
@@ -822,6 +824,7 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.version = pro.version ;
                 this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
                 this.pay.valor_pagado = Convert.ToDouble( valor_pagado );
+                this.pay.cuit_pagador = cuit_pago;
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -833,7 +836,8 @@ namespace ProyectoBrokerDelPuerto
                         compformapago,
                         fechapagar,
                         valor_pagado,
-                        dt_fecComprobante.ToString("yyyy-MM-dd")
+                        dt_fecComprobante.ToString("yyyy-MM-dd"),
+                        cuit_pago
                     );
 
                     if(frmpaga.ruta.Count > 0)
@@ -875,6 +879,7 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.version = pro.version;
                 this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
                 this.pay.valor_pagado = Convert.ToDouble(valor_pagado);
+                this.pay.cuit_pagador = cuit_pago;
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -886,7 +891,8 @@ namespace ProyectoBrokerDelPuerto
                         compformapago,
                         fechapagar,
                         valor_pagado,
-                        dt_fecComprobante.ToString("yyyy-MM-dd")
+                        dt_fecComprobante.ToString("yyyy-MM-dd"),
+                        cuit_pago
                     );
 
                     if (frmpaga.ruta.Count > 0)
@@ -1110,4 +1116,5 @@ class paypro
     public double valor_pagado { get; set; }
     public int imputacion { get; set; }
     public int version { get; set; }
+    public string cuit_pagador { get; set; }
 }

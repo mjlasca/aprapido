@@ -165,6 +165,11 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
 
+            if(cuit_pagador.Text == "")
+            {
+                error += "\nEl cuit pagador es obligatorio";
+            }
+
             
 
             return error;
