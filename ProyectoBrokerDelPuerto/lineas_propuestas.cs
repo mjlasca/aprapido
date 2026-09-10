@@ -164,7 +164,7 @@ namespace ProyectoBrokerDelPuerto
             sql = "SELECT *,(SELECT cod  FROM actividades t1 WHERE t1.id = t2.id_actividad) as cod_actividad, (SELECT cod  FROM clasificaciones t1 WHERE t1.id = t2.id_clasificacion) as cod_clasificacion, (SELECT SUM(t1.prima)  FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as prima, " +
                 " (SELECT SUM(t1.referencia) FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as referencia," +
                 " (SELECT SUM(t1.nota) FROM propuestas t1 WHERE t1.prefijo = t2.prefijo AND t1.idpropuesta = t2.id_propuesta) as nota FROM lineas_propuestas t2 WHERE t2.id_propuesta  = '" +
-                idpropuesta_ + "' AND t2.prefijo = '"+prefijo_+"' GROUP BY t2.documento ";
+                idpropuesta_ + "' AND t2.prefijo = '"+prefijo_+"' GROUP BY t2.prefijo, t2.id_propuesta, t2.documento ";
 
             try
             {
@@ -306,7 +306,7 @@ namespace ProyectoBrokerDelPuerto
                         AND t0.ultmod <= '{fecha2}'
                         AND t0.codestado > 0 
                          {refe} 
-                         AND t0.user_edit LIKE '%{this.user_edit}%'";
+                         AND t0.user_edit LIKE '%{this.user_edit}%' GROUP by t0.prefijo,t0.idpropuesta,t3.documento";
 
 
             }
@@ -365,7 +365,7 @@ namespace ProyectoBrokerDelPuerto
                         AND t0.ultmod <= '{fecha2}'
                         AND t0.codestado > 0 
                         {refe}
-                         AND t0.user_edit LIKE '%{this.user_edit}%'";
+                         AND t0.user_edit LIKE '%{this.user_edit}%' GROUP by t0.prefijo,t0.idpropuesta,t3.documento";
 
             }
 

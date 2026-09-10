@@ -307,7 +307,6 @@ namespace ProyectoBrokerDelPuerto
                 for (int i = 0; i < ds.Tables[0].Rows.Count; i++)
                 {
 
-
                     if (ds.Tables[0].Rows[i]["codestado"].ToString() != "0")
                     {
 
