@@ -204,7 +204,8 @@ namespace ProyectoBrokerDelPuerto
                            ds.Tables[0].Rows[i]["codestado"].ToString(),
                            ds.Tables[0].Rows[i]["formadepago"].ToString(),
                            pagado,
-                           ds.Tables[0].Rows[i]["fecha_paga"].ToString()
+                           ds.Tables[0].Rows[i]["fecha_paga"].ToString(),
+                           ds.Tables[0].Rows[i]["comprobante_bitrix"].ToString()
                           );
                     }
                 }
@@ -231,6 +232,10 @@ namespace ProyectoBrokerDelPuerto
                     if (dataGridView1.Rows[i].Cells["estado"].Value.ToString() == "0")
                     {
                         dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Red;
+                    }
+                    if (dataGridView1.Rows[i].Cells["comprobante_bitrix"].Value.ToString() != "")
+                    {
+                        dataGridView1.Rows[i].Cells["paga"].Style.BackColor = Color.CornflowerBlue;
                     }
                 }
 
@@ -302,7 +307,7 @@ namespace ProyectoBrokerDelPuerto
                     return;
                 }
 
-                propuestas pro = new propuestas();
+                /*propuestas pro = new propuestas();
                 DataSet ds = pro.getprefijo(dataGridView1.CurrentRow.Cells["prefijo"].Value.ToString(), dataGridView1.CurrentRow.Cells["idPropuesta"].Value.ToString());
                 informes info = new informes();
                 DataSet infoDs = info.get_tipo_informe("FINDIA", Convert.ToDateTime(dataGridView1.CurrentRow.Cells["fecha"].Value).ToString("yyyy-MM-dd"));
@@ -310,12 +315,12 @@ namespace ProyectoBrokerDelPuerto
                 if (infoDs.Tables[0].Rows.Count > 0)
                 {
                     if (ds.Tables[0].Rows.Count > 0)
-                    {
+                    {s
                         if (DateTime.Compare(Convert.ToDateTime(ds.Tables[0].Rows[0]["ultmod"].ToString()).Date, DateTime.Now.Date) < 0)
                             anular = false;
                     }
 
-                }
+                }*/
 
                 //Estado 1 Vigente 2 No vigente 0 Anulada
                 if (dataGridView1.CurrentRow.Cells["estado"].Value.ToString() == "1")
@@ -1092,6 +1097,17 @@ namespace ProyectoBrokerDelPuerto
                 fr.downloadInfoVentas();
             }
             
+        }
+
+        private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dataGridView1.CurrentRow.Cells["comprobante_bitrix"].Value != null)
+            {
+                if (dataGridView1.CurrentRow.Cells["comprobante_bitrix"].Value.ToString() != "")
+                {
+                    System.Diagnostics.Process.Start(dataGridView1.CurrentRow.Cells["comprobante_bitrix"].Value.ToString());
+                }
+            }
         }
     }
 

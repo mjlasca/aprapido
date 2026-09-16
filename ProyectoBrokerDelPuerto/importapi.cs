@@ -512,7 +512,8 @@ namespace ProyectoBrokerDelPuerto
                                                         imputacion = val["imputacion"] == null ? "" : val["imputacion"],
                                                         fecha_comprobante = val["fecha_comprobante"] == null ? "1000-01-01" : val["fecha_comprobante"],
                                                         codempresa = val["codempresa"] == null ? MDIParent1.codempresa : val["codempresa"],
-                                                        cuit_pagador = val["cuit_pagador"] ?? ""
+                                                        cuit_pagador = val["cuit_pagador"] ?? "",
+                                                        comprobante_bitrix = val["comprobante_bitrix"] ?? ""
                                                     }).ToList();
                     
                     

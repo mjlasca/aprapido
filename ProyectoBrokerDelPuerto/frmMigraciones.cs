@@ -1586,6 +1586,7 @@ namespace ProyectoBrokerDelPuerto
                                     imputacion = ds.Tables[0].Rows[i]["imputacion"].ToString(),
                                     fecha_comprobante = ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "" && ds.Tables[0].Rows[i]["fecha_comprobante"].ToString() != "0000-00-00" ? Convert.ToDateTime(ds.Tables[0].Rows[i]["fecha_comprobante"].ToString()).ToString("yyyy-MM-dd HH:mm:ss") : "1900-01-01",
                                     cuit_pagador = ds.Tables[0].Rows[i]["cuit_pagador"].ToString(),
+                                    comprobante_bitrix = ds.Tables[0].Rows[i]["comprobante_bitrix"].ToString()
                                 }
                             );
                         }

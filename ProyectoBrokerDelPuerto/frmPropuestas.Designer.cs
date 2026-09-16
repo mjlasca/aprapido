@@ -35,21 +35,6 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idpropuestaprefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.idPropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.cobertura = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.useredit = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.vigencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.premio = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.formadepago = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fecha_paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chVigentes = new System.Windows.Forms.CheckBox();
             this.chNoVigentes = new System.Windows.Forms.CheckBox();
             this.chAnuladas = new System.Windows.Forms.CheckBox();
@@ -72,6 +57,22 @@
             this.button4 = new System.Windows.Forms.Button();
             this.documents_all = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
+            this.referencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.prefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idpropuestaprefijo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.idPropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.documento = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.cobertura = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.useredit = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.vigencia = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.premio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.estado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.formadepago = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fecha_paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.comprobante_bitrix = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -155,7 +156,8 @@
             this.estado,
             this.formadepago,
             this.paga,
-            this.fecha_paga});
+            this.fecha_paga,
+            this.comprobante_bitrix});
             this.dataGridView1.Location = new System.Drawing.Point(22, 83);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -163,109 +165,7 @@
             this.dataGridView1.Size = new System.Drawing.Size(984, 431);
             this.dataGridView1.TabIndex = 11;
             this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
-            // 
-            // referencia
-            // 
-            this.referencia.FillWeight = 50.26117F;
-            this.referencia.HeaderText = "Referencia / Póliza";
-            this.referencia.Name = "referencia";
-            this.referencia.ReadOnly = true;
-            // 
-            // prefijo
-            // 
-            this.prefijo.FillWeight = 30F;
-            this.prefijo.HeaderText = "Prefijo";
-            this.prefijo.Name = "prefijo";
-            this.prefijo.ReadOnly = true;
-            // 
-            // idpropuestaprefijo
-            // 
-            this.idpropuestaprefijo.HeaderText = "No. Propuesta";
-            this.idpropuestaprefijo.Name = "idpropuestaprefijo";
-            this.idpropuestaprefijo.ReadOnly = true;
-            // 
-            // idPropuesta
-            // 
-            this.idPropuesta.FillWeight = 39.53878F;
-            this.idPropuesta.HeaderText = "No. Propuesta";
-            this.idPropuesta.Name = "idPropuesta";
-            this.idPropuesta.ReadOnly = true;
-            this.idPropuesta.Visible = false;
-            // 
-            // documento
-            // 
-            this.documento.FillWeight = 49.42349F;
-            this.documento.HeaderText = "Documento";
-            this.documento.Name = "documento";
-            this.documento.ReadOnly = true;
-            // 
-            // nombre
-            // 
-            this.nombre.FillWeight = 118.6163F;
-            this.nombre.HeaderText = "Apellido y Nombre";
-            this.nombre.Name = "nombre";
-            this.nombre.ReadOnly = true;
-            // 
-            // fecha
-            // 
-            this.fecha.FillWeight = 98.84701F;
-            this.fecha.HeaderText = "Fecha";
-            this.fecha.Name = "fecha";
-            this.fecha.ReadOnly = true;
-            // 
-            // cobertura
-            // 
-            this.cobertura.FillWeight = 39.53878F;
-            this.cobertura.HeaderText = "Cobertura";
-            this.cobertura.Name = "cobertura";
-            this.cobertura.ReadOnly = true;
-            // 
-            // useredit
-            // 
-            this.useredit.FillWeight = 98.84701F;
-            this.useredit.HeaderText = "Empleado";
-            this.useredit.Name = "useredit";
-            this.useredit.ReadOnly = true;
-            // 
-            // vigencia
-            // 
-            this.vigencia.FillWeight = 102.0715F;
-            this.vigencia.HeaderText = "Vigencia";
-            this.vigencia.Name = "vigencia";
-            this.vigencia.ReadOnly = true;
-            // 
-            // premio
-            // 
-            this.premio.FillWeight = 102.0715F;
-            this.premio.HeaderText = "Premio";
-            this.premio.Name = "premio";
-            this.premio.ReadOnly = true;
-            // 
-            // estado
-            // 
-            this.estado.HeaderText = "Estado";
-            this.estado.Name = "estado";
-            this.estado.ReadOnly = true;
-            this.estado.Visible = false;
-            // 
-            // formadepago
-            // 
-            this.formadepago.HeaderText = "Forma Pago";
-            this.formadepago.Name = "formadepago";
-            this.formadepago.ReadOnly = true;
-            // 
-            // paga
-            // 
-            this.paga.FillWeight = 60F;
-            this.paga.HeaderText = "Paga";
-            this.paga.Name = "paga";
-            this.paga.ReadOnly = true;
-            // 
-            // fecha_paga
-            // 
-            this.fecha_paga.HeaderText = "Fecha Pago";
-            this.fecha_paga.Name = "fecha_paga";
-            this.fecha_paga.ReadOnly = true;
+            this.dataGridView1.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellDoubleClick);
             // 
             // chVigentes
             // 
@@ -493,6 +393,116 @@
             this.button5.UseVisualStyleBackColor = true;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
+            // referencia
+            // 
+            this.referencia.FillWeight = 50.26117F;
+            this.referencia.HeaderText = "Referencia / Póliza";
+            this.referencia.Name = "referencia";
+            this.referencia.ReadOnly = true;
+            // 
+            // prefijo
+            // 
+            this.prefijo.FillWeight = 30F;
+            this.prefijo.HeaderText = "Prefijo";
+            this.prefijo.Name = "prefijo";
+            this.prefijo.ReadOnly = true;
+            // 
+            // idpropuestaprefijo
+            // 
+            this.idpropuestaprefijo.HeaderText = "No. Propuesta";
+            this.idpropuestaprefijo.Name = "idpropuestaprefijo";
+            this.idpropuestaprefijo.ReadOnly = true;
+            // 
+            // idPropuesta
+            // 
+            this.idPropuesta.FillWeight = 39.53878F;
+            this.idPropuesta.HeaderText = "No. Propuesta";
+            this.idPropuesta.Name = "idPropuesta";
+            this.idPropuesta.ReadOnly = true;
+            this.idPropuesta.Visible = false;
+            // 
+            // documento
+            // 
+            this.documento.FillWeight = 49.42349F;
+            this.documento.HeaderText = "Documento";
+            this.documento.Name = "documento";
+            this.documento.ReadOnly = true;
+            // 
+            // nombre
+            // 
+            this.nombre.FillWeight = 118.6163F;
+            this.nombre.HeaderText = "Apellido y Nombre";
+            this.nombre.Name = "nombre";
+            this.nombre.ReadOnly = true;
+            // 
+            // fecha
+            // 
+            this.fecha.FillWeight = 98.84701F;
+            this.fecha.HeaderText = "Fecha";
+            this.fecha.Name = "fecha";
+            this.fecha.ReadOnly = true;
+            // 
+            // cobertura
+            // 
+            this.cobertura.FillWeight = 39.53878F;
+            this.cobertura.HeaderText = "Cobertura";
+            this.cobertura.Name = "cobertura";
+            this.cobertura.ReadOnly = true;
+            // 
+            // useredit
+            // 
+            this.useredit.FillWeight = 98.84701F;
+            this.useredit.HeaderText = "Empleado";
+            this.useredit.Name = "useredit";
+            this.useredit.ReadOnly = true;
+            // 
+            // vigencia
+            // 
+            this.vigencia.FillWeight = 102.0715F;
+            this.vigencia.HeaderText = "Vigencia";
+            this.vigencia.Name = "vigencia";
+            this.vigencia.ReadOnly = true;
+            // 
+            // premio
+            // 
+            this.premio.FillWeight = 102.0715F;
+            this.premio.HeaderText = "Premio";
+            this.premio.Name = "premio";
+            this.premio.ReadOnly = true;
+            // 
+            // estado
+            // 
+            this.estado.HeaderText = "Estado";
+            this.estado.Name = "estado";
+            this.estado.ReadOnly = true;
+            this.estado.Visible = false;
+            // 
+            // formadepago
+            // 
+            this.formadepago.HeaderText = "Forma Pago";
+            this.formadepago.Name = "formadepago";
+            this.formadepago.ReadOnly = true;
+            // 
+            // paga
+            // 
+            this.paga.FillWeight = 60F;
+            this.paga.HeaderText = "Paga";
+            this.paga.Name = "paga";
+            this.paga.ReadOnly = true;
+            // 
+            // fecha_paga
+            // 
+            this.fecha_paga.HeaderText = "Fecha Pago";
+            this.fecha_paga.Name = "fecha_paga";
+            this.fecha_paga.ReadOnly = true;
+            // 
+            // comprobante_bitrix
+            // 
+            this.comprobante_bitrix.HeaderText = "comprobante_bitrix";
+            this.comprobante_bitrix.Name = "comprobante_bitrix";
+            this.comprobante_bitrix.ReadOnly = true;
+            this.comprobante_bitrix.Visible = false;
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -561,6 +571,12 @@
         private System.Windows.Forms.CheckBox sinpagar_ch;
         private System.Windows.Forms.Button btnPagar;
         private System.Windows.Forms.Button libreDeuda_btn;
+        private System.Windows.Forms.ComboBox orden_select;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button fiscalizador_btn;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button documents_all;
+        private System.Windows.Forms.Button button5;
         private System.Windows.Forms.DataGridViewTextBoxColumn referencia;
         private System.Windows.Forms.DataGridViewTextBoxColumn prefijo;
         private System.Windows.Forms.DataGridViewTextBoxColumn idpropuestaprefijo;
@@ -576,11 +592,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn formadepago;
         private System.Windows.Forms.DataGridViewTextBoxColumn paga;
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_paga;
-        private System.Windows.Forms.ComboBox orden_select;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button fiscalizador_btn;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button documents_all;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn comprobante_bitrix;
     }
 }
