@@ -61,6 +61,10 @@ namespace ProyectoBrokerDelPuerto
                 gr.nombre = comboGrupo.Text;
                 gr.get();
                 gr.delete();
+                Task.Run(() => {
+                    frmMigraciones frmm = new frmMigraciones();
+                    frmm.exportarGruposBarrios();
+                });
                 dataGridView1.Rows.Clear();
                 comboGrupo.Items.Clear();
                 this.datosIniciales();

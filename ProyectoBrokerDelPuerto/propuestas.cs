@@ -1255,7 +1255,7 @@ namespace ProyectoBrokerDelPuerto
                                 "imputacion = '" + this.imputacion + "'," +
                                 "codestado = '" + this.codestado + "'," +
                                 "paga = '" + this.paga + "'," +
-                                "referencia = '" + this.referencia + "'," +
+                                "referencia = '" + this.referencia ?? "" + "'," +
                                 "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
                                 "formadepago = '" + this.formadepago + "'," +
                                 "user_edit = '" + this.user_edit + "'," +
