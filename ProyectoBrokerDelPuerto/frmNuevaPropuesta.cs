@@ -311,6 +311,18 @@ namespace ProyectoBrokerDelPuerto
             {
                 this.polizamanana();
             }
+
+            gruposbarrios grp = new gruposbarrios();
+            DataSet dsGroup = new DataSet();
+            dsGroup = grp.get_all();
+            if(dsGroup.Tables[0].Rows.Count > 0)
+            {
+                for(int i= 0; i < dsGroup.Tables[0].Rows.Count; i++)
+                {
+                    separar_cb.Items.Add(dsGroup.Tables[0].Rows[i]["nombre"].ToString());
+                }
+            }
+
             /*LOAD*/
 
         }

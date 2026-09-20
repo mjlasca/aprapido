@@ -204,9 +204,10 @@ namespace ProyectoBrokerDelPuerto
                            ds.Tables[0].Rows[i]["codestado"].ToString(),
                            ds.Tables[0].Rows[i]["formadepago"].ToString(),
                            pagado,
-                           ds.Tables[0].Rows[i]["fecha_paga"].ToString(),
-                           ds.Tables[0].Rows[i]["comprobante_bitrix"].ToString()
-                          );
+                            ds.Tables[0].Rows[i]["fecha_paga"].ToString(),
+                            ds.Tables[0].Rows[i]["comprobante_bitrix"].ToString(),
+                            ds.Tables[0].Rows[i]["banco_destino"].ToString()
+                           );
                     }
                 }
             }
@@ -781,6 +782,7 @@ namespace ProyectoBrokerDelPuerto
             string compformapago = "";
             string valor_pagado = "";
             string cuit_pago = "";
+            string banco_destino = "";
             DateTime dt_fecComprobante;
 
             frmFormadepago frmpaga = new frmFormadepago();
@@ -795,6 +797,8 @@ namespace ProyectoBrokerDelPuerto
                 valor_pagado = frmpaga.ValorPagado_txt.Text;
                 dt_fecComprobante = frmpaga.fecha_comprobante.Value;
                 cuit_pago = frmpaga.cuit_pagador.Text;
+                banco_destino = frmpaga.bandestino_txt.Text;
+
             }
             else
             {
@@ -830,6 +834,7 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
                 this.pay.valor_pagado = Convert.ToDouble( valor_pagado );
                 this.pay.cuit_pagador = cuit_pago;
+                this.pay.banco_destino = banco_destino;
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -842,7 +847,8 @@ namespace ProyectoBrokerDelPuerto
                         fechapagar,
                         valor_pagado,
                         dt_fecComprobante.ToString("yyyy-MM-dd"),
-                        cuit_pago
+                        cuit_pago,
+                        banco_destino
                     );
 
                     if(frmpaga.ruta.Count > 0)
@@ -885,6 +891,7 @@ namespace ProyectoBrokerDelPuerto
                 this.pay.fecha_comprobante = dt_fecComprobante.ToString("yyyy-MM-dd");
                 this.pay.valor_pagado = Convert.ToDouble(valor_pagado);
                 this.pay.cuit_pagador = cuit_pago;
+                this.pay.banco_destino = banco_destino;
 
                 bool resimport = await this.paypropuesta();
                 if (resimport)
@@ -897,7 +904,8 @@ namespace ProyectoBrokerDelPuerto
                         fechapagar,
                         valor_pagado,
                         dt_fecComprobante.ToString("yyyy-MM-dd"),
-                        cuit_pago
+                        cuit_pago,
+                        banco_destino
                     );
 
                     if (frmpaga.ruta.Count > 0)
@@ -1133,4 +1141,5 @@ class paypro
     public int imputacion { get; set; }
     public int version { get; set; }
     public string cuit_pagador { get; set; }
+    public string banco_destino { get; set; }
 }

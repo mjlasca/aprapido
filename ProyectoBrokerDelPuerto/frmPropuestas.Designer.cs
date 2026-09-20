@@ -73,6 +73,7 @@
             this.paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.fecha_paga = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.comprobante_bitrix = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.banco_destino = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -157,7 +158,8 @@
             this.formadepago,
             this.paga,
             this.fecha_paga,
-            this.comprobante_bitrix});
+            this.comprobante_bitrix,
+            this.banco_destino});
             this.dataGridView1.Location = new System.Drawing.Point(22, 83);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
@@ -503,6 +505,13 @@
             this.comprobante_bitrix.ReadOnly = true;
             this.comprobante_bitrix.Visible = false;
             // 
+            // banco_destino
+            // 
+            this.banco_destino.HeaderText = "banco_destino";
+            this.banco_destino.Name = "banco_destino";
+            this.banco_destino.ReadOnly = true;
+            this.banco_destino.Visible = false;
+            // 
             // frmPropuestas
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -593,5 +602,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn paga;
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha_paga;
         private System.Windows.Forms.DataGridViewTextBoxColumn comprobante_bitrix;
+        private System.Windows.Forms.DataGridViewTextBoxColumn banco_destino;
     }
 }

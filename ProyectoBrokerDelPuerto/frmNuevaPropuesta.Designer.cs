@@ -104,8 +104,6 @@
             this.libreDeuda_btn = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button3 = new System.Windows.Forms.Button();
-            this.whatsapp = new System.Windows.Forms.PictureBox();
             this.idPropuesta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.nodocumento = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.documento = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -115,6 +113,10 @@
             this.fecha = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.actividad = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.clasificacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.button3 = new System.Windows.Forms.Button();
+            this.whatsapp = new System.Windows.Forms.PictureBox();
+            this.separar_cb = new System.Windows.Forms.ComboBox();
+            this.label26 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -754,6 +756,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label26);
+            this.groupBox3.Controls.Add(this.separar_cb);
             this.groupBox3.Controls.Add(this.label24);
             this.groupBox3.Controls.Add(this.btnInfoBarrios);
             this.groupBox3.Controls.Add(this.button2);
@@ -953,29 +957,6 @@
             this.dataGridView1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.dataGridView1_KeyUp);
             this.dataGridView1.MouseLeave += new System.EventHandler(this.dataGridView1_MouseLeave);
             // 
-            // button3
-            // 
-            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
-            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.button3.Location = new System.Drawing.Point(356, 647);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(25, 23);
-            this.button3.TabIndex = 65;
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // whatsapp
-            // 
-            this.whatsapp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.whatsapp.Image = global::ProyectoBrokerDelPuerto.Properties.Resources.whatsapp_logo_png_hd_2;
-            this.whatsapp.Location = new System.Drawing.Point(603, 642);
-            this.whatsapp.Name = "whatsapp";
-            this.whatsapp.Size = new System.Drawing.Size(32, 32);
-            this.whatsapp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.whatsapp.TabIndex = 60;
-            this.whatsapp.TabStop = false;
-            this.whatsapp.Click += new System.EventHandler(this.pictureBox1_Click);
-            // 
             // idPropuesta
             // 
             this.idPropuesta.FillWeight = 300F;
@@ -1055,6 +1036,47 @@
             this.clasificacion.Name = "clasificacion";
             this.clasificacion.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.clasificacion.Width = 300;
+            // 
+            // button3
+            // 
+            this.button3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("button3.BackgroundImage")));
+            this.button3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.button3.Location = new System.Drawing.Point(356, 647);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(25, 23);
+            this.button3.TabIndex = 65;
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // whatsapp
+            // 
+            this.whatsapp.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.whatsapp.Image = global::ProyectoBrokerDelPuerto.Properties.Resources.whatsapp_logo_png_hd_2;
+            this.whatsapp.Location = new System.Drawing.Point(603, 642);
+            this.whatsapp.Name = "whatsapp";
+            this.whatsapp.Size = new System.Drawing.Size(32, 32);
+            this.whatsapp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.whatsapp.TabIndex = 60;
+            this.whatsapp.TabStop = false;
+            this.whatsapp.Click += new System.EventHandler(this.pictureBox1_Click);
+            // 
+            // separar_cb
+            // 
+            this.separar_cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.separar_cb.FormattingEnabled = true;
+            this.separar_cb.Location = new System.Drawing.Point(516, 79);
+            this.separar_cb.Name = "separar_cb";
+            this.separar_cb.Size = new System.Drawing.Size(155, 21);
+            this.separar_cb.TabIndex = 68;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(513, 63);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(126, 13);
+            this.label26.TabIndex = 45;
+            this.label26.Text = "Separar barrios por grupo";
             // 
             // frmNuevaPropuesta
             // 
@@ -1182,5 +1204,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn fecha;
         private System.Windows.Forms.DataGridViewComboBoxColumn actividad;
         private System.Windows.Forms.DataGridViewComboBoxColumn clasificacion;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.ComboBox separar_cb;
     }
 }

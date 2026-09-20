@@ -14,9 +14,9 @@ namespace ProyectoBrokerDelPuerto
         //Si codestado es 1. Està vigente la propuesta, 2. Ya no està vigente, 0. Anulada
         string columns = "documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde ,fechaHasta,clausula, barrio_beneficiario, ultmod, " +
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor,"+
-            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion,fecha_comprobante, cuit_pagador, comprobante_bitrix";
+            "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion,fecha_comprobante, cuit_pagador, comprobante_bitrix, banco_destino, separar_grupo_id";
         public string  id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta,clausula, barrio_beneficiario,ultmod, 
-            user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota, cuit_pagador = "", comprobante_bitrix = "";
+            user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota, cuit_pagador = "", comprobante_bitrix = "", banco_destino = "", separar_grupo_id = "0";
         public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0", valor_pagado = "0", imputacion = "0", fecha_comprobante = DateTime.Now.ToString("1000-01-01 HH:mm:ss");
         public string fecha_paga = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public string referencia = "", prefijo = "", formadepago = "CONTADO";
@@ -354,6 +354,10 @@ namespace ProyectoBrokerDelPuerto
                         con.query("ALTER TABLE propuestas ADD COLUMN cuit_pagador VARCHAR(15)  NULL;");
                     if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'comprobante_bitrix' ").Tables[0].Rows.Count == 0)
                         con.query("ALTER TABLE propuestas ADD COLUMN comprobante_bitrix VARCHAR(300)  NULL;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'banco_destino' ").Tables[0].Rows.Count == 0)
+                    con.query("ALTER TABLE propuestas ADD COLUMN banco_destino VARCHAR(200)  NULL;");
+                    if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'separar_grupo_id' ").Tables[0].Rows.Count == 0)
+                        con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id int(5)  NULL;");
                 }
                 catch(Exception ex)
                 {
@@ -391,6 +395,8 @@ namespace ProyectoBrokerDelPuerto
                     con.query("ALTER TABLE propuestas ADD COLUMN fecha_comprobante DATE NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN cuit_pagador VARCHAR(15)  NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN comprobante_bitrix VARCHAR(300)  NULL;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN banco_destino VARCHAR(200)  NULL;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id int(5)  NULL;");
                 }
                 catch (Exception ex){
                     Console.WriteLine("Error al agregar columna de propuesta " + ex.Message);
@@ -1010,7 +1016,7 @@ namespace ProyectoBrokerDelPuerto
                         SELECT t1.prefijo, t1.formadepago, t1.idpropuesta, t1.referencia, t1.prima, 
                         t2.nombres, t2.apellidos, t1.fechaHasta, t1.premio_total, t1.id, t1.documento, 
                         t1.ultmod, t1.id_cobertura, t1.fechaDesde, t1.fechaHasta, t1.codestado, 
-                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga, t1.comprobante_bitrix 
+                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga, t1.comprobante_bitrix, t1.banco_destino, t1.separar_grupo_id 
                         FROM propuestas t1 
                         LEFT JOIN clientes t2 ON t2.id = t1.documento 
                         LEFT JOIN usuarios t3 ON t1.user_edit = t3.loggin 
@@ -1026,7 +1032,7 @@ namespace ProyectoBrokerDelPuerto
                         SELECT t1.prefijo, t1.formadepago, t1.idpropuesta, t1.referencia, t1.prima, 
                         t2.nombres, t2.apellidos, t1.fechaHasta, t1.premio_total, t1.id, t1.documento, 
                         t1.ultmod, t1.id_cobertura, t1.fechaDesde, t1.fechaHasta, t1.codestado, 
-                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga, t1.comprobante_bitrix
+                        t3.nombre AS nombreuser, t1.paga, t1.fecha_paga, t1.comprobante_bitrix, t1.banco_destino, t1.separar_grupo_id
                         FROM propuestas t1 
                         LEFT JOIN clientes t2 ON t2.id = t1.documento 
                         LEFT JOIN usuarios t3 ON t1.user_edit = t3.loggin 
@@ -1082,7 +1088,7 @@ namespace ProyectoBrokerDelPuerto
 
             if (MDIParent1.baseDatos == "MySql")
             {
-                sql = "SELECT t1.prefijo,t1.formadepago, t1.comprobante_bitrix, t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
+                sql = "SELECT t1.prefijo,t1.formadepago, t1.comprobante_bitrix, t1.banco_destino, t1.separar_grupo_id, t1.idpropuesta,t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
                 " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
                 " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento  AND  t1.user_edit = t3.loggin WHERE "
@@ -1093,7 +1099,7 @@ namespace ProyectoBrokerDelPuerto
             }
             else
             {
-                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta, t1.comprobante_bitrix, t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
+                sql = "SELECT t1.prefijo,t1.formadepago,t1.idpropuesta, t1.comprobante_bitrix, t1.banco_destino, t1.separar_grupo_id, t1.referencia,t1.prima, t2.nombres,t1.fechaHasta,t1.premio_total, t2.apellidos, t1.id, t1.documento, t1.ultmod, t1.id_cobertura, t1.fechaDesde, " +
                 " t1.fechaHasta, t1.codestado, t3.nombre as nombreuser, t1.paga, t1.fecha_paga  FROM propuestas t1 INNER JOIN clientes t2  " +
                 "  INNER JOIN usuarios t3 ON " +
                 " DATE(t1.fecha_paga) BETWEEN '" + fecha1 + "' AND '" + fecha2 + "' AND t2.id = t1.documento AND  t1.user_edit = t3.loggin WHERE " 
@@ -1242,6 +1248,8 @@ namespace ProyectoBrokerDelPuerto
                                 " version = '" + this.version + "'," +
                                 " cuit_pagador = '" + this.cuit_pagador + "'," +
                                 " comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                                " banco_destino = '" + this.banco_destino + "'," +
+                                " separar_grupo_id = '" + this.separar_grupo_id + "'," +
                                 "idpropuesta = '" + this.idpropuesta + "'" +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
                             }
@@ -1265,6 +1273,8 @@ namespace ProyectoBrokerDelPuerto
                                 "data_barrios = '" + this.data_barrios + "'," +
                                 "cuit_pagador = '" + this.cuit_pagador + "'," +
                                 "comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                                "banco_destino = '" + this.banco_destino + "'," +
+                                "separar_grupo_id = '" + this.separar_grupo_id + "'," +
                                 " version = '" + this.version + "' " +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
                             }
@@ -1325,7 +1335,9 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.imputacion + "'," +
                         "'" + this.formatField(this.fecha_comprobante) + "'," +
                         "'" + this.cuit_pagador + "'," +
-                        "'" + this.comprobante_bitrix + "'" +
+                        "'" + this.comprobante_bitrix + "'," +
+                        "'" + this.banco_destino + "'," +
+                        "'" + this.separar_grupo_id + "'" +
 
 
                         ") ";
@@ -1664,6 +1676,8 @@ namespace ProyectoBrokerDelPuerto
                             "compformapago = '" + this.compformapago + "'," +
                             "cuit_pagador = '" + this.cuit_pagador + "'," +
                             "comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                            "banco_destino = '" + this.banco_destino + "'," +
+                            "separar_grupo_id = '" + this.separar_grupo_id + "'," +
                             "nota = '" + this.nota + "'," +
                             "version = '"+this.version+"' , " +
                             "codempresa = '" + MDIParent1.codempresa + "'," +
@@ -1709,6 +1723,8 @@ namespace ProyectoBrokerDelPuerto
                                 "compformapago = '" + this.compformapago + "'," +
                                 "cuit_pagador = '" + this.cuit_pagador + "'," +
                                 "comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                                "banco_destino = '" + this.banco_destino + "'," +
+                                "separar_grupo_id = '" + this.separar_grupo_id + "'," +
                                 "codempresa = '" + MDIParent1.codempresa + "'," +
                                 "envionube = '0'," +
                                 "version = (version + 1 ) , " +
@@ -1753,6 +1769,8 @@ namespace ProyectoBrokerDelPuerto
                                 "compformapago = '" + this.compformapago + "'," +
                                 "cuit_pagador = '" + this.cuit_pagador + "'," +
                                 "comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                                "banco_destino = '" + this.banco_destino + "'," +
+                                "separar_grupo_id = '" + this.separar_grupo_id + "'," +
                                 "envionube = '0'," +
                                 "version = (version + 1 ) , " +
                                 "codempresa = '" + MDIParent1.codempresa + "'," +
@@ -1810,7 +1828,9 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.imputacion + "'," +
                         "'" + this.fecha_comprobante + "'," +
                         "'" + this.cuit_pagador + "'," +
-                        "'" + this.comprobante_bitrix + "'" +
+                        "'" + this.comprobante_bitrix + "'," +
+                        "'" + this.banco_destino + "'," +
+                        "'" + this.separar_grupo_id + "'" +
 
 
 
@@ -1873,7 +1893,9 @@ namespace ProyectoBrokerDelPuerto
                         "'" + this.imputacion + "'," +
                         "'" + this.fecha_comprobante + "'," +
                         "'" + this.cuit_pagador + "'," +
-                        "'" + this.comprobante_bitrix + "'" +
+                        "'" + this.comprobante_bitrix + "'," +
+                        "'" + this.banco_destino + "'," +
+                        "'" + this.separar_grupo_id + "'" +
 
                         ") ";
                     }
@@ -2124,13 +2146,18 @@ namespace ProyectoBrokerDelPuerto
         }
 
 
-        public void pagar(string id_, string prefijo_, string tipopago_, string compago_, string fechapago_ = "", string valor_pagado_ = "", string fecha_comprobante_ = "", string cuit_pagador_ = "")
+        public void pagar(string id_, string prefijo_, 
+            string tipopago_, string compago_, string fechapago_ = "", 
+            string valor_pagado_ = "", string fecha_comprobante_ = "", 
+            string cuit_pagador_ = "", string banco_destino_ = "")
         {
             if(fechapago_ == "")
                 fechapago_ = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             sql = "UPDATE propuestas SET paga = 1, usuariopaga = '" + MDIParent1.sesionUser + "', fecha_paga = '" +
-                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + "',valor_pagado = '" + valor_pagado_ + "',fecha_comprobante = '" + fecha_comprobante_ + "', cuit_pagador = '" + cuit_pagador_ + "', version = ( version + 2 )  WHERE " +
+                fechapago_ + "',compformapago = '" + compago_ + "',tipopago = '" + tipopago_ + 
+                "',valor_pagado = '" + valor_pagado_ + "',fecha_comprobante = '" + fecha_comprobante_ +
+                "', cuit_pagador = '" + cuit_pagador_ + "', banco_destino = '" + banco_destino_ + "', version = ( version + 2 )  WHERE " +
                 " idpropuesta = '" + id_.Trim() + "' AND prefijo = '" + prefijo_ + "' ";
             con.query(sql);
         }
@@ -2311,7 +2338,8 @@ namespace ProyectoBrokerDelPuerto
                 c.id AS cliente_id,
                 c.nombres,
                 c.apellidos,
-                c.cuir
+                c.cuir,
+                p.banco_destino
 
             FROM propuestas p
             LEFT JOIN (

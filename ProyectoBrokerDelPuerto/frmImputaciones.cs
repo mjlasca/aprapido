@@ -52,7 +52,8 @@ namespace ProyectoBrokerDelPuerto
                         Convert.ToInt16(ds.Tables[0].Rows[i]["imputacion"]),
                         ds.Tables[0].Rows[i]["nombres"] != null ? ds.Tables[0].Rows[i]["nombres"].ToString() + " " + ds.Tables[0].Rows[i]["apellidos"].ToString() : "",
                         ds.Tables[0].Rows[i]["cliente_id"] != null ? ds.Tables[0].Rows[i]["cliente_id"].ToString() : "",
-                        ds.Tables[0].Rows[i]["cuir"] != null ? ds.Tables[0].Rows[i]["cuir"].ToString() : ""
+                        ds.Tables[0].Rows[i]["cuir"] != null ? ds.Tables[0].Rows[i]["cuir"].ToString() : "",
+                        ds.Tables[0].Rows[i]["banco_destino"] != null ? ds.Tables[0].Rows[i]["banco_destino"].ToString() : ""
                     );
 
                     if (ds.Tables[0].Rows[i]["codestado"] != null && ds.Tables[0].Rows[i]["codestado"].ToString() == "0")
@@ -141,6 +142,7 @@ namespace ProyectoBrokerDelPuerto
             dt.Columns.Add("dni", typeof(string));
             dt.Columns.Add("cuil/cuit", typeof(string));
             dt.Columns.Add("cuit_pagador", typeof(string));
+            dt.Columns.Add("banco_destino", typeof(string));
 
             double total_ = 0;
             double sum_total = 0;
@@ -158,7 +160,8 @@ namespace ProyectoBrokerDelPuerto
                     dataGridView1.Rows[i].Cells["name"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["document"].Value.ToString(),
                     dataGridView1.Rows[i].Cells["cuil"].Value.ToString(),
-                    dataGridView1.Rows[i].Cells["cuit_pagador"].Value.ToString()
+                    dataGridView1.Rows[i].Cells["cuit_pagador"].Value.ToString(),
+                    dataGridView1.Rows[i].Cells["banco_destino"].Value.ToString()
                 );
                 total_ += dataGridView1.Rows[i].Cells["valor_comprobante"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["valor_comprobante"].Value) : 0;
                 sum_total += dataGridView1.Rows[i].Cells["suma_total"].Value.ToString() != "" ? Convert.ToDouble(dataGridView1.Rows[i].Cells["suma_total"].Value) : 0;

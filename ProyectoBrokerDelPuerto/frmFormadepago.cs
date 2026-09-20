@@ -170,7 +170,7 @@ namespace ProyectoBrokerDelPuerto
                 error += "\nEl cuit pagador es obligatorio";
             }
 
-            
+            bandestino_txt.Text = bandestino_txt.Text.Trim();
 
             return error;
         }
