@@ -323,6 +323,22 @@ namespace ProyectoBrokerDelPuerto
                 }
             }
 
+            DataSet ds = pro.getprefijo(lblPrefijo.Text, lblidpropuesta.Text);
+            if(ds.Tables[0].Rows.Count > 0)
+            {
+                grp.id = ds.Tables[0].Rows[0]["separar_grupo_id"].ToString();
+                if(grp.id != "")
+                {
+                    grp.id = grp.id.Split('*')[0];
+                    grp.get_id();
+                    if(grp.nombre != "")
+                    {
+                        separar_cb.Text = grp.nombre;
+                    }
+                }
+            }
+
+
             /*LOAD*/
 
         }
@@ -884,6 +900,22 @@ namespace ProyectoBrokerDelPuerto
                 return false;
             }
 
+            if(separar_cb.Text != "")
+            {
+                gruposbarrios grps = new gruposbarrios();
+                grps.nombre = separar_cb.Text;
+                DataSet ds = new DataSet();
+                ds = grps.get_name_barrios();
+                if(ds.Tables[0].Rows.Count > 0)
+                {
+                    pro.separar_grupo_id = ds.Tables[0].Rows[0]["id"].ToString() + "*";
+                    for(int i = 0; i < ds.Tables[0].Rows.Count; i++)
+                    {
+                        pro.separar_grupo_id = pro.separar_grupo_id + ds.Tables[0].Rows[i]["idbarrio"].ToString() + ",";
+                    }
+                }
+            }
+
             if (pro.save())
             {
                 
@@ -1063,6 +1095,9 @@ namespace ProyectoBrokerDelPuerto
 
         private void btnEmitir_Click(object sender, EventArgs e)
         {
+            if(lblPrefijo.Text != "" && lblidpropuesta.Text != "")
+                System.Diagnostics.Process.Start(MDIParent1.apiuri + "/emision/"+ lblidpropuesta.Text + "/" + lblPrefijo.Text + (checkBox3.Checked ? "?aseguradora=true" : "") );
+            return;
             this.suma_premio();
             if (this.validacion(false)) {
               /*  if (paga_ch.Checked)
@@ -1152,7 +1187,10 @@ namespace ProyectoBrokerDelPuerto
 
             this.crearCarpeta(path);
 
-            gen.pdfEmisionBarriosPrivados(lblPrefijo.Text + "-" + lblidpropuesta.Text, cl, dataGridView1, fechaDesde.Value, fechaHasta.Value, listBox1, cob, norepeticion, benefiBarrios, abrirArchivo, path, pagado);
+            string separarGrupoId = dsPropuesta.Tables[0].Rows[0]["separar_grupo_id"].ToString();
+            
+
+            gen.pdfEmisionBarriosPrivados(lblPrefijo.Text + "-" + lblidpropuesta.Text, cl, dataGridView1, fechaDesde.Value, fechaHasta.Value, listBox1, cob, norepeticion, benefiBarrios, abrirArchivo, path, pagado, separarGrupoId);
             if (File.Exists(Environment.CurrentDirectory + @"\" + path))
                 File.Delete(Environment.CurrentDirectory + @"\" + path);
         }
@@ -2077,7 +2115,7 @@ namespace ProyectoBrokerDelPuerto
 
         public void enviarMail()
         {
-
+            return;
             mailBarrios enviar = new mailBarrios();
             clientes cl1 = new clientes();
             DataSet clientes = cl1.get(textBox1.Text.Trim());
@@ -2304,13 +2342,13 @@ namespace ProyectoBrokerDelPuerto
             if (radioButton1.Checked)
                 sexoMensaje = "Estimada ";
 
-
             string mensaje = sexoMensaje + txtNombres.Text
                 + " " + txtApellidos.Text + ", Tenga un Excelente día!. Está Recibiendo su certificado de Cobertura y Recibo. Gracias por Preferirnos." +
-                " No olvide que puede renovar su póliza o emitir cualquier seguro que necesite, contactándonos por este medio \n – Equipo Broker del Puerto.";
+                " No olvide que puede renovar su póliza o emitir cualquier seguro que necesite, contactándonos por este medio \n – Equipo Broker del Puerto."
+                + " Descarga la póliza en "+ MDIParent1.apiuri + "/descargaseguro/" + lblidpropuesta.Text + "/" + lblPrefijo.Text;
 
             mensaje = mensaje.Replace(" ", "%20");
-            this.crearCarpeta(path);
+            /*this.crearCarpeta(path);
             bool pago = false;
             if (paga_ch.Checked)
             {
@@ -2318,9 +2356,9 @@ namespace ProyectoBrokerDelPuerto
                     pago = true;
             }
             this.generarEmisionPdf(false, pago);
-            this.generarReciboPdf(false, pago);
-            abrirRutaFacturaScripts("https://api.whatsapp.com/send?phone=54" + txtTelefono.Text + "&text=" + mensaje);
-            abrirRutaFacturaScripts(path);
+            this.generarReciboPdf(false, pago);*/
+            abrirRutaFacturaScripts("https://api.whatsapp.com/send?phone=57" + txtTelefono.Text + "&text=" + mensaje);
+            //abrirRutaFacturaScripts(path);
         }
 
 
@@ -2487,6 +2525,11 @@ namespace ProyectoBrokerDelPuerto
                 frmUtilities frm = new frmUtilities();
                 frm.ShowDialog();
             }
+        }
+
+        private void separar_cb_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            btnEmitir.Enabled = false;
         }
 
         private bool guardado(bool duplicar = false)

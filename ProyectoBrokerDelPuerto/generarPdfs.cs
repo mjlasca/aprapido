@@ -17,7 +17,7 @@ namespace ProyectoBrokerDelPuerto
     class generarPdfs
     {
         public string empresa_ = "Broker del puerto";
-        public void pdfEmisionBarriosPrivados(string idpropuesta, clientes tomador, DataGridView dgv, DateTime vigenciaDesde, DateTime vigenciaHasta, ListBox barrio, coberturas cobertura, bool norepeticion, bool benefbarrios, bool abrir = true, string ruta = "", bool pagado = false)
+        public void pdfEmisionBarriosPrivados(string idpropuesta, clientes tomador, DataGridView dgv, DateTime vigenciaDesde, DateTime vigenciaHasta, ListBox barrio, coberturas cobertura, bool norepeticion, bool benefbarrios, bool abrir = true, string ruta = "", bool pagado = false, string separardor = "")
         {
 
             try
@@ -31,6 +31,11 @@ namespace ProyectoBrokerDelPuerto
                     return;    
                 }
                 */
+
+
+                string[] arrSeparar;
+                if(separardor != "")
+                    arrSeparar = separardor.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
                 DateTime datett = DateTime.Now;
                 Document doc = new Document(PageSize.LETTER,30f,20f,50f,105f);

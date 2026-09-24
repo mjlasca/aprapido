@@ -134,6 +134,47 @@ namespace ProyectoBrokerDelPuerto
             return false;
         }
 
+        public bool get_id()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT * FROM gruposbarrios WHERE id  = TRIM( '" + this.id + "' ) AND codestado = '1' LIMIT 1";
+            try
+            {
+                ds = con.query(sql);
+                this.reg = ds.Tables[0].Rows[0]["reg"].ToString();
+                this.id = ds.Tables[0].Rows[0]["id"].ToString();
+                this.nombre = ds.Tables[0].Rows[0]["nombre"].ToString();
+                this.idbarrio = ds.Tables[0].Rows[0]["idbarrio"].ToString();
+                this.nombrebarrio = ds.Tables[0].Rows[0]["nombrebarrio"].ToString();
+                this.codestado = ds.Tables[0].Rows[0]["codestado"].ToString();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar gruposbarrios " + ex.Message);
+            }
+
+            return false;
+        }
+
+        public DataSet get_name_barrios()
+        {
+            DataSet ds = new DataSet();
+
+            sql = "SELECT id,idbarrio FROM gruposbarrios WHERE codestado = '1' AND nombre = '"+ this.nombre +"' GROUP BY idbarrio";
+            try
+            {
+                ds = con.query(sql);
+            }
+            catch (Exception ex)
+            {
+                Console.Write("ERROR al consultar gruposbarrios " + ex.Message);
+            }
+
+            return ds;
+        }
+
         public DataSet get_all()
         {
             DataSet ds = new DataSet();

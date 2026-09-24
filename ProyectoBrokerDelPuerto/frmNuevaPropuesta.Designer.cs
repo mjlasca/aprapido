@@ -90,6 +90,8 @@
             this.btnRecibo = new System.Windows.Forms.Button();
             this.btnEmitir = new System.Windows.Forms.Button();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.separar_cb = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
             this.btnInfoBarrios = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -115,8 +117,7 @@
             this.clasificacion = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.button3 = new System.Windows.Forms.Button();
             this.whatsapp = new System.Windows.Forms.PictureBox();
-            this.separar_cb = new System.Windows.Forms.ComboBox();
-            this.label26 = new System.Windows.Forms.Label();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -756,6 +757,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.checkBox3);
             this.groupBox3.Controls.Add(this.label26);
             this.groupBox3.Controls.Add(this.separar_cb);
             this.groupBox3.Controls.Add(this.label24);
@@ -786,6 +788,25 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
             this.groupBox3.MouseHover += new System.EventHandler(this.groupBox3_MouseHover);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(513, 63);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(126, 13);
+            this.label26.TabIndex = 45;
+            this.label26.Text = "Separar barrios por grupo";
+            // 
+            // separar_cb
+            // 
+            this.separar_cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.separar_cb.FormattingEnabled = true;
+            this.separar_cb.Location = new System.Drawing.Point(516, 79);
+            this.separar_cb.Name = "separar_cb";
+            this.separar_cb.Size = new System.Drawing.Size(141, 21);
+            this.separar_cb.TabIndex = 68;
+            this.separar_cb.SelectedIndexChanged += new System.EventHandler(this.separar_cb_SelectedIndexChanged);
             // 
             // label24
             // 
@@ -1060,23 +1081,14 @@
             this.whatsapp.TabStop = false;
             this.whatsapp.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // separar_cb
+            // checkBox3
             // 
-            this.separar_cb.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.separar_cb.FormattingEnabled = true;
-            this.separar_cb.Location = new System.Drawing.Point(516, 79);
-            this.separar_cb.Name = "separar_cb";
-            this.separar_cb.Size = new System.Drawing.Size(155, 21);
-            this.separar_cb.TabIndex = 68;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(513, 63);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(126, 13);
-            this.label26.TabIndex = 45;
-            this.label26.Text = "Separar barrios por grupo";
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(642, 63);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(15, 14);
+            this.checkBox3.TabIndex = 69;
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // frmNuevaPropuesta
             // 
@@ -1206,5 +1218,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn clasificacion;
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.ComboBox separar_cb;
+        private System.Windows.Forms.CheckBox checkBox3;
     }
 }

@@ -16,7 +16,7 @@ namespace ProyectoBrokerDelPuerto
             "user_edit,codestado, cobertura_suma, cobertura_deducible, cobertura_gastos,promocion,paga,fecha_paga,referencia,prima,master,organizador,productor,"+
             "prefijo,formadepago,usuariopaga, tipopago, compformapago,idpropuesta,envionube,codempresa,nota,data_barrios,version,valor_pagado,imputacion,fecha_comprobante, cuit_pagador, comprobante_bitrix, banco_destino, separar_grupo_id";
         public string  id, documento,  num_polizas, meses, id_cobertura, id_barrio, nueva_poliza, premio, premio_total, fechaDesde, fechaHasta,clausula, barrio_beneficiario,ultmod, 
-            user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota, cuit_pagador = "", comprobante_bitrix = "", banco_destino = "", separar_grupo_id = "0";
+            user_edit, codestado, promocion, master, organizador, productor, usuariopaga, tipopago, compformapago,idpropuesta, codempresa,nota, cuit_pagador = "", comprobante_bitrix = "", banco_destino = "", separar_grupo_id = "";
         public string paga = "1", envionube = "0", cobertura_suma="0", cobertura_deducible = "0", cobertura_gastos = "0", valor_pagado = "0", imputacion = "0", fecha_comprobante = DateTime.Now.ToString("1000-01-01 HH:mm:ss");
         public string fecha_paga = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
         public string referencia = "", prefijo = "", formadepago = "CONTADO";
@@ -357,7 +357,7 @@ namespace ProyectoBrokerDelPuerto
                     if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'banco_destino' ").Tables[0].Rows.Count == 0)
                     con.query("ALTER TABLE propuestas ADD COLUMN banco_destino VARCHAR(200)  NULL;");
                     if (con.query("SHOW COLUMNS FROM propuestas WHERE Field = 'separar_grupo_id' ").Tables[0].Rows.Count == 0)
-                        con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id int(5)  NULL;");
+                        con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id VARCHAR(5500)  NULL;");
                 }
                 catch(Exception ex)
                 {
@@ -396,7 +396,7 @@ namespace ProyectoBrokerDelPuerto
                     con.query("ALTER TABLE propuestas ADD COLUMN cuit_pagador VARCHAR(15)  NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN comprobante_bitrix VARCHAR(300)  NULL;");
                     con.query("ALTER TABLE propuestas ADD COLUMN banco_destino VARCHAR(200)  NULL;");
-                    con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id int(5)  NULL;");
+                    con.query("ALTER TABLE propuestas ADD COLUMN separar_grupo_id VARCHAR(5500)  NULL;");
                 }
                 catch (Exception ex){
                     Console.WriteLine("Error al agregar columna de propuesta " + ex.Message);
@@ -1207,7 +1207,7 @@ namespace ProyectoBrokerDelPuerto
 
                             if (this.confirmVersion())
                             {
-                                sql = "UPDATE propuestas SET " +
+                                 sql = "UPDATE propuestas SET " +
                                 "documento = '" + this.documento + "'," +
                                 "num_polizas = '" + this.num_polizas + "'," +
                                 "meses = '" + this.meses + "'," +
@@ -1234,7 +1234,8 @@ namespace ProyectoBrokerDelPuerto
                                 "promocion = '" + this.promocion + "'," +
                                 "paga = '" + this.paga + "'," +
                                 "referencia = '" + this.referencia + "'," +
-                                "prima = '" + this.prima.Trim().Replace(",", ".") + "'," +
+                                // CORRECCIÓN EN PRIMA (uso de paréntesis para el operador ternario)
+                                "prima = '" + (this.prima == null ? "" : this.prima.Trim().Replace(",", ".")) + "'," +
                                 "master = '" + this.master + "'," +
                                 "organizador = '" + this.organizador + "'," +
                                 "productor = '" + this.productor + "'," +
@@ -1245,14 +1246,16 @@ namespace ProyectoBrokerDelPuerto
                                 "nota = '" + this.nota + "'," +
                                 "codempresa = '" + MDIParent1.codempresa + "'," +
                                 "data_barrios = '" + this.data_barrios + "'," +
-                                " version = '" + this.version + "'," +
-                                " cuit_pagador = '" + this.cuit_pagador + "'," +
-                                " comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
-                                " banco_destino = '" + this.banco_destino + "'," +
-                                " separar_grupo_id = '" + this.separar_grupo_id + "'," +
+                                "version = '" + this.version + "'," +
+                                "cuit_pagador = '" + this.cuit_pagador + "'," +
+                                "comprobante_bitrix = '" + this.comprobante_bitrix + "'," +
+                                "banco_destino = '" + this.banco_destino + "'," +
+                                // CORRECCIÓN EN SEPARAR_GRUPO_ID (paréntesis para el operador ??)
+                                "separar_grupo_id = '" + (this.separar_grupo_id ?? "") + "'," +
                                 "idpropuesta = '" + this.idpropuesta + "'" +
                                 " WHERE idpropuesta = '" + this.idpropuesta + "' AND prefijo = '" + this.prefijo + "' ";
-                            }
+
+                        }
                             else if (this.confirmPay())
                             {
                                 sql = "UPDATE propuestas SET " +
